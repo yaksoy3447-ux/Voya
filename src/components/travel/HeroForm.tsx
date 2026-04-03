@@ -111,11 +111,11 @@ export function HeroForm() {
     return COUNTRIES.filter(c => c.name.toLowerCase().includes(depCountryQuery.toLowerCase())).slice(0, 30);
   }, [depCountryQuery, COUNTRIES]);
 
-  const [depCityPredictions, setDepCityPredictions] = useState<PlacePrediction[]>([]);
+  const [depCityPredictions, setDepCityPredictions] = useState<any[]>([]);
   
   useEffect(() => {
     if (!depCityQuery || depCityQuery.length < 2 || selectedDepCityObj) {
-      setDepCityPredictions([]);
+      if (!selectedDepCityObj) setDepCityPredictions([]);
       return;
     }
     const timer = setTimeout(async () => {
@@ -123,13 +123,13 @@ export function HeroForm() {
         const countryCode = selectedDepCountryObj?.isoCode || '';
         const res = await fetch(`/api/places?q=${encodeURIComponent(depCityQuery)}&country=${countryCode}`);
         const data = await res.json();
-        if (data.predictions) {
-          setDepCityPredictions(data.predictions);
-          setShowDepCityDropdown(true);
-        }
+        // Google v1 API can return predictions or suggestions
+        const results = data.predictions || data.suggestions || [];
+        setDepCityPredictions(results);
+        if (results.length > 0) setShowDepCityDropdown(true);
       } catch (e) { console.error('Places API error:', e); }
     }, 300);
-    return () => clearTimeout(timer);
+    return () => clearInterval(timer);
   }, [depCityQuery, selectedDepCountryObj, selectedDepCityObj]);
 
   // Destination Filters
@@ -137,11 +137,11 @@ export function HeroForm() {
     return COUNTRIES.filter(c => c.name.toLowerCase().includes(destCountryQuery.toLowerCase())).slice(0, 30);
   }, [destCountryQuery, COUNTRIES]);
 
-  const [destCityPredictions, setDestCityPredictions] = useState<PlacePrediction[]>([]);
+  const [destCityPredictions, setDestCityPredictions] = useState<any[]>([]);
   
   useEffect(() => {
     if (!destCityQuery || destCityQuery.length < 2 || selectedDestCityObj) {
-      setDestCityPredictions([]);
+      if (!selectedDestCityObj) setDestCityPredictions([]);
       return;
     }
     const timer = setTimeout(async () => {
@@ -149,13 +149,12 @@ export function HeroForm() {
         const countryCode = selectedDestCountryObj?.isoCode || '';
         const res = await fetch(`/api/places?q=${encodeURIComponent(destCityQuery)}&country=${countryCode}`);
         const data = await res.json();
-        if (data.predictions) {
-          setDestCityPredictions(data.predictions);
-          setShowDestCityDropdown(true);
-        }
+        const results = data.predictions || data.suggestions || [];
+        setDestCityPredictions(results);
+        if (results.length > 0) setShowDestCityDropdown(true);
       } catch (e) { console.error('Places API error:', e); }
     }, 300);
-    return () => clearTimeout(timer);
+    return () => clearInterval(timer);
   }, [destCityQuery, selectedDestCountryObj, selectedDestCityObj]);
 
   const getStepValidation = () => {
