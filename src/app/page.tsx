@@ -330,15 +330,15 @@ export default function LandingPage() {
                 whileInView={{ opacity: 1, y: 0 }} 
                 transition={{ delay: i * 0.1 }} 
                 viewport={{ once: true }}
-                className="relative h-[500px] rounded-[40px] overflow-hidden"
+                className="group relative h-[500px] rounded-[40px] overflow-hidden shadow-2xl"
               >
                 <a 
                   href={`https://tp.media/r?marker=715711&p=3447&u=${encodeURIComponent(tour.link)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="absolute inset-0 z-50 flex flex-col justify-end p-8 md:p-10 group hover:shadow-2xl hover:shadow-terracotta/20 transition-all duration-700 bg-linear-to-b from-transparent via-black/20 to-black/90 group-hover:via-black/40"
+                  className="absolute inset-0 z-20 flex flex-col justify-end p-8 md:p-10 transition-all duration-700 bg-linear-to-b from-transparent via-black/20 to-black/90 group-hover:via-black/40"
                  >
-                  <div className="relative z-10 space-y-4">
+                  <div className="relative z-30 space-y-4">
                     <div className="flex items-center justify-between gap-4">
                       <span className="text-[9px] font-bold text-white bg-terracotta px-3 py-1 rounded-full uppercase tracking-widest">{tour.tag}</span>
                       <div className="h-px flex-1 bg-white/20" />
@@ -360,8 +360,13 @@ export default function LandingPage() {
                   </div>
                 </a>
 
-                {/* Background Image Layer (Non-interactive) */}
-                <Image src={tour.img} alt={tour.title} fill className="object-cover group-hover:scale-105 transition-transform duration-1000 saturate-[0.8] group-hover:saturate-100 -z-10" />
+                {/* Background Image Layer */}
+                <Image 
+                  src={tour.img} 
+                  alt={tour.title} 
+                  fill 
+                  className="object-cover group-hover:scale-105 transition-transform duration-1000 saturate-[0.8] group-hover:saturate-100 z-10" 
+                />
               </motion.div>
             ))}
           </div>
