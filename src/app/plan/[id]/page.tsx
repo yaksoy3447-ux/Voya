@@ -288,7 +288,32 @@ export default function PlanHistoryViewer() {
 
           {/* Sidebar (Flights, Hotels, Tips) */}
           <div className="space-y-6 lg:mt-14">
-            
+
+            {/* MAP */}
+            <div className="glass-card rounded-3xl border border-glass-border overflow-hidden">
+              <div className="px-5 pt-5 pb-3 flex items-center gap-2">
+                <Globe className="text-terracotta" size={18} />
+                <h3 className="font-serif text-lg text-foreground">Destination Map</h3>
+              </div>
+              <iframe
+                title="Destination Map"
+                src={`https://maps.google.com/maps?q=${encodeURIComponent((itinerary.selectedCity || '') + ' ' + (itinerary.selectedCountry || ''))}&z=13&output=embed`}
+                className="w-full h-52 border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+              <div className="px-5 py-3">
+                <a
+                  href={`https://www.google.com/maps/search/${encodeURIComponent((itinerary.selectedCity || '') + ' ' + (itinerary.selectedCountry || ''))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] text-foreground/40 hover:text-terracotta transition-all uppercase tracking-widest"
+                >
+                  Open in Google Maps →
+                </a>
+              </div>
+            </div>
+
             {/* Hotels */}
             <div className="glass-card p-6 rounded-3xl border border-glass-border">
               <h3 className="font-serif text-lg text-foreground flex items-center gap-2 mb-4">
@@ -307,7 +332,7 @@ export default function PlanHistoryViewer() {
                           <span className="text-foreground/50"><MapPin size={12} className="inline mr-1"/>{hotel.location}</span>
                           <span className="text-terracotta">${hotel.pricePerNight} / night</span>
                       </div>
-                      <a 
+                      <a
                         href={`https://www.klook.com/en-US/hotels/search/result/?search_text=${encodeURIComponent(hotel.name + ' ' + hotel.location)}&marker=715711`}
                         target="_blank"
                         rel="noopener noreferrer"
