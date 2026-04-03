@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Calendar, MapPin, Plane, Hotel, DollarSign, Compass, Star, Check, Sparkles, Lock, Download } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { createBrowserClient } from '@supabase/ssr'
+import { supabase } from '@/lib/supabase/client'
 
 interface Activity {
   title: string;
@@ -48,16 +48,13 @@ export default function PlanDashboard() {
   const [isPro, setIsPro] = useState(false)
   const [loadingTier, setLoadingTier] = useState(true)
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-
   useEffect(() => {
     if (!itinerary) {
       router.replace('/create')
       return;
     }
+
+    if (!supabase) return; // Build-time safety
 
     const checkTier = async () => {
       try {
@@ -75,7 +72,7 @@ export default function PlanDashboard() {
       }
     }
     checkTier()
-  }, [itinerary, router, supabase])
+  }, [itinerary, router])
 
   if (!itinerary) return null
 

@@ -6,7 +6,7 @@ import { useRouter, useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Calendar, MapPin, Plane, Hotel, DollarSign, Compass, Star, Check, Sparkles, Lock, Download, Share2, Copy, Check as CheckIcon } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { createBrowserClient } from '@supabase/ssr'
+import { supabase } from '@/lib/supabase/client'
 import Image from 'next/image'
 
 interface Activity {
@@ -53,12 +53,9 @@ export default function PlanHistoryViewer() {
   const [isPublic, setIsPublic] = useState(false)
   const [copied, setCopied] = useState(false)
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-
   useEffect(() => {
+    if (!supabase) return; // Build safety
+    
     const fetchData = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser()
@@ -94,9 +91,10 @@ export default function PlanHistoryViewer() {
       }
     }
     fetchData()
-  }, [params.id, router, supabase])
+  }, [params.id, router])
 
   const handleTogglePublic = async () => {
+    if (!supabase) return;
     const newVal = !isPublic
     setIsPublic(newVal)
     await supabase.from('plans').update({ is_public: newVal }).eq('id', params.id)
