@@ -179,7 +179,8 @@ export default function LandingPage() {
                   onClick={() => {
                     const fromCode = (document.getElementById('search-from-v2') as HTMLInputElement)?.dataset.code || (document.getElementById('search-from-v2') as HTMLInputElement)?.value || 'IST';
                     const toCode = (document.getElementById('search-to-v2') as HTMLInputElement)?.dataset.code || (document.getElementById('search-to-v2') as HTMLInputElement)?.value || 'PAR';
-                    const url = `https://tp.media/r?marker=715711&trs=257697&u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%3Forigin%3D${fromCode}%26destination%3D${toCode}`;
+                    // Using the most robust Aviasales direct affiliate format
+                    const url = `https://www.aviasales.com/search/${fromCode}0101${toCode}1?marker=715711&trs=257697`;
                     window.open(url, '_blank');
                   }}
                   className="h-16 px-12 bg-terracotta text-white rounded-2xl text-[11px] font-bold hover:bg-terracotta/90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group shadow-2xl shadow-terracotta/20 uppercase tracking-widest"
@@ -346,7 +347,7 @@ export default function LandingPage() {
                        Official Agency
                      </div>
                      <a 
-                       href={`https://tp.media/r?marker=715711&trs=257697&u=${encodeURIComponent(tour.link)}`}
+                       href={`https://tp.media/r?marker=715711&trs=257697&p=3447&u=${encodeURIComponent(tour.link)}`}
                        target="_blank"
                        rel="noopener noreferrer"
                        className="h-12 w-12 bg-white text-black rounded-full flex items-center justify-center hover:bg-terracotta hover:text-white transition-all shadow-xl"
