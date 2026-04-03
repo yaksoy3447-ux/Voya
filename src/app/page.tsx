@@ -1,19 +1,78 @@
 "use client"
 
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion, useScroll, useTransform } from "framer-motion"
-import { Sparkles, MapPin, Calendar, Compass, Star, ArrowRight, Shield, Zap, Globe, Users, ChevronRight, Clock, DollarSign, Utensils, Brain } from "lucide-react"
+import { Sparkles, MapPin, Calendar, Compass, Star, ArrowRight, Shield, Zap, Globe, Users, ChevronRight, Clock, DollarSign, Utensils, Brain, ChevronDown, Plus, Minus } from "lucide-react"
 
 const fadeUp: any = {
   hidden: { opacity: 0, y: 30 },
   visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.6, ease: "easeOut" } })
 }
 
+const FROM_CITIES = [
+  { name: 'Istanbul', code: 'IST' }, { name: 'London', code: 'LHR' },
+  { name: 'Paris', code: 'CDG' }, { name: 'Dubai', code: 'DXB' },
+  { name: 'Tokyo', code: 'NRT' }, { name: 'New York', code: 'JFK' },
+  { name: 'Singapore', code: 'SIN' }, { name: 'Barcelona', code: 'BCN' },
+]
+const TO_CITIES = [
+  { name: 'Bali', code: 'DPS' }, { name: 'Maldives', code: 'MLE' },
+  { name: 'Rome', code: 'FCO' }, { name: 'Santorini', code: 'JTR' },
+  { name: 'Bangkok', code: 'BKK' }, { name: 'Sydney', code: 'SYD' },
+  { name: 'Miami', code: 'MIA' }, { name: 'Cape Town', code: 'CPT' },
+]
+
 export default function LandingPage() {
   const { scrollY } = useScroll()
   const videoY = useTransform(scrollY, [0, 500], [0, 150])
   const videoScale = useTransform(scrollY, [0, 500], [1, 1.1])
+
+  const [tripType, setTripType] = useState<'oneway' | 'roundtrip'>('oneway')
+  const [adults, setAdults] = useState(1)
+  const [children, setChildren] = useState(0)
+  const [showPassengers, setShowPassengers] = useState(false)
+  const [fromIdx, setFromIdx] = useState(0)
+  const [toIdx, setToIdx] = useState(3)
+  const passengersRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFromIdx(i => (i + 1) % FROM_CITIES.length)
+      setToIdx(i => (i + 1) % TO_CITIES.length)
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (passengersRef.current && !passengersRef.current.contains(e.target as Node)) {
+        setShowPassengers(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [])
+
+  const handleSearch = () => {
+    const fromCode = (document.getElementById('search-from-v2') as HTMLInputElement)?.dataset.code || FROM_CITIES[fromIdx].code
+    const toCode = (document.getElementById('search-to-v2') as HTMLInputElement)?.dataset.code || TO_CITIES[toIdx].code
+    const depVal = (document.getElementById('search-dep-date') as HTMLInputElement)?.value
+    const retVal = (document.getElementById('search-ret-date') as HTMLInputElement)?.value
+    const dep = depVal ? new Date(depVal) : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+    const depDD = String(dep.getUTCDate()).padStart(2, '0')
+    const depMM = String(dep.getUTCMonth() + 1).padStart(2, '0')
+    const pax = adults + children
+    let url = `https://www.aviasales.com/search/${fromCode}${depDD}${depMM}${toCode}${pax}?marker=715711`
+    if (tripType === 'roundtrip' && retVal) {
+      const ret = new Date(retVal)
+      const retDD = String(ret.getUTCDate()).padStart(2, '0')
+      const retMM = String(ret.getUTCMonth() + 1).padStart(2, '0')
+      url = `https://www.aviasales.com/search/${fromCode}${depDD}${depMM}${toCode}${pax}${retDD}${retMM}?marker=715711`
+    }
+    window.open(url, '_blank')
+  }
 
   return (
     <div className="min-h-dvh bg-background text-foreground overflow-x-hidden">
@@ -95,19 +154,72 @@ export default function LandingPage() {
                 Rovago directly connects with global airline networks to find the best rates for your journey.
               </p>
 
+              {/* TRIP TYPE + PASSENGERS ROW */}
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+                <div className="flex items-center gap-1 bg-white/5 rounded-full p-1 border border-white/10">
+                  <button
+                    onClick={() => setTripType('oneway')}
+                    className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${tripType === 'oneway' ? 'bg-terracotta text-white shadow' : 'text-foreground/40 hover:text-foreground/70'}`}
+                  >One Way</button>
+                  <button
+                    onClick={() => setTripType('roundtrip')}
+                    className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${tripType === 'roundtrip' ? 'bg-terracotta text-white shadow' : 'text-foreground/40 hover:text-foreground/70'}`}
+                  >Round Trip</button>
+                </div>
+
+                {/* PASSENGERS */}
+                <div className="relative" ref={passengersRef}>
+                  <button
+                    onClick={() => setShowPassengers(v => !v)}
+                    className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-foreground/60 hover:border-terracotta/30 transition-all"
+                  >
+                    <Users size={12} className="text-terracotta" />
+                    {adults + children} Passenger{adults + children !== 1 ? 's' : ''}
+                    <ChevronDown size={12} className={`transition-transform ${showPassengers ? 'rotate-180' : ''}`} />
+                  </button>
+                  {showPassengers && (
+                    <div className="absolute right-0 top-full mt-2 bg-[#1a1a1a] border border-white/10 rounded-2xl shadow-2xl z-200 p-4 min-w-[200px]">
+                      <div className="flex items-center justify-between mb-3">
+                        <div>
+                          <p className="text-xs font-bold text-white">Adults</p>
+                          <p className="text-[10px] text-foreground/40">12+ years</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button onClick={() => setAdults(a => Math.max(1, a - 1))} className="w-7 h-7 rounded-full bg-white/10 hover:bg-terracotta/30 flex items-center justify-center transition-all"><Minus size={12} /></button>
+                          <span className="text-sm font-bold w-4 text-center">{adults}</span>
+                          <button onClick={() => setAdults(a => Math.min(9, a + 1))} className="w-7 h-7 rounded-full bg-white/10 hover:bg-terracotta/30 flex items-center justify-center transition-all"><Plus size={12} /></button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-xs font-bold text-white">Children</p>
+                          <p className="text-[10px] text-foreground/40">2–11 years</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button onClick={() => setChildren(c => Math.max(0, c - 1))} className="w-7 h-7 rounded-full bg-white/10 hover:bg-terracotta/30 flex items-center justify-center transition-all"><Minus size={12} /></button>
+                          <span className="text-sm font-bold w-4 text-center">{children}</span>
+                          <button onClick={() => setChildren(c => Math.min(9, c + 1))} className="w-7 h-7 rounded-full bg-white/10 hover:bg-terracotta/30 flex items-center justify-center transition-all"><Plus size={12} /></button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
               {/* SMART SEARCH FORM */}
               <div className="bg-white/5 backdrop-blur-xl p-3 rounded-[32px] border border-white/10 flex flex-col lg:flex-row gap-2 shadow-2xl">
-                <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-2">
+                <div className={`flex-1 grid grid-cols-1 gap-2 ${tripType === 'roundtrip' ? 'md:grid-cols-4' : 'md:grid-cols-3'}`}>
+
                   {/* FROM INPUT */}
                   <div className="relative group">
                     <div className="bg-white/5 rounded-2xl p-4 flex flex-col items-start border border-white/5 hover:border-terracotta/20 transition-all">
                       <span className="text-[9px] font-bold text-terracotta uppercase tracking-[0.2em] mb-1">Departure</span>
-                      <input 
+                      <input
                         id="search-from-v2"
                         autoComplete="off"
-                        type="text" 
-                        placeholder="e.g. Istanbul (IST)"
-                        className="bg-transparent border-none text-white text-sm focus:ring-0 p-0 w-full placeholder:text-white/20 font-medium"
+                        type="text"
+                        placeholder={`${FROM_CITIES[fromIdx].name} (${FROM_CITIES[fromIdx].code})`}
+                        className="bg-transparent border-none text-white text-sm focus:ring-0 p-0 w-full placeholder:text-white/30 font-medium"
                         onChange={async (e) => {
                           const val = e.target.value;
                           const container = document.getElementById('from-suggestions');
@@ -123,11 +235,11 @@ export default function LandingPage() {
                             `).join('');
                             container.classList.remove('hidden');
                             container.querySelectorAll('.suggestion-item').forEach(el => {
-                                el.addEventListener('click', () => {
-                                    (document.getElementById('search-from-v2') as HTMLInputElement).value = (el as HTMLElement).dataset.name + ' (' + (el as HTMLElement).dataset.code + ')';
-                                    (document.getElementById('search-from-v2') as HTMLInputElement).dataset.code = (el as HTMLElement).dataset.code;
-                                    container.classList.add('hidden');
-                                });
+                              el.addEventListener('click', () => {
+                                (document.getElementById('search-from-v2') as HTMLInputElement).value = (el as HTMLElement).dataset.name + ' (' + (el as HTMLElement).dataset.code + ')';
+                                (document.getElementById('search-from-v2') as HTMLInputElement).dataset.code = (el as HTMLElement).dataset.code;
+                                container.classList.add('hidden');
+                              });
                             });
                           }
                         }}
@@ -140,12 +252,12 @@ export default function LandingPage() {
                   <div className="relative group">
                     <div className="bg-white/5 rounded-2xl p-4 flex flex-col items-start border border-white/5 hover:border-terracotta/20 transition-all">
                       <span className="text-[9px] font-bold text-terracotta uppercase tracking-[0.2em] mb-1">Destination</span>
-                      <input 
+                      <input
                         id="search-to-v2"
                         autoComplete="off"
-                        type="text" 
-                        placeholder="e.g. London (LHR)"
-                        className="bg-transparent border-none text-white text-sm focus:ring-0 p-0 w-full placeholder:text-white/20 font-medium"
+                        type="text"
+                        placeholder={`${TO_CITIES[toIdx].name} (${TO_CITIES[toIdx].code})`}
+                        className="bg-transparent border-none text-white text-sm focus:ring-0 p-0 w-full placeholder:text-white/30 font-medium"
                         onChange={async (e) => {
                           const val = e.target.value;
                           const container = document.getElementById('to-suggestions');
@@ -161,11 +273,11 @@ export default function LandingPage() {
                             `).join('');
                             container.classList.remove('hidden');
                             container.querySelectorAll('.suggestion-item').forEach(el => {
-                                el.addEventListener('click', () => {
-                                    (document.getElementById('search-to-v2') as HTMLInputElement).value = (el as HTMLElement).dataset.name + ' (' + (el as HTMLElement).dataset.code + ')';
-                                    (document.getElementById('search-to-v2') as HTMLInputElement).dataset.code = (el as HTMLElement).dataset.code;
-                                    container.classList.add('hidden');
-                                });
+                              el.addEventListener('click', () => {
+                                (document.getElementById('search-to-v2') as HTMLInputElement).value = (el as HTMLElement).dataset.name + ' (' + (el as HTMLElement).dataset.code + ')';
+                                (document.getElementById('search-to-v2') as HTMLInputElement).dataset.code = (el as HTMLElement).dataset.code;
+                                container.classList.add('hidden');
+                              });
                             });
                           }
                         }}
@@ -174,12 +286,12 @@ export default function LandingPage() {
                     <div id="to-suggestions" className="absolute top-full left-0 right-0 mt-2 bg-[#1a1a1a] border border-white/10 rounded-2xl shadow-2xl z-[100] max-h-60 overflow-y-auto hidden backdrop-blur-xl" />
                   </div>
 
-                  {/* DATE INPUT */}
+                  {/* DEPART DATE */}
                   <div className="relative group">
                     <div className="bg-white/5 rounded-2xl p-4 flex flex-col items-start border border-white/5 hover:border-terracotta/20 transition-all">
-                      <span className="text-[9px] font-bold text-terracotta uppercase tracking-[0.2em] mb-1">Date</span>
+                      <span className="text-[9px] font-bold text-terracotta uppercase tracking-[0.2em] mb-1">Depart</span>
                       <input
-                        id="search-date-v2"
+                        id="search-dep-date"
                         type="date"
                         defaultValue={new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
                         min={new Date().toISOString().split('T')[0]}
@@ -187,19 +299,26 @@ export default function LandingPage() {
                       />
                     </div>
                   </div>
+
+                  {/* RETURN DATE (round trip only) */}
+                  {tripType === 'roundtrip' && (
+                    <div className="relative group">
+                      <div className="bg-white/5 rounded-2xl p-4 flex flex-col items-start border border-white/5 hover:border-terracotta/20 transition-all">
+                        <span className="text-[9px] font-bold text-terracotta uppercase tracking-[0.2em] mb-1">Return</span>
+                        <input
+                          id="search-ret-date"
+                          type="date"
+                          defaultValue={new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
+                          min={new Date().toISOString().split('T')[0]}
+                          className="bg-transparent border-none text-white text-sm focus:ring-0 p-0 w-full font-medium scheme-dark cursor-pointer"
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
-                
-                <button 
-                  onClick={() => {
-                    const fromCode = (document.getElementById('search-from-v2') as HTMLInputElement)?.dataset.code || (document.getElementById('search-from-v2') as HTMLInputElement)?.value || 'IST';
-                    const toCode = (document.getElementById('search-to-v2') as HTMLInputElement)?.dataset.code || (document.getElementById('search-to-v2') as HTMLInputElement)?.value || 'PAR';
-                    const dateVal = (document.getElementById('search-date-v2') as HTMLInputElement)?.value;
-                    const d = dateVal ? new Date(dateVal) : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-                    const dd = String(d.getUTCDate()).padStart(2, '0');
-                    const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
-                    const url = `https://www.aviasales.com/search/${fromCode}${dd}${mm}${toCode}1?marker=715711`;
-                    window.open(url, '_blank');
-                  }}
+
+                <button
+                  onClick={handleSearch}
                   className="h-16 px-12 bg-terracotta text-white rounded-2xl text-[11px] font-bold hover:bg-terracotta/90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group shadow-2xl shadow-terracotta/20 uppercase tracking-widest"
                 >
                   Search Deals <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
