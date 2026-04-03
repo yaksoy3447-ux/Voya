@@ -251,17 +251,31 @@ export default function PlanHistoryViewer() {
                                </div>
                             )}
 
-                            <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2 ${isFoodLocked ? 'blur-sm' : ''}`}>
+                            <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3 ${isFoodLocked ? 'blur-sm' : ''}`}>
                               <h4 className="font-medium text-foreground">{act.title}</h4>
                               <div className="flex gap-3 text-xs font-medium text-foreground/60">
                                 <span className="flex items-center gap-1"><ClockIcon size={14}/> {act.time}</span>
                                 {act.estimatedCost > 0 && <span className="flex items-center gap-1 text-green-400/80 text-[11px]">~${act.estimatedCost}</span>}
                               </div>
                             </div>
-                            <p className={`text-sm text-foreground/70 mb-3 ${isFoodLocked ? 'blur-sm' : ''}`}>{act.description}</p>
-                            <span className={`inline-flex items-center gap-1 text-xs text-foreground/50 border border-glass-border/40 rounded-full px-2 py-1 bg-white/5 ${isFoodLocked ? 'blur-sm' : ''}`}>
-                              <MapPin size={12}/> {act.location}
-                            </span>
+                            <p className={`text-sm text-foreground/70 mb-4 ${isFoodLocked ? 'blur-sm' : ''}`}>{act.description}</p>
+                            
+                            <div className={`flex flex-wrap items-center justify-between gap-3 ${isFoodLocked ? 'blur-sm' : ''}`}>
+                                <span className="inline-flex items-center gap-1 text-xs text-foreground/50 border border-glass-border/40 rounded-full px-2 py-1 bg-white/5">
+                                    <MapPin size={12}/> {act.location}
+                                </span>
+                                
+                                {act.type !== 'food' && (
+                                    <a 
+                                        href={`https://tp.media/r?marker=715711&trs=257697&u=https%3A%2F%2Fwww.klook.com%2Fen-US%2Fsearch%2Fresult%2F%3Fquery%3D${encodeURIComponent(act.title + ' ' + act.location)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-[11px] font-bold text-terracotta hover:text-terracotta/80 flex items-center gap-1 transition-all"
+                                    >
+                                        <Compass size={12} /> Find Tickets & Tours
+                                    </a>
+                                )}
+                            </div>
                           </div>
                         </div>
                         )
@@ -283,16 +297,24 @@ export default function PlanHistoryViewer() {
               <div className="space-y-4">
                 {itinerary.hotels && itinerary.hotels.length > 0 ? (
                   itinerary.hotels.map((hotel: HotelInfo, idx: number) => (
-                    <div key={idx} className="p-4 bg-white/5 border border-glass-border rounded-2xl">
+                    <div key={idx} className="p-4 bg-white/5 border border-glass-border rounded-2xl group transition-all hover:bg-white/10">
                       <div className="flex justify-between items-start mb-2">
                           <h4 className="font-medium text-sm">{hotel.name}</h4>
                           <span className="flex items-center gap-1 text-xs bg-yellow-500/20 text-yellow-500 px-2 py-1 rounded-full"><Star size={12} className="fill-yellow-500" /> {hotel.rating}</span>
                       </div>
-                      <p className="text-xs text-foreground/60 mb-3">{hotel.description}</p>
-                      <div className="flex items-center justify-between text-xs font-medium border-t border-glass-border/40 pt-3">
+                      <p className="text-xs text-foreground/60 mb-3 line-clamp-2">{hotel.description}</p>
+                      <div className="flex items-center justify-between text-xs font-medium mb-3">
                           <span className="text-foreground/50"><MapPin size={12} className="inline mr-1"/>{hotel.location}</span>
                           <span className="text-terracotta">${hotel.pricePerNight} / night</span>
                       </div>
+                      <a 
+                        href={`https://search.hotellook.com/?location=${encodeURIComponent(hotel.name)}&marker=715711&language=en`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 w-full py-2 bg-terracotta text-white rounded-xl text-xs font-bold hover:bg-terracotta/90 transition-all shadow-lg shadow-terracotta/20"
+                      >
+                        Book This Hotel
+                      </a>
                     </div>
                   ))
                 ) : (
@@ -311,20 +333,42 @@ export default function PlanHistoryViewer() {
               <div className="space-y-3">
                 {itinerary.flights && itinerary.flights.length > 0 ? (
                   itinerary.flights.map((flight: FlightInfo, idx: number) => (
-                    <div key={idx} className="flex justify-between items-center p-3 border border-glass-border/40 rounded-xl bg-white/5">
-                      <div>
-                        <div className="font-medium text-sm flex items-center gap-2">
-                          {flight.departure} <Plane size={14} className="text-foreground/40"/> {flight.arrival}
+                    <div key={idx} className="p-3 border border-glass-border/40 rounded-xl bg-white/5 space-y-3">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <div className="font-medium text-sm flex items-center gap-2">
+                            {flight.departure} <Plane size={14} className="text-foreground/40 rotate-90"/> {flight.arrival}
+                          </div>
+                          <div className="text-xs text-foreground/50 font-medium">{flight.airline} • {flight.date}</div>
                         </div>
-                        <div className="text-xs text-foreground/50 font-medium">{flight.airline} • {flight.date}</div>
+                        <div className="font-medium text-sm text-terracotta font-serif">${flight.price}</div>
                       </div>
-                      <div className="font-medium text-sm text-terracotta font-serif">${flight.price}</div>
+                      <a 
+                        href={`https://www.aviasales.com/search?destination=${encodeURIComponent(flight.arrival)}&marker=715711&language=en`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 w-full py-2 border border-terracotta text-terracotta rounded-lg text-xs font-bold hover:bg-terracotta/10 transition-all"
+                      >
+                        Compare Flights
+                      </a>
                     </div>
                   ))
                 ) : (
                   <div className="p-3 border border-glass-border/20 rounded-xl text-center text-xs text-foreground/40 font-medium">
                     Optimizing flight routes...
                   </div>
+                )}
+                {itinerary.flights && itinerary.flights.length > 0 && (
+                   <div className="pt-2">
+                     <a 
+                       href={`https://www.aviasales.com?marker=715711`}
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       className="text-[10px] text-foreground/40 hover:text-terracotta transition-all block text-center underline"
+                     >
+                       Looking for more options? Check all flights
+                     </a>
+                   </div>
                 )}
               </div>
             </div>

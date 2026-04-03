@@ -14,6 +14,16 @@ export default function BlogPage() {
   // Sorted newest first by date
   const posts = [
     {
+      title: "2026's Best Cities for Digital Nomads",
+      slug: "digital-nomads-2026",
+      excerpt: "From high-speed internet in Bali to the vibrant co-working culture of Lisbon, find out where to take your office next.",
+      date: "April 10, 2026",
+      author: "Rovago Team",
+      readTime: "7 min read",
+      category: "Digital Nomad",
+      image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=800&auto=format&fit=crop"
+    },
+    {
       title: "Exploring the Soul of Istanbul: A Local's Perspective",
       slug: "istanbul-local-tips",
       excerpt: "Navigate the busy streets of Istanbul with insider tips on transport, hidden cafes, and the best time to visit historic sites.",
@@ -30,7 +40,16 @@ export default function BlogPage() {
       date: "April 2, 2026",
       readTime: "5 min read",
       category: "Experience",
-      image: "/blog/mykonos_streets.png"
+      image: "https://images.unsplash.com/photo-1601581875309-fad39686d45b?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      title: "How to Explore Paris on a Low Budget",
+      slug: "paris-low-budget",
+      excerpt: "Enjoy the City of Light without breaking the bank. From free museums to the best street food, we show you how.",
+      date: "March 30, 2026",
+      readTime: "9 min read",
+      category: "Budget Travel",
+      image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "10 Hidden Gems in Japan You've Never Heard Of",
@@ -40,6 +59,15 @@ export default function BlogPage() {
       readTime: "8 min read",
       category: "Destinations",
       image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      title: "Safe Solo Travel Routes for 2026",
+      slug: "safe-solo-travel",
+      excerpt: "Empowering tips and the safest destinations for independent explorers looking for their next solo journey.",
+      date: "March 25, 2026",
+      readTime: "6 min read",
+      category: "Solo Travel",
+      image: "https://images.unsplash.com/photo-1527631746610-bca00a040d60?q=80&w=800&auto=format&fit=crop"
     }
   ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
