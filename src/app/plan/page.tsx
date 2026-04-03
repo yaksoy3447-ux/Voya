@@ -1,5 +1,7 @@
 "use client"
 
+export const dynamic = 'force-dynamic';
+
 import { usePlanStore } from '@/store/usePlanStore'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'

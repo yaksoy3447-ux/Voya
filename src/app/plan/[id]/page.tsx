@@ -1,5 +1,7 @@
 "use client"
 
+export const dynamic = 'force-dynamic';
+
 import { useRouter, useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Calendar, MapPin, Plane, Hotel, DollarSign, Compass, Star, Check, Sparkles, Lock, Download, Share2, Copy, Check as CheckIcon } from 'lucide-react'
