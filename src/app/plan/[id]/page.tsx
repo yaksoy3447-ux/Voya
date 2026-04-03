@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 
 import { useRouter, useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Calendar, MapPin, Plane, Hotel, DollarSign, Compass, Star, Check, Sparkles, Lock, Download, Share2, Copy, Check as CheckIcon } from 'lucide-react'
+import { Calendar, MapPin, Plane, Hotel, DollarSign, Compass, Star, Check, Sparkles, Lock, Download, Share2, Copy, Check as CheckIcon, Globe, Shield } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '@/lib/supabase/client'
 import Image from 'next/image'
@@ -399,8 +399,76 @@ export default function PlanHistoryViewer() {
             </div>
 
           </div>
-        </div>
+            {/* TRAVEL ESSENTIALS & MONETIZATION */}
+            <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mt-20">
+                <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
+                    <h2 className="text-3xl font-serif text-foreground">Travel Essentials</h2>
+                    <p className="text-xs font-bold text-terracotta uppercase tracking-[0.4em]">Integrated Partners</p>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Airalo eSIM */}
+                    <div className="glass-card p-10 rounded-[40px] border border-glass-border relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-terracotta/10 rounded-full blur-[60px] -translate-y-1/2 translate-x-1/2" />
+                        <div className="relative z-10 space-y-6">
+                            <div className="flex items-center gap-3">
+                                <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform">
+                                    <Globe className="text-terracotta" size={24} />
+                                </div>
+                                <h3 className="text-xl font-medium uppercase tracking-widest text-foreground/80 font-serif">Global eSIM</h3>
+                            </div>
+                            <p className="text-foreground/50 leading-relaxed text-sm italic">
+                                &quot;Skip the physical SIM card and avoid high roaming fees. Get your eSIM before landing and stay connected from minute one.&quot;
+                            </p>
+                            <div className="pt-4 flex items-center justify-between border-t border-glass-border/30">
+                                <div>
+                                    <span className="text-xs font-bold text-foreground/40 block mb-1">RECOMMENDED BY ROVAGO</span>
+                                    <span className="text-sm font-bold text-foreground">Powered by Airalo</span>
+                                </div>
+                                <a 
+                                    href={`https://tp.media/r?marker=715711&trs=257697&u=https%3A%2F%2Fwww.airalo.com%2F`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="h-12 px-8 bg-white/5 border border-white/10 rounded-full text-xs font-bold hover:bg-terracotta hover:text-white transition-all flex items-center justify-center"
+                                >
+                                    Get eSIM Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
 
+                    {/* Travel Insurance / Protection */}
+                    <div className="glass-card p-10 rounded-[40px] border border-glass-border relative overflow-hidden group">
+                         <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-[60px] -translate-y-1/2 translate-x-1/2" />
+                         <div className="relative z-10 space-y-6">
+                            <div className="flex items-center gap-3">
+                                <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform">
+                                    <Shield className="text-blue-400" size={24} />
+                                </div>
+                                <h3 className="text-xl font-medium uppercase tracking-widest text-foreground/80 font-serif">Travel Protection</h3>
+                            </div>
+                            <p className="text-foreground/50 leading-relaxed text-sm italic">
+                                &quot;Peace of mind for your adventure. Full coverage for medical emergencies and trip cancellations. Better safe than sorry.&quot;
+                            </p>
+                            <div className="pt-4 flex items-center justify-between border-t border-glass-border/30">
+                                <div>
+                                    <span className="text-xs font-bold text-foreground/40 block mb-1">SAFETY FIRST</span>
+                                    <span className="text-sm font-bold text-foreground">Worldwide Coverage</span>
+                                </div>
+                                <a 
+                                    href={`https://tp.media/r?marker=715711&trs=257697&u=https%3A%2F%2Fwww.visitorscoverage.com%2F`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="h-12 px-8 bg-white/5 border border-white/10 rounded-full text-xs font-bold hover:bg-blue-500 hover:text-white transition-all flex items-center justify-center"
+                                >
+                                    Get Covered
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </motion.section>
+        </div>
       </div>
     </div>
   )
