@@ -381,9 +381,12 @@ export default function PlanHistoryViewer() {
                         <span className="flex items-center gap-1 text-xs bg-yellow-500/20 text-yellow-500 px-2 py-1 rounded-full shrink-0 ml-2"><Star size={12} className="fill-yellow-500" /> {hotel.rating}</span>
                       </div>
                       <p className="text-xs text-foreground/60 mb-3 line-clamp-2">{hotel.description}</p>
-                      <div className="flex items-center justify-between text-xs font-medium">
+                      <div className="flex items-center justify-between text-xs font-medium mb-3">
                         <span className="text-foreground/50"><MapPin size={12} className="inline mr-1"/>{hotel.location}</span>
-                        <span className="text-terracotta font-bold">${hotel.pricePerNight} / night →</span>
+                        <span className="text-terracotta font-bold">${hotel.pricePerNight} / night</span>
+                      </div>
+                      <div className="w-full py-2 bg-terracotta/10 border border-terracotta/30 rounded-xl text-center text-xs font-bold text-terracotta group-hover:bg-terracotta group-hover:text-white transition-all">
+                        Book on Klook →
                       </div>
                     </a>
                   ))
@@ -414,27 +417,32 @@ export default function PlanHistoryViewer() {
                       href={bookingUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex justify-between items-center p-3 border border-glass-border/40 rounded-xl bg-white/5 hover:border-terracotta/40 hover:bg-white/10 transition-all cursor-pointer group"
+                      className="block p-3 border border-glass-border/40 rounded-xl bg-white/5 hover:border-terracotta/40 hover:bg-white/10 transition-all cursor-pointer group space-y-3"
                     >
-                      <div>
-                        <div className="font-medium text-sm flex items-center gap-2 group-hover:text-terracotta transition-colors">
-                          {flight.departure} <Plane size={14} className="text-foreground/40 rotate-90"/> {flight.arrival}
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <div className="font-medium text-sm flex items-center gap-2 group-hover:text-terracotta transition-colors">
+                            {flight.departure} <Plane size={14} className="text-foreground/40 rotate-90"/> {flight.arrival}
+                          </div>
+                          <div className="text-xs text-foreground/50 font-medium mt-0.5">
+                            {rp?.airline || flight.airline} • {flight.date}
+                          </div>
                         </div>
-                        <div className="text-xs text-foreground/50 font-medium mt-0.5">
-                          {rp?.airline || flight.airline} • {flight.date}
+                        <div className="text-right shrink-0 ml-3">
+                          {rp?.loading ? (
+                            <span className="text-xs text-foreground/30 animate-pulse">Loading...</span>
+                          ) : rp?.price ? (
+                            <div>
+                              <span className="text-[9px] text-green-400/70 uppercase tracking-widest block">Live Price</span>
+                              <span className="font-bold text-sm text-green-400">${rp.price}</span>
+                            </div>
+                          ) : (
+                            <span className="text-xs text-foreground/40">—</span>
+                          )}
                         </div>
                       </div>
-                      <div className="text-right shrink-0 ml-3">
-                        {rp?.loading ? (
-                          <span className="text-xs text-foreground/30 animate-pulse">Loading...</span>
-                        ) : rp?.price ? (
-                          <div>
-                            <span className="text-[9px] text-green-400/70 uppercase tracking-widest block">Live</span>
-                            <span className="font-bold text-sm text-green-400">${rp.price} →</span>
-                          </div>
-                        ) : (
-                          <span className="text-xs text-terracotta font-bold">Book →</span>
-                        )}
+                      <div className="w-full py-2 bg-terracotta/10 border border-terracotta/30 rounded-lg text-center text-xs font-bold text-terracotta group-hover:bg-terracotta group-hover:text-white transition-all">
+                        Book this Flight on Aviasales →
                       </div>
                     </a>
                     )
