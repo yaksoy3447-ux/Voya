@@ -324,8 +324,17 @@ export default function LandingPage() {
               { id: 5, title: "Amalfi Coast Sailing", loc: "Italy", tag: "Romantic", img: "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/5520-santorini-sunset-catamaran-cruise/" },
               { id: 6, title: "Osaka Tower Dinner", loc: "Japan", tag: "Foodie Choice", img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/2424-umeda-sky-building-floating-garden-observatory-osaka/" },
             ].map((tour, i) => (
-              <motion.div key={tour.id} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} viewport={{ once: true }}
-                className="group relative h-[500px] rounded-[40px] overflow-hidden flex flex-col justify-end p-8 md:p-10 hover:shadow-2xl hover:shadow-terracotta/10 transition-all duration-700">
+              <motion.a 
+                key={tour.id} 
+                href={`https://tp.media/r?marker=715711&trs=257697&p=3447&u=${encodeURIComponent(tour.link)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 40 }} 
+                whileInView={{ opacity: 1, y: 0 }} 
+                transition={{ delay: i * 0.1 }} 
+                viewport={{ once: true }}
+                className="group relative h-[500px] rounded-[40px] overflow-hidden flex flex-col justify-end p-8 md:p-10 hover:shadow-2xl hover:shadow-terracotta/20 transition-all duration-700 cursor-pointer block"
+              >
                 
                 {/* Image & Overlay */}
                 <Image src={tour.img} alt={tour.title} fill className="object-cover group-hover:scale-105 transition-transform duration-1000 saturate-[0.8] group-hover:saturate-100" />
@@ -334,29 +343,24 @@ export default function LandingPage() {
                 <div className="relative z-10 space-y-4">
                   <div className="flex items-center justify-between gap-4">
                     <span className="text-[9px] font-bold text-white bg-terracotta px-3 py-1 rounded-full uppercase tracking-widest">{tour.tag}</span>
-                    <div className="h-[1px] flex-1 bg-white/20" />
+                    <div className="h-px flex-1 bg-white/20" />
                   </div>
                   
                   <div>
                     <span className="text-[10px] font-bold text-white/50 uppercase tracking-widest block mb-1">{tour.loc}</span>
-                    <h3 className="text-2xl md:text-3xl font-serif text-white tracking-tight">{tour.title}</h3>
+                    <h3 className="text-2xl md:text-3xl font-serif text-white tracking-tight leading-tight">{tour.title}</h3>
                   </div>
 
                   <div className="flex items-center justify-between pt-4 gap-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                      <div className="flex items-center gap-1.5 grayscale opacity-50 underline decoration-white/20 underline-offset-4 text-[10px] font-bold text-white uppercase tracking-widest">
                        Official Agency
                      </div>
-                     <a 
-                       href={`https://tp.media/r?marker=715711&trs=257697&p=3447&u=${encodeURIComponent(tour.link)}`}
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       className="h-12 w-12 bg-white text-black rounded-full flex items-center justify-center hover:bg-terracotta hover:text-white transition-all shadow-xl"
-                     >
+                     <div className="h-12 w-12 bg-white text-black rounded-full flex items-center justify-center group-hover:bg-terracotta group-hover:text-white transition-all shadow-xl">
                        <ArrowRight size={20} />
-                     </a>
+                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </motion.a>
             ))}
           </div>
         </div>
