@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
-import Image from "next/image"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { Sparkles, MapPin, Calendar, Compass, Star, ArrowRight, Shield, Zap, Globe, Users, ChevronRight, Clock, DollarSign, Utensils, Brain, ChevronDown, Plus, Minus } from "lucide-react"
 
@@ -471,7 +470,7 @@ export default function LandingPage() {
               { id: 1, title: "Private Seine Cruise", loc: "Paris", tag: "Most Booked", img: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/1736-seine-river-cruise-paris/?marker=715711" },
               { id: 2, title: "Shibuya Sky Views", loc: "Tokyo", tag: "Trending", img: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/27701-shibuya-sky-observation-deck-ticket-tokyo/?marker=715711" },
               { id: 3, title: "Warner Bros. Studios", loc: "London", tag: "Family Favorite", img: "https://images.unsplash.com/photo-1486299267070-83823f5448dd?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/3307-warner-bros-studio-tour-london-the-making-of-harry-potter/?marker=715711" },
-              { id: 4, title: "Desert Safari Dunes", loc: "Dubai", tag: "Adventure", img: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/218-desert-safari-dubai/?marker=715711" },
+              { id: 4, title: "Desert Safari Dunes", loc: "Dubai", tag: "Adventure", img: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/218-desert-safari-dubai/?marker=715711" },
               { id: 5, title: "Amalfi Coast Sailing", loc: "Italy", tag: "Romantic", img: "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/10360-sorrento-amalfi-coast-full-day-cruise-naples/?marker=715711" },
               { id: 6, title: "Osaka Tower Dinner", loc: "Japan", tag: "Foodie Choice", img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/2424-umeda-sky-building-floating-garden-observatory-osaka/?marker=715711" },
             ].map((tour, i) => (
@@ -512,11 +511,9 @@ export default function LandingPage() {
                 </a>
 
                 {/* Background Image Layer */}
-                <Image 
-                  src={tour.img} 
-                  alt={tour.title} 
-                  fill 
-                  className="object-cover group-hover:scale-105 transition-transform duration-1000 saturate-[0.8] group-hover:saturate-100 z-10" 
+                <div
+                  style={{ backgroundImage: `url(${tour.img})` }}
+                  className="absolute inset-0 z-10 bg-cover bg-center group-hover:scale-105 transition-transform duration-1000 saturate-[0.8] group-hover:saturate-100"
                 />
               </motion.div>
             ))}
