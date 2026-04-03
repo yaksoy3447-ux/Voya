@@ -308,13 +308,14 @@ export default function PlanHistoryViewer() {
                           <span className="text-terracotta">${hotel.pricePerNight} / night</span>
                       </div>
                       <a 
-                        href={`https://search.hotellook.com/?location=${encodeURIComponent(hotel.name)}&marker=715711&language=en`}
+                        href={`https://tp.media/r?marker=715711&trs=257697&u=https%3A%2F%2Fsearch.hotellook.com%2Fhotels%3Flocation%3D${encodeURIComponent(hotel.name)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center justify-center gap-2 w-full py-2 bg-terracotta text-white rounded-xl text-xs font-bold hover:bg-terracotta/90 transition-all shadow-lg shadow-terracotta/20"
                       >
                         Book This Hotel
                       </a>
+                      <div className="mt-2 text-[9px] text-center text-foreground/30 uppercase tracking-widest">Powered by Hotellook</div>
                     </div>
                   ))
                 ) : (
