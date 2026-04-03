@@ -6,7 +6,7 @@ import { usePlanStore } from '@/store/usePlanStore'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { Calendar, MapPin, Plane, Hotel, DollarSign, Compass, Star, Check, Sparkles, Lock, Download } from 'lucide-react'
+import { Calendar, MapPin, Plane, Hotel, DollarSign, Compass, Star, Check, Sparkles, Lock, Download, Globe, Shield, Car } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '@/lib/supabase/client'
 
@@ -197,9 +197,32 @@ export default function PlanDashboard() {
                               </div>
                             </div>
                             <p className={`text-sm text-foreground/70 mb-3 ${isFoodLocked ? 'blur-sm' : ''}`}>{act.description}</p>
-                            <span className={`inline-flex items-center gap-1 text-xs text-foreground/50 border border-glass-border/40 rounded-full px-2 py-1 bg-white/5 ${isFoodLocked ? 'blur-sm' : ''}`}>
-                              <MapPin size={12}/> {act.location}
-                            </span>
+                            <div className={`flex flex-wrap items-center justify-between gap-3 ${isFoodLocked ? 'blur-sm' : ''}`}>
+                              <span className="inline-flex items-center gap-1 text-xs text-foreground/50 border border-glass-border/40 rounded-full px-2 py-1 bg-white/5">
+                                <MapPin size={12}/> {act.location}
+                              </span>
+                              {act.type !== 'food' && (
+                                (act as any).bookable ? (
+                                  <a
+                                    href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(act.title + ' ' + act.location)}&marker=715711`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-terracotta text-white px-3 py-1.5 rounded-full hover:bg-terracotta/90 transition-all"
+                                  >
+                                    <Compass size={11} /> Book on Klook
+                                  </a>
+                                ) : (
+                                  <a
+                                    href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(act.title + ' ' + act.location)}&marker=715711`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-[11px] font-bold text-terracotta hover:text-terracotta/80 flex items-center gap-1 transition-all"
+                                  >
+                                    <Compass size={12} /> Find Tickets & Tours
+                                  </a>
+                                )
+                              )}
+                            </div>
                           </div>
                         </div>
                         )
@@ -212,7 +235,59 @@ export default function PlanDashboard() {
 
           {/* Sidebar (Flights, Hotels, Tips) */}
           <div className="space-y-6 lg:mt-14">
-            
+
+            {/* SIM CARD TIP */}
+            <div className="glass-card p-5 rounded-3xl border border-glass-border bg-blue-500/5">
+              <div className="flex items-start gap-3">
+                <div className="w-9 h-9 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0">
+                  <Globe className="text-blue-400" size={18} />
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">SIM Card Tip</p>
+                  {itinerary.simCard?.tip ? (
+                    <p className="text-xs text-foreground/70 leading-relaxed">{itinerary.simCard.tip}</p>
+                  ) : (
+                    <p className="text-xs text-foreground/70 leading-relaxed">
+                      Get a local SIM at the airport or use an eSIM for instant connectivity in {itinerary.selectedCity || itinerary.selectedCountry || 'your destination'}.
+                    </p>
+                  )}
+                  <a
+                    href="https://www.airalo.com/?marker=715711"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 inline-flex items-center gap-1 text-[10px] font-bold text-blue-400 hover:text-blue-300 transition-all uppercase tracking-widest"
+                  >
+                    Get eSIM via Airalo →
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* MAP */}
+            <div className="glass-card rounded-3xl border border-glass-border overflow-hidden">
+              <div className="px-5 pt-5 pb-3 flex items-center gap-2">
+                <Globe className="text-terracotta" size={18} />
+                <h3 className="font-serif text-lg text-foreground">Destination Map</h3>
+              </div>
+              <iframe
+                title="Destination Map"
+                src={`https://maps.google.com/maps?q=${encodeURIComponent((itinerary.selectedCity || '') + ' ' + (itinerary.selectedCountry || ''))}&z=13&output=embed`}
+                className="w-full h-52 border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+              <div className="px-5 py-3">
+                <a
+                  href={`https://www.google.com/maps/search/${encodeURIComponent((itinerary.selectedCity || '') + ' ' + (itinerary.selectedCountry || ''))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] text-foreground/40 hover:text-terracotta transition-all uppercase tracking-widest"
+                >
+                  Open in Google Maps →
+                </a>
+              </div>
+            </div>
+
             {/* Hotels */}
             <div className="glass-card p-6 rounded-3xl border border-glass-border">
               <h3 className="font-serif text-lg text-foreground flex items-center gap-2 mb-4">
@@ -319,6 +394,86 @@ export default function PlanDashboard() {
 
           </div>
         </div>
+
+        {/* TRAVEL ESSENTIALS */}
+        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mt-4">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-serif text-foreground">Travel Essentials</h2>
+            <span className="text-[10px] font-bold text-terracotta uppercase tracking-[0.3em]">Integrated Partners</span>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {[
+              {
+                icon: <Globe size={20} className="text-terracotta" />,
+                title: "Global eSIM",
+                desc: "Stay connected from minute one.",
+                partner: "Airalo",
+                label: "Get eSIM",
+                href: "https://www.airalo.com/?marker=715711",
+              },
+              {
+                icon: <Car size={20} className="text-yellow-500" />,
+                title: "Airport Transfer",
+                desc: "Private transfer, airport to hotel.",
+                partner: "Klook",
+                label: "Book Transfer",
+                href: "https://www.klook.com/en-US/transport/airport-transfers/?marker=715711",
+              },
+              {
+                icon: <Shield size={20} className="text-blue-400" />,
+                title: "Travel Insurance",
+                desc: "Medical & trip protection.",
+                partner: "SafetyWing",
+                label: "Get Covered",
+                href: "https://safetywing.com/?referenceID=715711",
+              },
+              {
+                icon: <Plane size={20} className="text-purple-400" />,
+                title: "Package Tours",
+                desc: "All-inclusive flights & hotel.",
+                partner: "Expedia",
+                label: "Browse Packages",
+                href: "https://www.expedia.com/Vacation-Packages?affcid=ZOorfcw",
+              },
+              {
+                icon: <Car size={20} className="text-green-400" />,
+                title: "Car Rental",
+                desc: "Explore at your own pace.",
+                partner: "Expedia",
+                label: "Rent a Car",
+                href: "https://www.expedia.com/Cars?affcid=ZOorfcw",
+              },
+              {
+                icon: <Compass size={20} className="text-orange-400" />,
+                title: "Things To Do",
+                desc: "Tours & activities on-site.",
+                partner: "Klook",
+                label: "Explore",
+                href: `https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(itinerary.selectedCity || itinerary.selectedCountry || 'travel')}&marker=715711`,
+              },
+            ].map((item, i) => (
+              <a
+                key={i}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="glass-card p-4 rounded-2xl border border-glass-border hover:border-terracotta/30 transition-all group flex flex-col gap-3"
+              >
+                <div className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  {item.icon}
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-foreground leading-tight">{item.title}</p>
+                  <p className="text-[10px] text-foreground/40 uppercase tracking-widest mt-0.5">{item.partner}</p>
+                </div>
+                <p className="text-xs text-foreground/50 leading-relaxed flex-1">{item.desc}</p>
+                <div className="w-full py-1.5 rounded-xl border border-glass-border/50 text-center text-[10px] font-bold text-foreground/60 group-hover:bg-terracotta group-hover:text-white group-hover:border-terracotta transition-all">
+                  {item.label} →
+                </div>
+              </a>
+            ))}
+          </div>
+        </motion.section>
 
       </div>
     </div>

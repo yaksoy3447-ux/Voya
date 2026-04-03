@@ -4,6 +4,9 @@ export interface ItineraryData {
   title: string;
   summary: string;
   estimatedBudget: { total: number; currency: string };
+  selectedCity?: string;
+  selectedCountry?: string;
+  simCard?: { tip: string };
   flights: Array<{
     departure: string;
     arrival: string;
@@ -28,7 +31,8 @@ export interface ItineraryData {
       time: string;
       estimatedCost: number;
       location: string;
-      type: "food" | "culture" | "nature" | "relaxation" | "transit";
+      type: "food" | "culture" | "nature" | "relaxation" | "transit" | "tour" | "market" | "concert";
+      bookable?: boolean;
     }>;
   }>;
   insiderTips: string[];
