@@ -24,6 +24,9 @@ export default function PricingPage() {
       const data = await res.json();
       if (data.url) {
         window.location.href = data.url;
+      } else if (res.status === 401) {
+        // Oturum yoksa login'e gönder, sonra geri bu sayfaya gelsin
+        window.location.href = "/login?next=/pricing";
       } else {
         alert("Server Error: " + (data.error || JSON.stringify(data)));
       }
