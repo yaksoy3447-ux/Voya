@@ -278,16 +278,26 @@ export default function PlanHistoryViewer() {
                                 <span className="inline-flex items-center gap-1 text-xs text-foreground/50 border border-glass-border/40 rounded-full px-2 py-1 bg-white/5">
                                     <MapPin size={12}/> {act.location}
                                 </span>
-                                
                                 {act.type !== 'food' && (
-                                    <a 
-                                        href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(act.title + ' ' + act.location)}&marker=715711`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-[11px] font-bold text-terracotta hover:text-terracotta/80 flex items-center gap-1 transition-all"
+                                  act.bookable ? (
+                                    <a
+                                      href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(act.title + ' ' + act.location)}&marker=715711`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-terracotta text-white px-3 py-1.5 rounded-full hover:bg-terracotta/90 transition-all"
                                     >
-                                        <Compass size={12} /> Find Tickets & Tours
+                                      <Compass size={11} /> Book on Klook
                                     </a>
+                                  ) : (
+                                    <a
+                                      href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(act.title + ' ' + act.location)}&marker=715711`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-[11px] font-bold text-terracotta hover:text-terracotta/80 flex items-center gap-1 transition-all"
+                                    >
+                                      <Compass size={12} /> Find Tickets & Tours
+                                    </a>
+                                  )
                                 )}
                             </div>
                           </div>
@@ -302,6 +312,29 @@ export default function PlanHistoryViewer() {
 
           {/* Sidebar (Flights, Hotels, Tips) */}
           <div className="space-y-6 lg:mt-14">
+
+            {/* SIM CARD TIP */}
+            {itinerary.simCard?.tip && (
+              <div className="glass-card p-5 rounded-3xl border border-glass-border bg-blue-500/5">
+                <div className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0">
+                    <Globe className="text-blue-400" size={18} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">SIM Card Tip</p>
+                    <p className="text-xs text-foreground/70 leading-relaxed">{itinerary.simCard.tip}</p>
+                    <a
+                      href="https://www.airalo.com/?marker=715711"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2 inline-flex items-center gap-1 text-[10px] font-bold text-blue-400 hover:text-blue-300 transition-all uppercase tracking-widest"
+                    >
+                      Or get an eSIM via Airalo →
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* MAP */}
             <div className="glass-card rounded-3xl border border-glass-border overflow-hidden">
