@@ -80,6 +80,52 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
+      {/* ═══════════════ SEARCH & SAVE WIDGET ═══════════════ */}
+      <section className="py-20 px-6 relative">
+        <div className="max-w-6xl mx-auto">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} className="glass-card p-1 items-center justify-center rounded-[40px] border border-glass-border overflow-hidden relative shadow-2xl">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-terracotta/20 via-terracotta to-terracotta/20 animate-pulse" />
+            
+            <div className="p-8 md:p-12 text-center">
+              <span className="text-xs font-bold text-terracotta uppercase tracking-[0.3em] mb-4 block">Search & Save</span>
+              <h2 className="text-3xl md:text-5xl font-serif mb-4">Find the Best Deals</h2>
+              <p className="text-foreground/50 max-w-xl mx-auto mb-10">Search across hundreds of airlines and hotels to find the perfect stay at the best price.</p>
+              
+              {/* Travelpayouts Search Form Widget */}
+              <div className="w-full min-h-[150px] relative rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm p-2 md:p-4 border border-white/10">
+                <iframe 
+                  src={`https://tp.media/content?currency=usd&promo_id=2088&shmarker=715711&campaign_id=100&trs=257697&target_host=search.aviasales.com&locale=en&type=compact&powered_by=true`}
+                  width="100%" 
+                  height="120" 
+                  frameBorder="0" 
+                  scrolling="no"
+                  className="rounded-xl"
+                />
+              </div>
+              
+              <div className="mt-8 flex justify-center items-center gap-8 text-[10px] uppercase tracking-widest font-bold text-foreground/30">
+                <span className="flex items-center gap-2 italic"><Sparkles size={12} className="text-terracotta"/> Best Price Guarantee</span>
+                <span className="flex items-center gap-2 italic"><Star size={12} className="text-yellow-500"/> Verified Partners</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══════════════ PARTNER BRANDS ═══════════════ */}
+      <section className="py-12 border-y border-glass-border bg-white/[0.02]">
+        <div className="max-w-6xl mx-auto px-6">
+          <p className="text-center text-[10px] uppercase tracking-[0.4em] font-bold text-foreground/30 mb-10">Our Affiliate Partners & Integrated Networks</p>
+          <div className="flex flex-wrap justify-center items-center gap-12 md:gap-20 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
+             <div className="flex items-center gap-2 font-serif text-xl"><span className="text-terracotta">Booking</span>.com</div>
+             <div className="flex items-center gap-2 font-serif text-xl">aviasales</div>
+             <div className="flex items-center gap-2 font-serif text-xl">KLOOK</div>
+             <div className="flex items-center gap-2 font-serif text-xl">airalo</div>
+             <div className="flex items-center gap-2 font-serif text-xl">GYG</div>
+          </div>
+        </div>
+      </section>
+
       {/* ═══════════════ HOW IT WORKS ═══════════════ */}
       <section className="py-24 px-6">
         <div className="max-w-6xl mx-auto">
