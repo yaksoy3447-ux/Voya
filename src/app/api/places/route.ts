@@ -6,48 +6,34 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const query = searchParams.get('q');
+    const countryCode = searchParams.get('country'); // ISO 2-letter code e.g. "TR"
 
-    if (!query) return NextResponse.json({ predictions: [] });
+    if (!query || query.length < 2) return NextResponse.json({ predictions: [] });
 
-    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY;
-    if (!apiKey) {
-      console.warn("Missing Google Places API Key");
-      return NextResponse.json({ predictions: [] });
-    }
+    const url = `https://autocomplete.travelpayouts.com/places2?term=${encodeURIComponent(query)}&locale=en&types[]=city`;
+    const response = await fetch(url);
 
-    const countryCode = searchParams.get('country');
-    
-    // Use the STABLE Legacy Places API (v0) — Autocomplete endpoint
-    // This is 100% more reliable for most Google Cloud setups
-    const url = new URL('https://maps.googleapis.com/maps/api/place/autocomplete/json');
-    url.searchParams.append('input', query);
-    url.searchParams.append('types', '(cities)');
-    url.searchParams.append('language', 'en');
-    url.searchParams.append('key', apiKey);
+    if (!response.ok) return NextResponse.json({ predictions: [] });
 
-    // Restrict to specific country if provided
-    if (countryCode && countryCode.length === 2) {
-      url.searchParams.append('components', `country:${countryCode.toLowerCase()}`);
-    }
+    const raw: any[] = await response.json();
 
-    const response = await fetch(url.toString(), {
-      method: 'GET',
-    });
+    // Optional: filter by country if provided
+    const filtered = countryCode
+      ? raw.filter(item => item.country_code?.toUpperCase() === countryCode.toUpperCase())
+      : raw;
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Google Places API Error:', errorData);
-      return NextResponse.json({ predictions: [] });
-    }
+    // Shape to match what HeroForm expects (same as Google Places format)
+    const predictions = filtered.slice(0, 8).map(item => ({
+      place_id: item.code,
+      description: `${item.name}${item.country_name ? ', ' + item.country_name : ''}`,
+      structured_formatting: {
+        main_text: item.name,
+      },
+    }));
 
-    const data = await response.json();
-    
-    // Return the predictions directly (Legacy API returns { predictions: [...] })
-    return NextResponse.json({ 
-      predictions: data.predictions || [] 
-    });
+    return NextResponse.json({ predictions });
   } catch (error: any) {
-    console.error("Google Places Error:", error);
+    console.error("Places API error:", error);
     return NextResponse.json({ predictions: [], error: error.message }, { status: 500 });
   }
 }
