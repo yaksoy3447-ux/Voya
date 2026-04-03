@@ -371,7 +371,7 @@ export default function PlanHistoryViewer() {
                   itinerary.hotels.map((hotel: HotelInfo, idx: number) => (
                     <a
                       key={idx}
-                      href={`https://www.klook.com/en-US/hotels/search/result/?search_text=${encodeURIComponent(hotel.name + ' ' + hotel.location)}&marker=715711`}
+                      href={`https://www.booking.com/search.html?ss=${encodeURIComponent(hotel.name + ' ' + hotel.location)}&aid=2311236`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="block p-4 bg-white/5 border border-glass-border rounded-2xl hover:border-terracotta/40 hover:bg-white/10 transition-all cursor-pointer group"
@@ -386,7 +386,7 @@ export default function PlanHistoryViewer() {
                         <span className="text-terracotta font-bold">${hotel.pricePerNight} / night</span>
                       </div>
                       <div className="w-full py-2 bg-terracotta/10 border border-terracotta/30 rounded-xl text-center text-xs font-bold text-terracotta group-hover:bg-terracotta group-hover:text-white transition-all">
-                        Book on Klook →
+                        Book on Booking.com →
                       </div>
                     </a>
                   ))
