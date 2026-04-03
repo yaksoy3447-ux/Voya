@@ -2,6 +2,8 @@ import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { repairJson } from '@/lib/utils/jsonRepair'
 
+export const dynamic = 'force-dynamic';
+
 export const maxDuration = 300 // Vercel'de 5 dakika
 
 const SYSTEM_PROMPT = `
