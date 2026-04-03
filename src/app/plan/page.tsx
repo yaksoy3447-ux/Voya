@@ -223,7 +223,7 @@ export default function PlanDashboard() {
                   itinerary.hotels.map((hotel: HotelInfo, idx: number) => (
                     <a
                       key={idx}
-                      href={`https://www.booking.com/search.html?ss=${encodeURIComponent(hotel.name + ' ' + hotel.location)}&aid=2311236`}
+                      href={`https://www.expedia.com/Hotel-Search?destination=${encodeURIComponent(hotel.name + ' ' + hotel.location)}&affcid=ZOorfcw`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="block p-4 bg-white/5 border border-glass-border rounded-2xl hover:border-terracotta/40 hover:bg-white/10 transition-all group"
@@ -238,7 +238,7 @@ export default function PlanDashboard() {
                         <span className="text-terracotta font-bold">${hotel.pricePerNight} / night</span>
                       </div>
                       <div className="w-full py-2 bg-terracotta/10 border border-terracotta/30 rounded-xl text-center text-xs font-bold text-terracotta group-hover:bg-terracotta group-hover:text-white transition-all">
-                        Book on Booking.com →
+                        Book on Expedia →
                       </div>
                     </a>
                   ))
