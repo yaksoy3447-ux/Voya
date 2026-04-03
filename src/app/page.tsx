@@ -97,7 +97,7 @@ export default function LandingPage() {
 
               {/* SMART SEARCH FORM */}
               <div className="bg-white/5 backdrop-blur-xl p-3 rounded-[32px] border border-white/10 flex flex-col lg:flex-row gap-2 shadow-2xl">
-                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2">
+                <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-2">
                   {/* FROM INPUT */}
                   <div className="relative group">
                     <div className="bg-white/5 rounded-2xl p-4 flex flex-col items-start border border-white/5 hover:border-terracotta/20 transition-all">
@@ -173,14 +173,31 @@ export default function LandingPage() {
                     </div>
                     <div id="to-suggestions" className="absolute top-full left-0 right-0 mt-2 bg-[#1a1a1a] border border-white/10 rounded-2xl shadow-2xl z-[100] max-h-60 overflow-y-auto hidden backdrop-blur-xl" />
                   </div>
+
+                  {/* DATE INPUT */}
+                  <div className="relative group">
+                    <div className="bg-white/5 rounded-2xl p-4 flex flex-col items-start border border-white/5 hover:border-terracotta/20 transition-all">
+                      <span className="text-[9px] font-bold text-terracotta uppercase tracking-[0.2em] mb-1">Date</span>
+                      <input
+                        id="search-date-v2"
+                        type="date"
+                        defaultValue={new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
+                        min={new Date().toISOString().split('T')[0]}
+                        className="bg-transparent border-none text-white text-sm focus:ring-0 p-0 w-full font-medium scheme-dark cursor-pointer"
+                      />
+                    </div>
+                  </div>
                 </div>
                 
                 <button 
                   onClick={() => {
                     const fromCode = (document.getElementById('search-from-v2') as HTMLInputElement)?.dataset.code || (document.getElementById('search-from-v2') as HTMLInputElement)?.value || 'IST';
                     const toCode = (document.getElementById('search-to-v2') as HTMLInputElement)?.dataset.code || (document.getElementById('search-to-v2') as HTMLInputElement)?.value || 'PAR';
-                    // Using the most robust Aviasales direct affiliate format
-                    const url = `https://www.aviasales.com/search/${fromCode}0101${toCode}1?marker=715711`;
+                    const dateVal = (document.getElementById('search-date-v2') as HTMLInputElement)?.value;
+                    const d = dateVal ? new Date(dateVal) : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+                    const dd = String(d.getUTCDate()).padStart(2, '0');
+                    const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+                    const url = `https://www.aviasales.com/search/${fromCode}${dd}${mm}${toCode}1?marker=715711`;
                     window.open(url, '_blank');
                   }}
                   className="h-16 px-12 bg-terracotta text-white rounded-2xl text-[11px] font-bold hover:bg-terracotta/90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group shadow-2xl shadow-terracotta/20 uppercase tracking-widest"
@@ -317,12 +334,12 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
             {[
-              { id: 1, title: "Private Seine Cruise", loc: "Paris", tag: "Most Booked", img: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop", link: "https://tp.media/r?marker=715711&p=218&u=" + encodeURIComponent("https://www.klook.com/en-US/activity/1736-seine-river-cruise-paris/") },
-              { id: 2, title: "Shibuya Sky Views", loc: "Tokyo", tag: "Trending", img: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?q=80&w=800&auto=format&fit=crop", link: "https://tp.media/r?marker=715711&p=218&u=" + encodeURIComponent("https://www.klook.com/en-US/activity/27701-shibuya-sky-observation-deck-ticket-tokyo/") },
-              { id: 3, title: "Warner Bros. Studios", loc: "London", tag: "Family Favorite", img: "https://images.unsplash.com/photo-1486299267070-83823f5448dd?q=80&w=800&auto=format&fit=crop", link: "https://tp.media/r?marker=715711&p=218&u=" + encodeURIComponent("https://www.klook.com/en-US/activity/3307-warner-bros-studio-tour-london-the-making-of-harry-potter/") },
-              { id: 4, title: "Desert Safari Dunes", loc: "Dubai", tag: "Adventure", img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop", link: "https://tp.media/r?marker=715711&p=218&u=" + encodeURIComponent("https://www.klook.com/en-US/activity/218-desert-safari-dubai/") },
-              { id: 5, title: "Amalfi Coast Sailing", loc: "Italy", tag: "Romantic", img: "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800&auto=format&fit=crop", link: "https://tp.media/r?marker=715711&p=218&u=" + encodeURIComponent("https://www.klook.com/en-US/activity/10360-sorrento-amalfi-coast-full-day-cruise-naples/") },
-              { id: 6, title: "Osaka Tower Dinner", loc: "Japan", tag: "Foodie Choice", img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop", link: "https://tp.media/r?marker=715711&p=218&u=" + encodeURIComponent("https://www.klook.com/en-US/activity/2424-umeda-sky-building-floating-garden-observatory-osaka/") },
+              { id: 1, title: "Private Seine Cruise", loc: "Paris", tag: "Most Booked", img: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/1736-seine-river-cruise-paris/?marker=715711" },
+              { id: 2, title: "Shibuya Sky Views", loc: "Tokyo", tag: "Trending", img: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/27701-shibuya-sky-observation-deck-ticket-tokyo/?marker=715711" },
+              { id: 3, title: "Warner Bros. Studios", loc: "London", tag: "Family Favorite", img: "https://images.unsplash.com/photo-1486299267070-83823f5448dd?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/3307-warner-bros-studio-tour-london-the-making-of-harry-potter/?marker=715711" },
+              { id: 4, title: "Desert Safari Dunes", loc: "Dubai", tag: "Adventure", img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/218-desert-safari-dubai/?marker=715711" },
+              { id: 5, title: "Amalfi Coast Sailing", loc: "Italy", tag: "Romantic", img: "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/10360-sorrento-amalfi-coast-full-day-cruise-naples/?marker=715711" },
+              { id: 6, title: "Osaka Tower Dinner", loc: "Japan", tag: "Foodie Choice", img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/2424-umeda-sky-building-floating-garden-observatory-osaka/?marker=715711" },
             ].map((tour, i) => (
               <motion.div 
                 key={tour.id} 
