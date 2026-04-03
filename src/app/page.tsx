@@ -330,37 +330,38 @@ export default function LandingPage() {
                 whileInView={{ opacity: 1, y: 0 }} 
                 transition={{ delay: i * 0.1 }} 
                 viewport={{ once: true }}
-                onClick={() => {
-                   const affUrl = `https://tp.media/r?marker=715711&trs=257697&p=3447&u=${encodeURIComponent(tour.link)}`;
-                   window.open(affUrl, '_blank');
-                }}
-                className="group relative h-[500px] rounded-[40px] overflow-hidden flex flex-col justify-end p-8 md:p-10 hover:shadow-2xl hover:shadow-terracotta/20 transition-all duration-700 cursor-pointer"
+                className="relative h-[500px] rounded-[40px] overflow-hidden"
               >
-                
-                {/* Image & Overlay */}
-                <Image src={tour.img} alt={tour.title} fill className="object-cover group-hover:scale-105 transition-transform duration-1000 saturate-[0.8] group-hover:saturate-100" />
-                <div className="absolute inset-0 bg-linear-to-b from-transparent via-black/20 to-black/90 group-hover:via-black/40 transition-all" />
-                
-                <div className="relative z-10 space-y-4">
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="text-[9px] font-bold text-white bg-terracotta px-3 py-1 rounded-full uppercase tracking-widest">{tour.tag}</span>
-                    <div className="h-px flex-1 bg-white/20" />
-                  </div>
-                  
-                  <div>
-                    <span className="text-[10px] font-bold text-white/50 uppercase tracking-widest block mb-1">{tour.loc}</span>
-                    <h3 className="text-2xl md:text-3xl font-serif text-white tracking-tight leading-tight">{tour.title}</h3>
-                  </div>
+                <a 
+                  href={`https://tp.media/r?marker=715711&trs=257697&p=3447&u=${encodeURIComponent(tour.link)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute inset-0 z-50 flex flex-col justify-end p-8 md:p-10 group hover:shadow-2xl hover:shadow-terracotta/20 transition-all duration-700 bg-linear-to-b from-transparent via-black/20 to-black/90 group-hover:via-black/40"
+                 >
+                  <div className="relative z-10 space-y-4">
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="text-[9px] font-bold text-white bg-terracotta px-3 py-1 rounded-full uppercase tracking-widest">{tour.tag}</span>
+                      <div className="h-px flex-1 bg-white/20" />
+                    </div>
+                    
+                    <div>
+                      <span className="text-[10px] font-bold text-white/50 uppercase tracking-widest block mb-1">{tour.loc}</span>
+                      <h3 className="text-2xl md:text-3xl font-serif text-white tracking-tight leading-tight">{tour.title}</h3>
+                    </div>
 
-                  <div className="flex items-center justify-between pt-4 gap-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                     <div className="flex items-center gap-1.5 grayscale opacity-50 underline decoration-white/20 underline-offset-4 text-[10px] font-bold text-white uppercase tracking-widest">
-                       Official Agency
-                     </div>
-                     <div className="h-12 w-12 bg-white text-black rounded-full flex items-center justify-center group-hover:bg-terracotta group-hover:text-white transition-all shadow-xl">
-                       <ArrowRight size={20} />
-                     </div>
+                    <div className="flex items-center justify-between pt-4 gap-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                       <div className="flex items-center gap-1.5 grayscale opacity-50 underline decoration-white/20 underline-offset-4 text-[10px] font-bold text-white uppercase tracking-widest">
+                         Official Agency
+                       </div>
+                       <div className="h-12 w-12 bg-white text-black rounded-full flex items-center justify-center group-hover:bg-terracotta group-hover:text-white transition-all shadow-xl">
+                         <ArrowRight size={20} />
+                       </div>
+                    </div>
                   </div>
-                </div>
+                </a>
+
+                {/* Background Image Layer (Non-interactive) */}
+                <Image src={tour.img} alt={tour.title} fill className="object-cover group-hover:scale-105 transition-transform duration-1000 saturate-[0.8] group-hover:saturate-100 -z-10" />
               </motion.div>
             ))}
           </div>
