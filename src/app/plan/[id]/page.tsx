@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 
 import { useRouter, useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Calendar, MapPin, Plane, Hotel, DollarSign, Compass, Star, Check, Sparkles, Lock, Download, Share2, Copy, Check as CheckIcon, Globe, Shield } from 'lucide-react'
+import { Calendar, MapPin, Plane, Hotel, DollarSign, Compass, Star, Check, Sparkles, Lock, Download, Share2, Copy, Check as CheckIcon, Globe, Shield, Car } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '@/lib/supabase/client'
 import Image from 'next/image'
@@ -406,60 +406,90 @@ export default function PlanHistoryViewer() {
                     <p className="text-xs font-bold text-terracotta uppercase tracking-[0.4em]">Integrated Partners</p>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                     {/* Airalo eSIM */}
-                    <div className="glass-card p-10 rounded-[40px] border border-glass-border relative overflow-hidden group">
+                    <div className="glass-card p-8 lg:p-10 rounded-[40px] border border-glass-border relative overflow-hidden group h-full flex flex-col">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-terracotta/10 rounded-full blur-[60px] -translate-y-1/2 translate-x-1/2" />
-                        <div className="relative z-10 space-y-6">
+                        <div className="relative z-10 space-y-6 flex-1 flex flex-col">
                             <div className="flex items-center gap-3">
                                 <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform">
                                     <Globe className="text-terracotta" size={24} />
                                 </div>
-                                <h3 className="text-xl font-medium uppercase tracking-widest text-foreground/80 font-serif">Global eSIM</h3>
+                                <h3 className="text-xl font-medium uppercase tracking-widest text-foreground/80 font-serif leading-tight">Global eSIM</h3>
                             </div>
-                            <p className="text-foreground/50 leading-relaxed text-sm italic">
-                                &quot;Skip the physical SIM card and avoid high roaming fees. Get your eSIM before landing and stay connected from minute one.&quot;
+                            <p className="text-foreground/50 leading-relaxed text-sm italic flex-1">
+                                &quot;Skip the physical SIM and avoid roaming fees. Stay connected from minute one.&quot;
                             </p>
-                            <div className="pt-4 flex items-center justify-between border-t border-glass-border/30">
+                            <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-glass-border/30">
                                 <div>
-                                    <span className="text-xs font-bold text-foreground/40 block mb-1">RECOMMENDED BY ROVAGO</span>
-                                    <span className="text-sm font-bold text-foreground">Powered by Airalo</span>
+                                    <span className="text-[10px] font-bold text-foreground/40 block mb-1 uppercase tracking-widest leading-none">Recommended</span>
+                                    <span className="text-[11px] font-bold text-foreground">Airalo</span>
                                 </div>
                                 <a 
                                     href={`https://tp.media/r?marker=715711&trs=257697&u=https%3A%2F%2Fwww.airalo.com%2F`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="h-12 px-8 bg-white/5 border border-white/10 rounded-full text-xs font-bold hover:bg-terracotta hover:text-white transition-all flex items-center justify-center"
+                                    className="w-full sm:w-auto h-11 px-6 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold hover:bg-terracotta hover:text-white transition-all flex items-center justify-center uppercase tracking-widest"
                                 >
-                                    Get eSIM Now
+                                    Get eSIM
                                 </a>
                             </div>
                         </div>
                     </div>
 
-                    {/* Travel Insurance / Protection */}
-                    <div className="glass-card p-10 rounded-[40px] border border-glass-border relative overflow-hidden group">
+                    {/* Private Transfer */}
+                    <div className="glass-card p-8 lg:p-10 rounded-[40px] border border-glass-border relative overflow-hidden group h-full flex flex-col">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-[60px] -translate-y-1/2 translate-x-1/2" />
+                        <div className="relative z-10 space-y-6 flex-1 flex flex-col">
+                            <div className="flex items-center gap-3">
+                                <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform">
+                                    <Car className="text-yellow-500" size={24} />
+                                </div>
+                                <h3 className="text-xl font-medium uppercase tracking-widest text-foreground/80 font-serif leading-tight">Airport Transfer</h3>
+                            </div>
+                            <p className="text-foreground/50 leading-relaxed text-sm italic flex-1">
+                                &quot;Travel in comfort. Book a reliable private transfer from the airport to your hotel.&quot;
+                            </p>
+                            <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-glass-border/30">
+                                <div>
+                                    <span className="text-[10px] font-bold text-foreground/40 block mb-1 uppercase tracking-widest leading-none">Best Rated</span>
+                                    <span className="text-[11px] font-bold text-foreground">Klook Transfer</span>
+                                </div>
+                                <a 
+                                    href={`https://tp.media/r?marker=715711&trs=257697&u=https%3A%2F%2Fwww.klook.com%2Fen-US%2Ftransport%2Fairport-transfers%2F`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full sm:w-auto h-11 px-6 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold hover:bg-yellow-600 hover:text-white transition-all flex items-center justify-center uppercase tracking-widest"
+                                >
+                                    Book Car
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Travel Insurance */}
+                    <div className="glass-card p-8 lg:p-10 rounded-[40px] border border-glass-border relative overflow-hidden group h-full flex flex-col">
                          <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-[60px] -translate-y-1/2 translate-x-1/2" />
-                         <div className="relative z-10 space-y-6">
+                         <div className="relative z-10 space-y-6 flex-1 flex flex-col">
                             <div className="flex items-center gap-3">
                                 <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform">
                                     <Shield className="text-blue-400" size={24} />
                                 </div>
-                                <h3 className="text-xl font-medium uppercase tracking-widest text-foreground/80 font-serif">Travel Protection</h3>
+                                <h3 className="text-xl font-medium uppercase tracking-widest text-foreground/80 font-serif leading-tight">Safe Journey</h3>
                             </div>
-                            <p className="text-foreground/50 leading-relaxed text-sm italic">
-                                &quot;Peace of mind for your adventure. Full coverage for medical emergencies and trip cancellations. Better safe than sorry.&quot;
+                            <p className="text-foreground/50 leading-relaxed text-sm italic flex-1">
+                                &quot;Global coverage for your journey. Medical and trip protection for explorers.&quot;
                             </p>
-                            <div className="pt-4 flex items-center justify-between border-t border-glass-border/30">
+                            <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-glass-border/30">
                                 <div>
-                                    <span className="text-xs font-bold text-foreground/40 block mb-1">SAFETY FIRST</span>
-                                    <span className="text-sm font-bold text-foreground">Worldwide Coverage</span>
+                                    <span className="text-[10px] font-bold text-foreground/40 block mb-1 uppercase tracking-widest leading-none">Global Coverage</span>
+                                    <span className="text-[11px] font-bold text-foreground">Verification Support</span>
                                 </div>
                                 <a 
                                     href={`https://tp.media/r?marker=715711&trs=257697&u=https%3A%2F%2Fwww.visitorscoverage.com%2F`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="h-12 px-8 bg-white/5 border border-white/10 rounded-full text-xs font-bold hover:bg-blue-500 hover:text-white transition-all flex items-center justify-center"
+                                    className="w-full sm:w-auto h-11 px-6 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold hover:bg-blue-500 hover:text-white transition-all flex items-center justify-center uppercase tracking-widest"
                                 >
                                     Get Covered
                                 </a>
