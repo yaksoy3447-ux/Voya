@@ -4,17 +4,16 @@ import { createClient } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: '2024-12-18.acacia' as any,
-});
-
 export async function POST(req: Request) {
+  // Move SDK initialization inside to avoid build-time errors
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+    apiVersion: '2024-12-18.acacia' as any,
+  });
+
   try {
     const { planId, billing } = await req.json();
     const isYearly = billing === 'yearly';
 
-    // Map plan IDs to dynamic Stripe Recurring Price Objects for Testing
-    // (In production, you'd use pre-created Stripe Price IDs instead)
     let amount = 0;
     let name = "";
     
@@ -55,7 +54,7 @@ export async function POST(req: Request) {
       mode: 'subscription',
       metadata: {
         userId: user.id,
-        planId: planId.charAt(0).toUpperCase() + planId.slice(1), // Capitalize (Explorer/Nomad)
+        planId: planId.charAt(0).toUpperCase() + planId.slice(1),
       },
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/profile?success=true`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/pricing?canceled=true`,

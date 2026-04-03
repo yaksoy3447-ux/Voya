@@ -3,7 +3,6 @@ import { createClient } from '@/lib/supabase/server'
 import { repairJson } from '@/lib/utils/jsonRepair'
 
 export const dynamic = 'force-dynamic';
-
 export const maxDuration = 300 // Vercel'de 5 dakika
 
 const SYSTEM_PROMPT = `
@@ -99,7 +98,7 @@ export async function POST(req: Request) {
       return Response.json(mockData);
     }
 
-    // STREAMING MODE
+    // STREAMING MODE - Initialize SDK INSIDE handle to avoid build-time static errors
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
     const userPrompt = `Parameters:\n${JSON.stringify(data, null, 2)}`;
 
