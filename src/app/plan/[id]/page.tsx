@@ -371,7 +371,7 @@ export default function PlanHistoryViewer() {
                   itinerary.hotels.map((hotel: HotelInfo, idx: number) => (
                     <a
                       key={idx}
-                      href={`https://www.booking.com/search.html?ss=${encodeURIComponent(hotel.name + ' ' + hotel.location)}`}
+                      href={`https://www.klook.com/en-US/hotels/search/result/?search_text=${encodeURIComponent(hotel.name + ' ' + hotel.location)}&marker=715711`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="block p-4 bg-white/5 border border-glass-border rounded-2xl hover:border-terracotta/40 hover:bg-white/10 transition-all cursor-pointer group"
