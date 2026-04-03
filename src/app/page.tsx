@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { Sparkles, MapPin, Calendar, Compass, Star, ArrowRight, Shield, Zap, Globe, Users, ChevronRight, Clock, DollarSign, Utensils, Brain } from "lucide-react"
 
@@ -208,6 +209,59 @@ export default function LandingPage() {
                   <div>
                     <div className="font-medium text-sm">{t.name}</div>
                     <div className="text-xs text-foreground/50">{t.location}</div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════ CURATED EXPERIENCES (KLOOK) ═══════════════ */}
+      <section className="py-24 px-6 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-terracotta/20 to-transparent" />
+        <div className="max-w-6xl mx-auto relative z-10">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="text-center mb-16">
+            <motion.span custom={0} variants={fadeUp} className="text-sm font-medium text-terracotta uppercase tracking-[0.3em]">World Class Adventures</motion.span>
+            <motion.h2 custom={1} variants={fadeUp} className="text-3xl md:text-5xl font-serif mt-3 text-white">Curated Experiences</motion.h2>
+            <motion.p custom={2} variants={fadeUp} className="text-foreground/50 max-w-xl mx-auto mt-4 text-sm tracking-tight italic">
+              From historic landmarks to hidden local spots. Discover things to do worldwide, powered by Klook.
+            </motion.p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              { id: 1, title: "Skip-the-Line: Eiffel Tower", location: "Paris, France", image: "https://images.unsplash.com/photo-1543349689-9a4d426bee8e?q=80&w=600&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/3308-eiffel-tower-paris/" },
+              { id: 2, title: "Umeda Sky Building Observatory", location: "Osaka, Japan", image: "https://images.unsplash.com/photo-1512441932396-121034d0a5c0?q=80&w=600&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/2424-umeda-sky-building-floating-garden-observatory-osaka/" },
+              { id: 3, title: "Warner Bros. Studio Tour London", location: "London, UK", image: "https://images.unsplash.com/photo-1551818255-e6e10975bc17?q=80&w=600&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/3307-warner-bros-studio-tour-london-the-making-of-harry-potter/" },
+              { id: 4, title: "Desert Safari: Camel Ridings", location: "Dubai, UAE", image: "https://images.unsplash.com/photo-1454431939696-243f1c1eeedc?q=80&w=600&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/218-desert-safari-dubai/" },
+              { id: 5, title: "Santorini Sunset Sailing Cruise", location: "Greece", image: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?q=80&w=600&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/5520-santorini-sunset-catamaran-cruise/" },
+              { id: 6, title: "Tokyo City Highlights Tour", location: "Tokyo, Japan", image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=600&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/13271-tokyo-day-tour-bus/" },
+            ].map((tour, i) => (
+              <motion.div key={tour.id} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}
+                className="glass-card group rounded-[32px] border border-glass-border overflow-hidden relative h-[420px] flex flex-col hover:border-terracotta/30 transition-all shadow-xl">
+                <div className="absolute inset-0 z-0">
+                  <Image src={tour.image} alt={tour.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-60" />
+                  <div className="absolute inset-0 bg-linear-to-b from-transparent via-black/20 to-black/90" />
+                </div>
+                
+                <div className="relative z-10 p-8 flex flex-col justify-end h-full">
+                  <div className="inline-flex items-center gap-1.5 text-[10px] uppercase font-bold text-terracotta mb-2 bg-white/5 px-2 py-1 rounded w-fit backdrop-blur-md border border-white/5 tracking-widest">
+                    <MapPin size={10} /> {tour.location}
+                  </div>
+                  <h3 className="text-2xl font-serif text-white mb-2 leading-tight group-hover:text-terracotta transition-colors">{tour.title}</h3>
+                  <p className="text-xs text-white/50 mb-6 italic font-medium leading-relaxed uppercase tracking-wider">Top Experience Found by AI Explorer</p>
+                  
+                  <div className="flex items-center justify-between pt-4 border-t border-white/10 gap-4">
+                    <span className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em]">Verified Partner</span>
+                    <a 
+                      href={`https://tp.media/r?marker=715711&trs=257697&u=${encodeURIComponent(tour.link)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="h-10 px-5 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full text-xs font-bold hover:bg-terracotta hover:border-terracotta transition-all flex items-center justify-center gap-2 group/btn"
+                    >
+                      View on Klook <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
+                    </a>
                   </div>
                 </div>
               </motion.div>
