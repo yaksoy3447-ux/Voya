@@ -1,13 +1,13 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { createBrowserClient } from "@supabase/ssr"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { ArrowRight, Mail, Lock, Eye, EyeOff, Compass } from "lucide-react"
 import { useSearchParams } from "next/navigation"
 
-export default function LoginPage() {
+function LoginContent() {
   const searchParams = useSearchParams()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -155,5 +155,17 @@ export default function LoginPage() {
         </p>
       </motion.div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-dvh flex items-center justify-center bg-background">
+        <div className="w-8 h-8 border-4 border-terracotta/30 border-t-terracotta rounded-full animate-spin" />
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   )
 }

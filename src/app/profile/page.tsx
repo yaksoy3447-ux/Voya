@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { User as UserIcon, Mail, Shield, CreditCard, ChevronRight, Settings as SettingsIcon, LogOut, Compass, MapPin, Trash2, AlertCircle, RefreshCw } from "lucide-react"
 import Link from "next/link"
@@ -24,7 +24,7 @@ interface TravelPlan {
   itinerary: any;
 }
 
-export default function ProfilePage() {
+function ProfileContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isSuccess = searchParams.get('success') === 'true';
@@ -302,5 +302,17 @@ export default function ProfilePage() {
         </motion.div>
       </div>
     </div>
+  )
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="w-12 h-12 border-t-2 border-terracotta rounded-full animate-spin" />
+      </div>
+    }>
+      <ProfileContent />
+    </Suspense>
   )
 }
