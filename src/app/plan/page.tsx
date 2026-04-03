@@ -4,6 +4,7 @@ export const dynamic = 'force-dynamic';
 
 import { usePlanStore } from '@/store/usePlanStore'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Calendar, MapPin, Plane, Hotel, DollarSign, Compass, Star, Check, Sparkles, Lock, Download } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -119,7 +120,7 @@ export default function PlanDashboard() {
           <div className="hidden md:flex absolute top-10 right-10 w-48 h-48 bg-glass-bg border border-glass-border/50 rounded-full items-center justify-center p-8 backdrop-blur-lg shadow-2xl">
             <div className="text-center">
                <Compass size={48} className="text-terracotta mx-auto mb-2 drop-shadow-[0_0_15px_rgba(215,92,61,0.5)]" />
-               <span className="text-xs font-semibold uppercase tracking-widest text-foreground/60">Voya AI Plan</span>
+               <span className="text-xs font-semibold uppercase tracking-widest text-foreground/60">Rovago AI Plan</span>
             </div>
           </div>
         </div>

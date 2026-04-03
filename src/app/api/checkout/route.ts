@@ -43,7 +43,7 @@ export async function POST(req: Request) {
             currency: 'usd',
             product_data: {
               name,
-              description: `Voya AI ${name} Subscription`
+              description: `Rovago AI ${name} Subscription`
             },
             unit_amount: amount,
             recurring: { interval: isYearly ? 'year' : 'month' },

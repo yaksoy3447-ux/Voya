@@ -18,6 +18,7 @@ export default function BlogPage() {
       slug: "istanbul-local-tips",
       excerpt: "Navigate the busy streets of Istanbul with insider tips on transport, hidden cafes, and the best time to visit historic sites.",
       date: "April 5, 2026",
+      author: "Rovago Team",
       readTime: "6 min read",
       category: "City Guide",
       image: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=800&auto=format&fit=crop"
@@ -25,7 +26,7 @@ export default function BlogPage() {
     {
       title: "Chasing Sunsets in Mykonos: An AI-Planned Adventure",
       slug: "mykonos-experience",
-      excerpt: "How I used Voya to skip the tourist traps and discover the most authentic corners of the Aegean islands.",
+      excerpt: "How I used Rovago to skip the tourist traps and discover the most authentic corners of the Aegean islands.",
       date: "April 2, 2026",
       readTime: "5 min read",
       category: "Experience",
@@ -54,7 +55,7 @@ export default function BlogPage() {
           <motion.span custom={0} variants={fadeUp} className="text-sm font-medium text-terracotta uppercase tracking-widest">Travel Insights</motion.span>
           <motion.h1 custom={1} variants={fadeUp} className="text-4xl md:text-6xl font-serif mt-3 mb-6">The Explorer Journal</motion.h1>
           <motion.p custom={2} variants={fadeUp} className="text-lg text-foreground/60 max-w-2xl mx-auto">
-            Stories, tips, and inspiration for the modern traveler. Explore our latest thoughts on AI, destinations, and the art of travel.
+            Travel stories, destination guides, and AI-powered trip inspiration from the Rovago team.
           </motion.p>
         </motion.div>
 
@@ -70,6 +71,7 @@ export default function BlogPage() {
                 </div>
               </div>
               <div className="p-8 md:p-12 flex flex-col justify-center space-y-6">
+                <span className="text-xs font-semibold uppercase tracking-widest text-foreground/60">Saved Rovago AI Plan</span>
                 <div className="flex items-center gap-6 text-xs text-foreground/40 font-medium">
                   <span className="flex items-center gap-1.5"><Calendar size={14} /> {featured.date}</span>
                   <span className="flex items-center gap-1.5"><Clock size={14} /> {featured.readTime}</span>

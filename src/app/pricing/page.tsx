@@ -41,7 +41,7 @@ export default function PricingPage() {
       icon: <Compass size={24} />,
       monthlyPrice: 0,
       yearlyPrice: 0,
-      desc: 'Try Voya with limited access',
+      desc: 'Try Rovago with limited access',
       cta: 'Get Started',
       ctaStyle: 'border border-glass-border bg-white/5 hover:bg-white/10 text-foreground',
       highlight: false,
@@ -113,7 +113,7 @@ export default function PricingPage() {
           <motion.span custom={0} variants={fadeUp} className="text-sm font-medium text-terracotta uppercase tracking-widest">Pricing</motion.span>
           <motion.h1 custom={1} variants={fadeUp} className="text-4xl md:text-5xl font-serif mt-3 mb-4">Choose Your Adventure Tier</motion.h1>
           <motion.p custom={2} variants={fadeUp} className="text-lg text-foreground/60 max-w-xl mx-auto">
-            Start free. Upgrade when you&apos;re ready for the complete Voya experience.
+            Start free. Upgrade when you&apos;re ready for the complete Rovago experience.
           </motion.p>
 
           {/* Billing Toggle */}

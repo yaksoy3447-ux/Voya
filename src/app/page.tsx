@@ -54,7 +54,7 @@ export default function LandingPage() {
           </motion.h1>
           
           <motion.p custom={2} variants={fadeUp} className="text-lg md:text-xl text-foreground/60 max-w-xl mx-auto leading-relaxed">
-            Craft your personalized journey in seconds with Voya&apos;s AI travel assistant. Experience travel like never before.
+            Craft your personalized journey in seconds with Rovago&apos;s AI travel assistant. Experience travel like never before.
           </motion.p>
           
           <motion.div custom={3} variants={fadeUp} className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
@@ -111,7 +111,7 @@ export default function LandingPage() {
         <div className="absolute inset-0 bg-linear-to-b from-transparent via-terracotta/3 to-transparent pointer-events-none" />
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="text-center mb-16">
-            <motion.span custom={0} variants={fadeUp} className="text-sm font-medium text-terracotta uppercase tracking-widest">Why Voya?</motion.span>
+            <motion.span custom={0} variants={fadeUp} className="text-sm font-medium text-terracotta uppercase tracking-widest">Why Rovago?</motion.span>
             <motion.h2 custom={1} variants={fadeUp} className="text-3xl md:text-5xl font-serif mt-3">Smart Features for Smart Travelers</motion.h2>
           </motion.div>
 
@@ -145,8 +145,8 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { name: "Sarah M.", location: "New York, USA", text: "Voya planned my 10-day Italy trip in under a minute. Every restaurant suggestion was a hit. I didn't have to Google a single thing during the entire trip.", stars: 5, avatar: "SM" },
-              { name: "Thomas K.", location: "Berlin, Germany", text: "As a digital nomad, I've tried dozens of travel planners. Voya is the only one that actually understands budget constraints and gives realistic insider tips.", stars: 5, avatar: "TK" },
+              { name: "Sarah M.", location: "New York, USA", text: "Rovago planned my 10-day Italy trip in under a minute. Every restaurant suggestion was a hit. I didn't have to Google a single thing during the entire trip.", stars: 5, avatar: "SM" },
+              { name: "Thomas K.", location: "Berlin, Germany", text: "As a digital nomad, I've tried dozens of travel planners. Rovago is the only one that actually understands budget constraints and gives realistic insider tips.", stars: 5, avatar: "TK" },
               { name: "Yuki T.", location: "Tokyo, Japan", text: "The route optimization is incredible. It saved us hours of walking by grouping nearby attractions together. The dining secrets were absolutely worth the upgrade.", stars: 5, avatar: "YT" },
             ].map((t, i) => (
               <motion.div key={i} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}
@@ -192,7 +192,7 @@ export default function LandingPage() {
       <footer className="border-t border-glass-border py-16 px-6">
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="col-span-2 md:col-span-1">
-            <h3 className="font-serif text-2xl mb-3">Voya.</h3>
+            <h3 className="font-serif text-2xl mb-3">Rovago.</h3>
             <p className="text-sm text-foreground/50 leading-relaxed">Where AI meets the art of travel.</p>
           </div>
           <div>
@@ -221,7 +221,7 @@ export default function LandingPage() {
           </div>
         </div>
         <div className="max-w-6xl mx-auto mt-12 pt-8 border-t border-glass-border/50 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-foreground/40">© 2026 Voya. All rights reserved.</p>
+          <p className="text-xs text-foreground/40">© 2026 Rovago. All rights reserved.</p>
           <p className="text-xs text-foreground/40">Built with AI ✦ Designed for explorers</p>
         </div>
       </footer>

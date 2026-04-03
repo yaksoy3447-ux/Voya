@@ -29,7 +29,7 @@ export default function CookiesPage() {
               <h2 className="text-xl font-serif font-medium">What are Cookies?</h2>
             </div>
             <p className="text-foreground/70 leading-relaxed">
-              Cookies are small text files stored on your device that help us remember your preferences, keep you logged in, and analyze how you interact with Voya. They help us provide a smoother, more personalized service.
+              Cookies are small text files stored on your device that help us remember your preferences, keep you logged in, and analyze how you interact with Rovago. They help us provide a smoother, more personalized service.
             </p>
           </section>
 
@@ -43,7 +43,7 @@ export default function CookiesPage() {
               {[
                 { title: "Essential Cookies", desc: "Necessary for the website to function. They handle authentication, security, and basic navigation." },
                 { title: "Preference Cookies", desc: "Remember settings like your preferred language or currency for future visits." },
-                { title: "Analytics Cookies", desc: "Help us understand how travelers use Voya so we can optimize the interface and engine." }
+                { title: "Analytics Cookies", desc: "Help us understand how travelers use Rovago so we can optimize the interface and engine." }
               ].map((c, i) => (
                 <div key={i} className="glass-card p-6 rounded-2xl border border-glass-border">
                   <h3 className="font-medium mb-1 font-serif text-lg">{c.title}</h3>
@@ -59,12 +59,12 @@ export default function CookiesPage() {
               <h2 className="text-xl font-serif font-medium">Managing Your Choices</h2>
             </div>
             <p className="text-foreground/70 leading-relaxed">
-              You can control and manage cookies through your browser settings. Most browsers allow you to block or delete cookies, though this may impact your ability to use certain features on Voya.
+              You can control and manage cookies through your browser settings. Most browsers allow you to block or delete cookies, though this may impact your ability to use certain features on Rovago.
             </p>
           </section>
 
           <div className="pt-12 text-center text-xs text-foreground/30 border-t border-glass-border">
-            Voya AI Travel Planner ✦ Built for explorers
+            Rovago AI Travel Planner ✦ Built for explorers
           </div>
         </motion.div>
       </div>

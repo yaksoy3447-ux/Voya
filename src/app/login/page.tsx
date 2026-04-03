@@ -69,9 +69,8 @@ function LoginContent() {
       >
         {/* Logo */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <Compass size={32} className="text-terracotta" />
-            <span className="font-serif text-2xl font-medium">Voya.</span>
+          <Link href="/" className="inline-block mb-10 group">
+            <span className="font-serif text-2xl font-medium tracking-tight">Rovago.</span>
           </Link>
           <h1 className="text-2xl md:text-3xl font-serif mb-2">
             {isSignUp ? 'Create your account' : 'Welcome back'}

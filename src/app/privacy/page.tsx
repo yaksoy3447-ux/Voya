@@ -21,7 +21,7 @@ export default function PrivacyPage() {
           </motion.div>
           <motion.h1 custom={1} variants={fadeUp} className="text-4xl md:text-5xl font-serif mt-3 mb-6">Privacy Commitment</motion.h1>
           <motion.p custom={2} variants={fadeUp} className="text-lg text-foreground/60 leading-relaxed max-w-2xl mx-auto">
-            Your journey is personal. At Voya, we believe your data should be handled with the same care and precision as your travel plans.
+            Your journey is personal. At Rovago, we believe your data should be handled with the same care and precision as your travel plans.
           </motion.p>
         </motion.div>
 
@@ -74,7 +74,7 @@ export default function PrivacyPage() {
           </section>
 
           <div className="pt-12 text-center text-xs text-foreground/30 border-t border-glass-border">
-            Voya Privacy Policy ✦ For a safer exploration
+            Rovago Privacy Policy ✦ For a safer exploration
           </div>
         </motion.div>
       </div>

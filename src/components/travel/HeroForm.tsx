@@ -497,7 +497,7 @@ export function HeroForm() {
                      <div className="h-40 glass-card rounded-2xl flex flex-col items-center justify-center text-center p-6 bg-terracotta/5 border-terracotta/20">
                         <Sparkles className="text-terracotta mb-3" size={32} />
                         <p className="text-sm font-serif italic text-foreground/80 leading-relaxed">
-                          &quot;Tell us your vibe in the final step, and Voya will find the perfect hidden gems for you.&quot;
+                          &quot;Tell us your vibe in the final step, and Rovago will find the perfect hidden gems for you.&quot;
                         </p>
                      </div>
                    )}

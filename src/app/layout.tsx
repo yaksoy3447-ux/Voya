@@ -15,24 +15,24 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Voya — AI Powered Travel Planner",
-    template: "%s | Voya",
+    default: "Rovago — AI Powered Travel Planner",
+    template: "%s | Rovago",
   },
-  description: "Craft your personalized journey in seconds with Voya's AI travel assistant. Day-by-day itineraries, hotel picks, and insider tips — all powered by Claude AI.",
+  description: "Craft your personalized journey in seconds with Rovago's AI travel assistant. Day-by-day itineraries, hotel picks, and insider tips — all powered by Claude AI.",
   keywords: ["AI travel planner", "travel itinerary", "personalized travel", "AI trip planner", "travel assistant"],
-  authors: [{ name: "Voya" }],
-  creator: "Voya",
+  authors: [{ name: "Rovago" }],
+  creator: "Rovago",
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "Voya — AI Powered Travel Planner",
-    description: "Craft your personalized journey in seconds with Voya's AI travel assistant.",
-    siteName: "Voya",
+    title: "Rovago — AI Powered Travel Planner",
+    description: "Craft your personalized journey in seconds with Rovago's AI travel assistant.",
+    siteName: "Rovago",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Voya — AI Powered Travel Planner",
-    description: "Craft your personalized journey in seconds with Voya's AI travel assistant.",
+    title: "Rovago — AI Powered Travel Planner",
+    description: "Craft your personalized journey in seconds with Rovago's AI travel assistant.",
   },
   robots: {
     index: true,

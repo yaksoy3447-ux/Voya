@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Get in touch with the Voya team. We'd love to hear from you.",
+  description: "Get in touch with the Rovago team. We'd love to hear from you.",
 }
 
 export default function ContactLayout({ children }: { children: React.ReactNode }) {

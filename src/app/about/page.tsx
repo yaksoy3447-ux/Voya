@@ -20,7 +20,7 @@ export default function AboutPage() {
           <motion.span custom={0} variants={fadeUp} className="text-sm font-medium text-terracotta uppercase tracking-widest">Our Story</motion.span>
           <motion.h1 custom={1} variants={fadeUp} className="text-4xl md:text-6xl font-serif mt-3 mb-6">Redefining the Art of Exploration</motion.h1>
           <motion.p custom={2} variants={fadeUp} className="text-lg text-foreground/60 leading-relaxed max-w-2xl mx-auto">
-            Voya was born from a simple realization: travel planning should be as inspiring as the journey itself. 
+            Rovago was born from a simple realization: travel planning should be as inspiring as the journey itself. 
             We combine human curiosity with cutting-edge AI to craft itineraries that feel personal, authentic, and effortless.
           </motion.p>
         </motion.div>

@@ -204,7 +204,7 @@ function ProfileContent() {
                 <Compass size={24} />
               </div>
               <h3 className="text-xl font-medium mb-1">Travel Stats</h3>
-              <p className="text-sm text-foreground/50 mb-6">Your history with Voya AI.</p>
+              <p className="text-sm text-foreground/50 mb-6">Your history with Rovago AI.</p>
               
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center p-3 rounded-2xl bg-white/5 border border-glass-border">

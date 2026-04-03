@@ -41,7 +41,7 @@ export default function BlogPostDetail() {
       title: "Exploring the Soul of Istanbul: A Local's Perspective",
       date: "April 5, 2026",
       readTime: "6 min read",
-      author: "Voya Team",
+      author: "Rovago Team",
       category: "City Guide",
       heroImage: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=1200&auto=format&fit=crop",
       sections: [
@@ -71,7 +71,7 @@ export default function BlogPostDetail() {
       title: "10 Hidden Gems in Japan You've Never Heard Of",
       date: "March 28, 2026",
       readTime: "8 min read",
-      author: "Voya Team",
+      author: "Rovago Team",
       category: "Destinations",
       heroImage: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1200&auto=format&fit=crop",
       sections: [
@@ -101,12 +101,12 @@ export default function BlogPostDetail() {
       title: "Chasing Sunsets in Mykonos: An AI-Planned Adventure",
       date: "April 2, 2026",
       readTime: "5 min read",
-      author: "Voya Team",
+      author: "Rovago Team",
       category: "Experience",
       heroImage: "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=1200&auto=format&fit=crop",
       sections: [
         {
-          text: "Stepping onto the white-washed streets of Mykonos town, I felt that familiar mix of excitement and overwhelm. The town is a literal labyrinth. Luckily, our Voya-planned route had our boutique hotel sorted right at the quiet edge of the old town. Pro-tip: Don't bother with a rental car if you're staying in Chora; the winding alleys are strictly for walking, and the local buses are surprisingly reliable for reaching the southern beaches.",
+          text: "Stepping onto the white-washed streets of Mykonos town, I felt that familiar mix of excitement and overwhelm. The town is a literal labyrinth. Luckily, our Rovago-planned route had our boutique hotel sorted right at the quiet edge of the old town. Pro-tip: Don't bother with a rental car if you're staying in Chora; the winding alleys are strictly for walking, and the local buses are surprisingly reliable for reaching the southern beaches.",
           image: "/blog/mykonos_streets.png",
           layout: "text-left"
         },
@@ -133,7 +133,7 @@ export default function BlogPostDetail() {
     title: "Content Coming Soon",
     date: "2026",
     readTime: "...",
-    author: "Voya Team",
+    author: "Rovago Team",
     category: "Travel",
     heroImage: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=1200&auto=format&fit=crop",
     sections: []
@@ -210,7 +210,7 @@ export default function BlogPostDetail() {
 
       {/* Social interaction section */}
       <footer className="max-w-4xl mx-auto px-6 border-t border-glass-border pt-20 text-center">
-        <p className="text-xs text-foreground/30 mb-10 font-bold uppercase tracking-[0.4em]">Fin • Exploring with Voya</p>
+        <p className="text-xs text-foreground/30 mb-10 font-bold uppercase tracking-[0.4em]">Fin • Exploring with Rovago</p>
         <div className="flex justify-center gap-16 md:gap-24">
             <button className="flex flex-col items-center gap-3 group">
               <div className="w-16 h-16 rounded-full border border-glass-border flex items-center justify-center group-hover:bg-terracotta group-hover:border-terracotta group-hover:text-white group-hover:scale-110 transition-all duration-300">

@@ -18,7 +18,7 @@ export default function TermsPage() {
           </motion.div>
           <motion.h1 custom={1} variants={fadeUp} className="text-4xl md:text-5xl font-serif mt-3 mb-6">Terms of Service</motion.h1>
           <motion.p custom={2} variants={fadeUp} className="text-lg text-foreground/60 leading-relaxed max-w-2xl mx-auto">
-            Welcome to Voya. By using our platform, you agree to these legal terms designed to ensure a safe and professional experience for all travelers.
+            Welcome to Rovago. By using our platform, you agree to these legal terms designed to ensure a safe and professional experience for all travelers.
           </motion.p>
         </motion.div>
 
@@ -39,7 +39,7 @@ export default function TermsPage() {
                 <Shield size={22} /> 2. User Responsibilities
               </h2>
               <p className="text-foreground/70 leading-relaxed">
-                As a traveler on Voya, you agree to provide accurate information when generating plans. You are responsible for maintaining the security of your account and for all activities that occur under your credentials. We provide the tools for discovery, but the final booking and travel arrangements remain your professional responsibility.
+                Your journey is personal. At Rovago, we believe your data should be handled with the same care and precision as your travel plans. You are responsible for maintaining the security of your account and for all activities that occur under your credentials. We provide the tools for discovery, but the final booking and travel arrangements remain your professional responsibility.
               </p>
             </section>
 
@@ -48,7 +48,7 @@ export default function TermsPage() {
                 <Scale size={22} /> 3. Intellectual Property
               </h2>
               <p className="text-foreground/70 leading-relaxed">
-                The itineraries, designs, and AI algorithms generated on Voya are protected by international copyright laws. These materials are provided for your personal use and may not be redistributed, sold, or used for commercial purposes without explicit authorization.
+                The itineraries, designs, and AI algorithms generated on Rovago are protected by international copyright laws. These materials are provided for your personal use and may not be redistributed, sold, or used for commercial purposes without explicit authorization.
               </p>
             </section>
 
@@ -57,13 +57,13 @@ export default function TermsPage() {
                 <HelpCircle size={22} /> 4. Limitation of Liability
               </h2>
               <p className="text-foreground/70 leading-relaxed">
-                While our AI strives for perfection, travel conditions change. Voya provides recommendations in good faith but does not guarantee the availability, pricing, or quality of third-party services. We are an intelligence layer designed to enhance your decision-making, not a direct provider of travel services.
+                Rovago Privacy Policy ✦ For a safer exploration, travel conditions change. Rovago provides recommendations in good faith but does not guarantee the availability, pricing, or quality of third-party services. We are an intelligence layer designed to enhance your decision-making, not a direct provider of travel services.
               </p>
             </section>
           </div>
 
           <div className="pt-12 text-center text-xs text-foreground/30 border-t border-glass-border">
-            Voya AI Travel Planner © 2026 ✦ Professional Exploration Standard
+            Rovago AI Travel Planner ✦ Built for explorers ✦ hello@rovago.app
           </div>
         </motion.div>
       </div>

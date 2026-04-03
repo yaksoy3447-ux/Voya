@@ -37,13 +37,13 @@ export default function ContactPage() {
             <div className="space-y-6">
               <h2 className="text-2xl font-serif">Quick Contact</h2>
               <div className="space-y-4">
-                <a href="mailto:hello@voya.ai" className="flex items-center gap-4 group">
+                <a href="mailto:hello@rovago.app" className="flex items-center gap-4 group">
                   <div className="w-12 h-12 rounded-2xl bg-white/5 border border-glass-border flex items-center justify-center text-foreground/40 group-hover:bg-terracotta/10 group-hover:text-terracotta transition-all">
                     <Mail size={20} />
                   </div>
                   <div>
                     <div className="text-sm text-foreground/40">Email our team</div>
-                    <div className="font-medium">hello@voya.ai</div>
+                    <div className="font-medium">hello@rovago.app</div>
                   </div>
                 </a>
                 <div className="flex items-center gap-4 group">
@@ -52,7 +52,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <div className="text-sm text-foreground/40">Technical Support</div>
-                    <div className="font-medium">help.voya.ai</div>
+                    <div className="font-medium">help.rovago.app</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-4 group">
@@ -98,7 +98,7 @@ export default function ContactPage() {
                     </div>
                     <div className="space-y-2">
                        <label className="text-xs text-foreground/40 font-medium uppercase tracking-wider ml-1">Email Address</label>
-                       <input required type="email" placeholder="voyager@voya.ai" className="w-full h-12 bg-white/5 border border-glass-border rounded-xl px-4 text-sm focus:border-terracotta/50 focus:outline-none transition-all placeholder:text-foreground/20" />
+                       <input required type="email" placeholder="explorer@rovago.app" className="w-full h-12 bg-white/5 border border-glass-border rounded-xl px-4 text-sm focus:border-terracotta/50 focus:outline-none transition-all placeholder:text-foreground/20" />
                     </div>
                   </div>
                   <div className="space-y-2">

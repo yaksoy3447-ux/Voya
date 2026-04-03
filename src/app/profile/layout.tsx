@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "My Profile",
-  description: "Manage your Voya account, subscription, and travel history.",
+  description: "Manage your Rovago account, subscription, and travel history.",
   robots: { index: false, follow: false },
 }
 

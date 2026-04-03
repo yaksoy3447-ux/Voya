@@ -9,7 +9,7 @@ export async function Header() {
   return (
     <header className="fixed top-0 left-0 w-full z-50 px-4 md:px-8 py-5 flex justify-between items-center bg-transparent pointer-events-none">
       <Link href="/" className="text-3xl font-serif text-foreground tracking-wider font-bold pointer-events-auto">
-        Voya.
+        Rovago.
       </Link>
 
       <nav className="hidden md:flex items-center gap-8 pointer-events-auto">
