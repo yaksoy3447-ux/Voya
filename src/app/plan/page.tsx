@@ -221,17 +221,26 @@ export default function PlanDashboard() {
               <div className="space-y-4">
                 {itinerary.hotels && itinerary.hotels.length > 0 ? (
                   itinerary.hotels.map((hotel: HotelInfo, idx: number) => (
-                    <div key={idx} className="p-4 bg-white/5 border border-glass-border rounded-2xl">
+                    <a
+                      key={idx}
+                      href={`https://www.booking.com/search.html?ss=${encodeURIComponent(hotel.name + ' ' + hotel.location)}&aid=2311236`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block p-4 bg-white/5 border border-glass-border rounded-2xl hover:border-terracotta/40 hover:bg-white/10 transition-all group"
+                    >
                       <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-medium text-sm">{hotel.name}</h4>
-                          <span className="flex items-center gap-1 text-xs bg-yellow-500/20 text-yellow-500 px-2 py-1 rounded-full"><Star size={12} className="fill-yellow-500" /> {hotel.rating}</span>
+                        <h4 className="font-medium text-sm group-hover:text-terracotta transition-colors">{hotel.name}</h4>
+                        <span className="flex items-center gap-1 text-xs bg-yellow-500/20 text-yellow-500 px-2 py-1 rounded-full shrink-0 ml-2"><Star size={12} className="fill-yellow-500" /> {hotel.rating}</span>
                       </div>
-                      <p className="text-xs text-foreground/60 mb-3">{hotel.description}</p>
-                      <div className="flex items-center justify-between text-xs font-medium border-t border-glass-border/40 pt-3">
-                          <span className="text-foreground/50"><MapPin size={12} className="inline mr-1"/>{hotel.location}</span>
-                          <span className="text-terracotta">${hotel.pricePerNight} / night</span>
+                      <p className="text-xs text-foreground/60 mb-3 line-clamp-2">{hotel.description}</p>
+                      <div className="flex items-center justify-between text-xs font-medium mb-3">
+                        <span className="text-foreground/50"><MapPin size={12} className="inline mr-1"/>{hotel.location}</span>
+                        <span className="text-terracotta font-bold">${hotel.pricePerNight} / night</span>
                       </div>
-                    </div>
+                      <div className="w-full py-2 bg-terracotta/10 border border-terracotta/30 rounded-xl text-center text-xs font-bold text-terracotta group-hover:bg-terracotta group-hover:text-white transition-all">
+                        Book on Booking.com →
+                      </div>
+                    </a>
                   ))
                 ) : (
                   <div className="p-4 border border-glass-border/20 rounded-2xl text-center text-xs text-foreground/40 font-medium">
@@ -248,17 +257,34 @@ export default function PlanDashboard() {
               </h3>
               <div className="space-y-3">
                 {itinerary.flights && itinerary.flights.length > 0 ? (
-                  itinerary.flights.map((flight: FlightInfo, idx: number) => (
-                    <div key={idx} className="flex justify-between items-center p-3 border border-glass-border/40 rounded-xl bg-white/5">
-                      <div>
-                        <div className="font-medium text-sm flex items-center gap-2">
-                          {flight.departure} <Plane size={14} className="text-foreground/40"/> {flight.arrival}
+                  itinerary.flights.map((flight: FlightInfo, idx: number) => {
+                    const depDate = flight.date ? new Date(flight.date) : null;
+                    const dd = depDate ? String(depDate.getUTCDate()).padStart(2,'0') : '01';
+                    const mm = depDate ? String(depDate.getUTCMonth()+1).padStart(2,'0') : '06';
+                    const bookingUrl = `https://www.aviasales.com/search/${flight.departure}${dd}${mm}${flight.arrival}1?marker=715711`;
+                    return (
+                    <a
+                      key={idx}
+                      href={bookingUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block p-3 border border-glass-border/40 rounded-xl bg-white/5 hover:border-terracotta/40 hover:bg-white/10 transition-all group space-y-3"
+                    >
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <div className="font-medium text-sm flex items-center gap-2 group-hover:text-terracotta transition-colors">
+                            {flight.departure} <Plane size={14} className="text-foreground/40 rotate-90"/> {flight.arrival}
+                          </div>
+                          <div className="text-xs text-foreground/50 font-medium mt-0.5">{flight.airline} • {flight.date}</div>
                         </div>
-                        <div className="text-xs text-foreground/50 font-medium">{flight.airline} • {flight.date}</div>
+                        <span className="text-sm font-bold text-terracotta">${flight.price}</span>
                       </div>
-                      <div className="font-medium text-sm text-terracotta font-serif">${flight.price}</div>
-                    </div>
-                  ))
+                      <div className="w-full py-2 bg-terracotta/10 border border-terracotta/30 rounded-lg text-center text-xs font-bold text-terracotta group-hover:bg-terracotta group-hover:text-white transition-all">
+                        Book this Flight on Aviasales →
+                      </div>
+                    </a>
+                    )
+                  })
                 ) : (
                   <div className="p-3 border border-glass-border/20 rounded-xl text-center text-xs text-foreground/40 font-medium">
                     Optimizing flight routes...
