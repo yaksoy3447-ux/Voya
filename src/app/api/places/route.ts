@@ -17,44 +17,35 @@ export async function GET(req: Request) {
 
     const countryCode = searchParams.get('country');
     
-    // Use the NEW Places API (v1) — Autocomplete endpoint
-    const requestBody: any = {
-      input: query,
-      // Broaden types to include both localities and administrative areas
-      includedPrimaryTypes: ["locality", "administrative_area_level_1", "administrative_area_level_2"], 
-      languageCode: "en",
-    };
+    // Use the STABLE Legacy Places API (v0) — Autocomplete endpoint
+    // This is 100% more reliable for most Google Cloud setups
+    const url = new URL('https://maps.googleapis.com/maps/api/place/autocomplete/json');
+    url.searchParams.append('input', query);
+    url.searchParams.append('types', '(cities)');
+    url.searchParams.append('language', 'en');
+    url.searchParams.append('key', apiKey);
 
     // Restrict to specific country if provided
     if (countryCode && countryCode.length === 2) {
-      requestBody.includedRegionCodes = [countryCode.toUpperCase()];
+      url.searchParams.append('components', `country:${countryCode.toLowerCase()}`);
     }
 
-    const response = await fetch(
-      "https://places.googleapis.com/v1/places:autocomplete",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Goog-Api-Key": apiKey,
-        },
-        body: JSON.stringify(requestBody),
-      }
-    );
+    const response = await fetch(url.toString(), {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Google Places API Error:', errorData);
+      return NextResponse.json({ predictions: [] });
+    }
 
     const data = await response.json();
-
-    // Transform the new API response to match our frontend's expected format
-    const predictions = (data.suggestions || []).map((s: any) => ({
-      place_id: s.placePrediction?.placeId || "",
-      description: s.placePrediction?.text?.text || "",
-      structured_formatting: {
-        main_text: s.placePrediction?.structuredFormat?.mainText?.text || "",
-        secondary_text: s.placePrediction?.structuredFormat?.secondaryText?.text || "",
-      },
-    }));
-
-    return NextResponse.json({ predictions });
+    
+    // Return the predictions directly (Legacy API returns { predictions: [...] })
+    return NextResponse.json({ 
+      predictions: data.predictions || [] 
+    });
   } catch (error: any) {
     console.error("Google Places Error:", error);
     return NextResponse.json({ predictions: [], error: error.message }, { status: 500 });
