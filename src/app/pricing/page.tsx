@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Check, X, Compass, Star, Zap, Crown } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 
 const fadeUp: any = {
   hidden: { opacity: 0, y: 20 },
@@ -15,6 +16,17 @@ export default function PricingPage() {
 
   const handleSubscribe = async (planId: string) => {
     setLoading(planId)
+    const supabase = createClient()
+    
+    // 1. Önce Client-side (tarayıcıda) hızlıca oturuma bakalım
+    const { data: { session } } = await supabase.auth.getSession()
+    
+    if (!session) {
+      // Oturum yoksa saniyesinde login ekranına ışınlıyoruz
+      window.location.href = `/login?next=/pricing`
+      return
+    }
+
     try {
       const res = await fetch('/api/checkout', {
         method: 'POST',
@@ -22,10 +34,11 @@ export default function PricingPage() {
         body: JSON.stringify({ planId, billing }),
       });
       const data = await res.json();
+      
       if (data.url) {
         window.location.href = data.url;
       } else if (res.status === 401) {
-        // Oturum yoksa login'e gönder, sonra geri bu sayfaya gelsin
+        // Sunucu tarafında da oturum düşmüşse login'e gönder
         window.location.href = "/login?next=/pricing";
       } else {
         alert("Server Error: " + (data.error || JSON.stringify(data)));
