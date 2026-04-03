@@ -333,7 +333,7 @@ export default function LandingPage() {
                 className="group relative h-[500px] rounded-[40px] overflow-hidden shadow-2xl"
               >
                 <a 
-                  href={`https://tp.media/r?marker=715711&u=${encodeURIComponent(tour.link)}`}
+                  href={`${tour.link}${tour.link.includes('?') ? '&' : '?'}marker=715711`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="absolute inset-0 z-20 flex flex-col justify-end p-8 md:p-10 transition-all duration-700 bg-linear-to-b from-transparent via-black/20 to-black/90 group-hover:via-black/40"
