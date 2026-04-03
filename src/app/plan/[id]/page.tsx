@@ -52,6 +52,7 @@ export default function PlanHistoryViewer() {
   const [error, setError] = useState<string | null>(null)
   const [isPublic, setIsPublic] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [realPrices, setRealPrices] = useState<Record<number, { price: number | null, airline: string | null, loading: boolean }>>({})
 
   useEffect(() => {
     if (!supabase) return; // Build safety
@@ -92,6 +93,19 @@ export default function PlanHistoryViewer() {
     }
     fetchData()
   }, [params.id, router])
+
+  // Fetch real flight prices from Travelpayouts when itinerary loads
+  useEffect(() => {
+    if (!itinerary?.flights?.length) return;
+    itinerary.flights.forEach((flight: any, idx: number) => {
+      if (!flight.departure || !flight.arrival || !flight.date) return;
+      setRealPrices(prev => ({ ...prev, [idx]: { price: null, airline: null, loading: true } }));
+      fetch(`/api/flights?origin=${flight.departure}&destination=${flight.arrival}&date=${flight.date}`)
+        .then(r => r.json())
+        .then(data => setRealPrices(prev => ({ ...prev, [idx]: { price: data.price, airline: data.airline, loading: false } })))
+        .catch(() => setRealPrices(prev => ({ ...prev, [idx]: { price: null, airline: null, loading: false } })));
+    });
+  }, [itinerary])
 
   const handleTogglePublic = async () => {
     if (!supabase) return;
@@ -358,27 +372,47 @@ export default function PlanHistoryViewer() {
               </h3>
               <div className="space-y-3">
                 {itinerary.flights && itinerary.flights.length > 0 ? (
-                  itinerary.flights.map((flight: FlightInfo, idx: number) => (
+                  itinerary.flights.map((flight: FlightInfo, idx: number) => {
+                    const rp = realPrices[idx];
+                    const depDate = flight.date ? new Date(flight.date) : null;
+                    const dd = depDate ? String(depDate.getUTCDate()).padStart(2,'0') : '01';
+                    const mm = depDate ? String(depDate.getUTCMonth()+1).padStart(2,'0') : '06';
+                    const bookingUrl = `https://www.aviasales.com/search/${flight.departure}${dd}${mm}${flight.arrival}1?marker=715711`;
+                    return (
                     <div key={idx} className="p-3 border border-glass-border/40 rounded-xl bg-white/5 space-y-3">
                       <div className="flex justify-between items-center">
                         <div>
                           <div className="font-medium text-sm flex items-center gap-2">
                             {flight.departure} <Plane size={14} className="text-foreground/40 rotate-90"/> {flight.arrival}
                           </div>
-                          <div className="text-xs text-foreground/50 font-medium">{flight.airline} • {flight.date}</div>
+                          <div className="text-xs text-foreground/50 font-medium">
+                            {rp?.airline || flight.airline} • {flight.date}
+                          </div>
                         </div>
-                        <div className="font-medium text-sm text-terracotta font-serif">${flight.price}</div>
+                        <div className="text-right">
+                          {rp?.loading ? (
+                            <span className="text-xs text-foreground/30 animate-pulse">Loading...</span>
+                          ) : rp?.price ? (
+                            <div>
+                              <span className="text-[9px] text-green-400/70 uppercase tracking-widest block">Live Price</span>
+                              <span className="font-bold text-sm text-green-400">${rp.price}</span>
+                            </div>
+                          ) : (
+                            <span className="text-xs text-foreground/30">—</span>
+                          )}
+                        </div>
                       </div>
-                      <a 
-                        href={`https://www.aviasales.com/search?destination=${encodeURIComponent(flight.arrival)}&marker=715711&language=en`}
+                      <a
+                        href={bookingUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 w-full py-2 border border-terracotta text-terracotta rounded-lg text-xs font-bold hover:bg-terracotta/10 transition-all"
+                        className="flex items-center justify-center gap-2 w-full py-2 bg-terracotta text-white rounded-lg text-xs font-bold hover:bg-terracotta/90 transition-all"
                       >
-                        Compare Flights
+                        <Plane size={12} /> Book this Flight
                       </a>
                     </div>
-                  ))
+                    )
+                  })
                 ) : (
                   <div className="p-3 border border-glass-border/20 rounded-xl text-center text-xs text-foreground/40 font-medium">
                     Optimizing flight routes...
