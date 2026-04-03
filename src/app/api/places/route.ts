@@ -18,9 +18,9 @@ export async function GET(req: Request) {
     const countryCode = searchParams.get('country');
     
     // Use the NEW Places API (v1) — Autocomplete endpoint
-    const requestBody: Record<string, unknown> = {
+    const requestBody: Record<string, any> = {
       input: query,
-      includedPrimaryTypes: ["(cities)"],
+      includedPrimaryTypes: ["locality"], // Correct for v1 API to fetch cities
       languageCode: "en",
     };
 
