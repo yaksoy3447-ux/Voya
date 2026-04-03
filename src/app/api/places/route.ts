@@ -18,14 +18,15 @@ export async function GET(req: Request) {
     const countryCode = searchParams.get('country');
     
     // Use the NEW Places API (v1) — Autocomplete endpoint
-    const requestBody: Record<string, any> = {
+    const requestBody: any = {
       input: query,
-      includedPrimaryTypes: ["locality"], // Correct for v1 API to fetch cities
+      // Broaden types to include both localities and administrative areas
+      includedPrimaryTypes: ["locality", "administrative_area_level_1", "administrative_area_level_2"], 
       languageCode: "en",
     };
 
     // Restrict to specific country if provided
-    if (countryCode) {
+    if (countryCode && countryCode.length === 2) {
       requestBody.includedRegionCodes = [countryCode.toUpperCase()];
     }
 
