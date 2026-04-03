@@ -3,6 +3,8 @@ import Stripe from 'stripe';
 import { createClient } from '@/lib/supabase/server';
 import { headers } from 'next/headers';
 
+export const dynamic = 'force-dynamic';
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2024-12-18.acacia' as any,
 });
