@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+:root {
+  /* Earthy Glassmorphism Core Palettes - Always Dark / Premium */
+  --background: #0A0909; /* Deep espresso / Night Sky */
+  --foreground: #F3ECE6; /* Warm Pearl White */
+  
+  /* Glass Surfaces */
+  --glass-bg: rgba(36, 31, 28, 0.6);
+  --glass-border: rgba(243, 236, 230, 0.08);
+  
+  /* Brand Accents */
+  --accent-terracotta: #CD5C45; /* Sunset Orange / Terracotta */
+  --accent-sage: #80907A; /* Nature Green */
+  --accent-sand: #D5B99A; /* Sand Beige */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  
+  --color-glass: var(--glass-bg);
+  --color-glass-border: var(--glass-border);
+  --color-terracotta: var(--accent-terracotta);
+  --color-sage: var(--accent-sage);
+  --color-sand: var(--accent-sand);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), sans-serif;
+  /* Subtle, luxury ambient lighting (background gradient) */
+  background-image: radial-gradient(circle at 10% 20%, rgba(205, 92, 69, 0.05), transparent 60%),
+                    radial-gradient(circle at 90% 80%, rgba(128, 144, 122, 0.05), transparent 60%);
+  min-height: 100vh;
+  antialiased: auto;
+}
+
+/* Glassmorphism Bento Component Infrastructure */
+@utility glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Print / PDF styles */
+@media print {
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    background-image: none !important;
+  }
+  .no-print { display: none !important; }
+  .glass-card {
+    background: #f9f9f9 !important;
+    backdrop-filter: none !important;
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+  }
+  nav, header, footer { display: none !important; }
+  .fixed { position: static !important; }
+}
