@@ -81,49 +81,105 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      {/* ═══════════════ SEARCH & SAVE (CUSTOM SEARCH) ═══════════════ */}
+      {/* ═══════════════ SEARCH & SAVE (SMART AUTOCOMPLETE) ═══════════════ */}
       <section className="py-24 px-6 relative">
         <div className="max-w-4xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="glass-card p-8 md:p-12 rounded-[48px] border border-glass-border/40 text-center relative overflow-hidden">
-            {/* Background elements */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-terracotta/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
             
             <div className="relative z-10">
-              <span className="text-[10px] font-bold text-terracotta uppercase tracking-[0.4em] mb-4 block underline-offset-4 decoration-terracotta/30 italic">Direct Booking Integration</span>
+              <span className="text-[10px] font-bold text-terracotta uppercase tracking-[0.4em] mb-4 block italic">Direct Booking Integration</span>
               <h2 className="text-3xl md:text-5xl font-serif text-white mb-4">Find the Best Deals</h2>
               <p className="text-foreground/50 max-w-xl mx-auto mb-10 text-sm leading-relaxed italic">
                 Rovago directly connects with global airline networks to find the best rates for your journey.
               </p>
 
-              {/* CUSTOM SEARCH FORM */}
+              {/* SMART SEARCH FORM */}
               <div className="bg-white/5 backdrop-blur-xl p-3 rounded-[32px] border border-white/10 flex flex-col lg:flex-row gap-2 shadow-2xl">
                 <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2">
-                  <div className="bg-white/5 rounded-2xl p-4 flex flex-col items-start border border-white/5 hover:border-terracotta/20 transition-all group">
-                    <span className="text-[9px] font-bold text-terracotta uppercase tracking-[0.2em] mb-1">Departure</span>
-                    <input 
-                      id="search-from-hero"
-                      type="text" 
-                      placeholder="e.g. Istanbul"
-                      className="bg-transparent border-none text-white text-sm focus:ring-0 p-0 w-full placeholder:text-white/20 font-medium"
-                    />
+                  {/* FROM INPUT */}
+                  <div className="relative group">
+                    <div className="bg-white/5 rounded-2xl p-4 flex flex-col items-start border border-white/5 hover:border-terracotta/20 transition-all">
+                      <span className="text-[9px] font-bold text-terracotta uppercase tracking-[0.2em] mb-1">Departure</span>
+                      <input 
+                        id="search-from-v2"
+                        autoComplete="off"
+                        type="text" 
+                        placeholder="e.g. Istanbul (IST)"
+                        className="bg-transparent border-none text-white text-sm focus:ring-0 p-0 w-full placeholder:text-white/20 font-medium"
+                        onChange={async (e) => {
+                          const val = e.target.value;
+                          const container = document.getElementById('from-suggestions');
+                          if (val.length < 2) { if (container) container.classList.add('hidden'); return; }
+                          const res = await fetch(`https://autocomplete.travelpayouts.com/places2?term=${val}&locale=en&types[]=city&types[]=airport`);
+                          const data = await res.json();
+                          if (container) {
+                            container.innerHTML = data.map((item: any) => `
+                              <div class="suggestion-item p-3 hover:bg-terracotta/20 cursor-pointer flex justify-between items-center border-b border-white/5 last:border-0" data-code="${item.code}" data-name="${item.name}">
+                                <span class="text-white text-xs font-medium">${item.name} <span class="text-white/40 italic">(${item.main_airport_name || item.name})</span></span>
+                                <span class="text-terracotta font-bold text-[10px] uppercase">${item.code}</span>
+                              </div>
+                            `).join('');
+                            container.classList.remove('hidden');
+                            container.querySelectorAll('.suggestion-item').forEach(el => {
+                                el.addEventListener('click', () => {
+                                    (document.getElementById('search-from-v2') as HTMLInputElement).value = (el as HTMLElement).dataset.name + ' (' + (el as HTMLElement).dataset.code + ')';
+                                    (document.getElementById('search-from-v2') as HTMLInputElement).dataset.code = (el as HTMLElement).dataset.code;
+                                    container.classList.add('hidden');
+                                });
+                            });
+                          }
+                        }}
+                      />
+                    </div>
+                    <div id="from-suggestions" className="absolute top-full left-0 right-0 mt-2 bg-[#1a1a1a] border border-white/10 rounded-2xl shadow-2xl z-[100] max-h-60 overflow-y-auto hidden backdrop-blur-xl" />
                   </div>
-                  <div className="bg-white/5 rounded-2xl p-4 flex flex-col items-start border border-white/5 hover:border-terracotta/20 transition-all">
-                    <span className="text-[9px] font-bold text-terracotta uppercase tracking-[0.2em] mb-1">Destination</span>
-                    <input 
-                      id="search-to-hero"
-                      type="text" 
-                      placeholder="e.g. Paris"
-                      className="bg-transparent border-none text-white text-sm focus:ring-0 p-0 w-full placeholder:text-white/20 font-medium"
-                    />
+
+                  {/* TO INPUT */}
+                  <div className="relative group">
+                    <div className="bg-white/5 rounded-2xl p-4 flex flex-col items-start border border-white/5 hover:border-terracotta/20 transition-all">
+                      <span className="text-[9px] font-bold text-terracotta uppercase tracking-[0.2em] mb-1">Destination</span>
+                      <input 
+                        id="search-to-v2"
+                        autoComplete="off"
+                        type="text" 
+                        placeholder="e.g. London (LHR)"
+                        className="bg-transparent border-none text-white text-sm focus:ring-0 p-0 w-full placeholder:text-white/20 font-medium"
+                        onChange={async (e) => {
+                          const val = e.target.value;
+                          const container = document.getElementById('to-suggestions');
+                          if (val.length < 2) { if (container) container.classList.add('hidden'); return; }
+                          const res = await fetch(`https://autocomplete.travelpayouts.com/places2?term=${val}&locale=en&types[]=city&types[]=airport`);
+                          const data = await res.json();
+                          if (container) {
+                            container.innerHTML = data.map((item: any) => `
+                              <div class="suggestion-item p-3 hover:bg-terracotta/20 cursor-pointer flex justify-between items-center border-b border-white/5 last:border-0" data-code="${item.code}" data-name="${item.name}">
+                                <span class="text-white text-xs font-medium">${item.name} <span class="text-white/40 italic">(${item.main_airport_name || item.name})</span></span>
+                                <span class="text-terracotta font-bold text-[10px] uppercase">${item.code}</span>
+                              </div>
+                            `).join('');
+                            container.classList.remove('hidden');
+                            container.querySelectorAll('.suggestion-item').forEach(el => {
+                                el.addEventListener('click', () => {
+                                    (document.getElementById('search-to-v2') as HTMLInputElement).value = (el as HTMLElement).dataset.name + ' (' + (el as HTMLElement).dataset.code + ')';
+                                    (document.getElementById('search-to-v2') as HTMLInputElement).dataset.code = (el as HTMLElement).dataset.code;
+                                    container.classList.add('hidden');
+                                });
+                            });
+                          }
+                        }}
+                      />
+                    </div>
+                    <div id="to-suggestions" className="absolute top-full left-0 right-0 mt-2 bg-[#1a1a1a] border border-white/10 rounded-2xl shadow-2xl z-[100] max-h-60 overflow-y-auto hidden backdrop-blur-xl" />
                   </div>
                 </div>
                 
                 <button 
                   onClick={() => {
-                    const from = (document.getElementById('search-from-hero') as HTMLInputElement)?.value || 'IST';
-                    const to = (document.getElementById('search-to-hero') as HTMLInputElement)?.value || 'PAR';
-                    const url = `https://tp.media/r?marker=715711&trs=257697&u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%3Forigin%3D${encodeURIComponent(from)}%26destination%3D${encodeURIComponent(to)}`;
+                    const fromCode = (document.getElementById('search-from-v2') as HTMLInputElement)?.dataset.code || (document.getElementById('search-from-v2') as HTMLInputElement)?.value || 'IST';
+                    const toCode = (document.getElementById('search-to-v2') as HTMLInputElement)?.dataset.code || (document.getElementById('search-to-v2') as HTMLInputElement)?.value || 'PAR';
+                    const url = `https://tp.media/r?marker=715711&trs=257697&u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%3Forigin%3D${fromCode}%26destination%3D${toCode}`;
                     window.open(url, '_blank');
                   }}
                   className="h-16 px-12 bg-terracotta text-white rounded-2xl text-[11px] font-bold hover:bg-terracotta/90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group shadow-2xl shadow-terracotta/20 uppercase tracking-widest"
