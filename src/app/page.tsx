@@ -81,31 +81,59 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      {/* ═══════════════ SEARCH & SAVE WIDGET ═══════════════ */}
-      <section className="py-20 px-6 relative">
-        <div className="max-w-6xl mx-auto">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} className="glass-card p-1 items-center justify-center rounded-[40px] border border-glass-border overflow-hidden relative shadow-2xl">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-terracotta/20 via-terracotta to-terracotta/20 animate-pulse" />
+      {/* ═══════════════ SEARCH & SAVE (CUSTOM SEARCH) ═══════════════ */}
+      <section className="py-24 px-6 relative">
+        <div className="max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="glass-card p-8 md:p-12 rounded-[48px] border border-glass-border/40 text-center relative overflow-hidden">
+            {/* Background elements */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-terracotta/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
             
-            <div className="p-8 md:p-12 text-center">
-              <span className="text-xs font-bold text-terracotta uppercase tracking-[0.3em] mb-4 block">Search & Save</span>
-              <h2 className="text-3xl md:text-5xl font-serif mb-4">Find the Best Deals</h2>
-              <p className="text-foreground/50 max-w-xl mx-auto mb-10">Search across hundreds of airlines and hotels to find the perfect stay at the best price.</p>
-              
-              {/* Travelpayouts Search Form Widget */}
-              <div className="w-full min-h-[150px] relative rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm p-2 md:p-4 border border-white/10">
-                <iframe 
-                  src={`https://tp.media/content?currency=usd&promo_id=2088&shmarker=715711&campaign_id=100&trs=257697&target_host=search.aviasales.com&locale=en&type=compact&powered_by=true`}
-                  width="100%" 
-                  height="120" 
-                  frameBorder="0" 
-                  scrolling="no"
-                  className="rounded-xl"
-                />
+            <div className="relative z-10">
+              <span className="text-[10px] font-bold text-terracotta uppercase tracking-[0.4em] mb-4 block underline-offset-4 decoration-terracotta/30 italic">Direct Booking Integration</span>
+              <h2 className="text-3xl md:text-5xl font-serif text-white mb-4">Find the Best Deals</h2>
+              <p className="text-foreground/50 max-w-xl mx-auto mb-10 text-sm leading-relaxed italic">
+                Rovago directly connects with global airline networks to find the best rates for your journey.
+              </p>
+
+              {/* CUSTOM SEARCH FORM */}
+              <div className="bg-white/5 backdrop-blur-xl p-3 rounded-[32px] border border-white/10 flex flex-col lg:flex-row gap-2 shadow-2xl">
+                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2">
+                  <div className="bg-white/5 rounded-2xl p-4 flex flex-col items-start border border-white/5 hover:border-terracotta/20 transition-all group">
+                    <span className="text-[9px] font-bold text-terracotta uppercase tracking-[0.2em] mb-1">Departure</span>
+                    <input 
+                      id="search-from-hero"
+                      type="text" 
+                      placeholder="e.g. Istanbul"
+                      className="bg-transparent border-none text-white text-sm focus:ring-0 p-0 w-full placeholder:text-white/20 font-medium"
+                    />
+                  </div>
+                  <div className="bg-white/5 rounded-2xl p-4 flex flex-col items-start border border-white/5 hover:border-terracotta/20 transition-all">
+                    <span className="text-[9px] font-bold text-terracotta uppercase tracking-[0.2em] mb-1">Destination</span>
+                    <input 
+                      id="search-to-hero"
+                      type="text" 
+                      placeholder="e.g. Paris"
+                      className="bg-transparent border-none text-white text-sm focus:ring-0 p-0 w-full placeholder:text-white/20 font-medium"
+                    />
+                  </div>
+                </div>
+                
+                <button 
+                  onClick={() => {
+                    const from = (document.getElementById('search-from-hero') as HTMLInputElement)?.value || 'IST';
+                    const to = (document.getElementById('search-to-hero') as HTMLInputElement)?.value || 'PAR';
+                    const url = `https://tp.media/r?marker=715711&trs=257697&u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%3Forigin%3D${encodeURIComponent(from)}%26destination%3D${encodeURIComponent(to)}`;
+                    window.open(url, '_blank');
+                  }}
+                  className="h-16 px-12 bg-terracotta text-white rounded-2xl text-[11px] font-bold hover:bg-terracotta/90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group shadow-2xl shadow-terracotta/20 uppercase tracking-widest"
+                >
+                  Search Deals <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                </button>
               </div>
-              
+
               <div className="mt-8 flex justify-center items-center gap-8 text-[10px] uppercase tracking-widest font-bold text-foreground/30">
-                <span className="flex items-center gap-2 italic"><Sparkles size={12} className="text-terracotta"/> Best Price Guarantee</span>
+                <span className="flex items-center gap-2 italic"><Zap size={12} className="text-terracotta"/> 24/7 Live Rates</span>
                 <span className="flex items-center gap-2 italic"><Star size={12} className="text-yellow-500"/> Verified Partners</span>
               </div>
             </div>
@@ -217,51 +245,58 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ═══════════════ CURATED EXPERIENCES (KLOOK) ═══════════════ */}
-      <section className="py-24 px-6 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-terracotta/20 to-transparent" />
-        <div className="max-w-6xl mx-auto relative z-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="text-center mb-16">
-            <motion.span custom={0} variants={fadeUp} className="text-sm font-medium text-terracotta uppercase tracking-[0.3em]">World Class Adventures</motion.span>
-            <motion.h2 custom={1} variants={fadeUp} className="text-3xl md:text-5xl font-serif mt-3 text-white">Curated Experiences</motion.h2>
-            <motion.p custom={2} variants={fadeUp} className="text-foreground/50 max-w-xl mx-auto mt-4 text-sm tracking-tight italic">
-              From historic landmarks to hidden local spots. Discover things to do worldwide, powered by Klook.
-            </motion.p>
-          </motion.div>
+      {/* ═══════════════ CURATED EXPERIENCES (EDITORIAL STYLE) ═══════════════ */}
+      <section className="py-32 px-6 relative bg-linear-to-b from-background to-[#0a0a0a]">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+            <div className="max-w-2xl">
+              <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-xs font-bold text-terracotta uppercase tracking-[0.5em] mb-4 block">Handpicked for you</motion.span>
+              <h2 className="text-4xl md:text-6xl font-serif text-white leading-[1.1]">Signature <span className="italic text-foreground/40">Experiences</span></h2>
+            </div>
+            <p className="text-foreground/40 max-w-xs text-sm leading-relaxed font-medium border-l border-terracotta/30 pl-6 hidden md:block">
+              Exclusive Access. Unforgettable Memories. Powered by global leader Klook.
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
             {[
-              { id: 1, title: "Skip-the-Line: Eiffel Tower", location: "Paris, France", image: "https://images.unsplash.com/photo-1543349689-9a4d426bee8e?q=80&w=600&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/3308-eiffel-tower-paris/" },
-              { id: 2, title: "Umeda Sky Building Observatory", location: "Osaka, Japan", image: "https://images.unsplash.com/photo-1512441932396-121034d0a5c0?q=80&w=600&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/2424-umeda-sky-building-floating-garden-observatory-osaka/" },
-              { id: 3, title: "Warner Bros. Studio Tour London", location: "London, UK", image: "https://images.unsplash.com/photo-1551818255-e6e10975bc17?q=80&w=600&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/3307-warner-bros-studio-tour-london-the-making-of-harry-potter/" },
-              { id: 4, title: "Desert Safari: Camel Ridings", location: "Dubai, UAE", image: "https://images.unsplash.com/photo-1454431939696-243f1c1eeedc?q=80&w=600&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/218-desert-safari-dubai/" },
-              { id: 5, title: "Santorini Sunset Sailing Cruise", location: "Greece", image: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?q=80&w=600&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/5520-santorini-sunset-catamaran-cruise/" },
-              { id: 6, title: "Tokyo City Highlights Tour", location: "Tokyo, Japan", image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=600&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/13271-tokyo-day-tour-bus/" },
+              { id: 1, title: "Private Seine Cruise", loc: "Paris", tag: "Most Booked", img: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/3308-eiffel-tower-paris/" },
+              { id: 2, title: "Shibuya Sky Views", loc: "Tokyo", tag: "Trending", img: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/13271-tokyo-day-tour-bus/" },
+              { id: 3, title: "Warner Bros. Studios", loc: "London", tag: "Family Favorite", img: "https://images.unsplash.com/photo-1486299267070-83823f5448dd?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/3307-warner-bros-studio-tour-london-the-making-of-harry-potter/" },
+              { id: 4, title: "Desert Safari Dunes", loc: "Dubai", tag: "Adventure", img: "https://images.unsplash.com/photo-1454431939696-243f1c1eeedc?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/218-desert-safari-dubai/" },
+              { id: 5, title: "Amalfi Coast Sailing", loc: "Italy", tag: "Romantic", img: "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/5520-santorini-sunset-catamaran-cruise/" },
+              { id: 6, title: "Osaka Tower Dinner", loc: "Japan", tag: "Foodie Choice", img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/2424-umeda-sky-building-floating-garden-observatory-osaka/" },
             ].map((tour, i) => (
-              <motion.div key={tour.id} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}
-                className="glass-card group rounded-[32px] border border-glass-border overflow-hidden relative h-[420px] flex flex-col hover:border-terracotta/30 transition-all shadow-xl">
-                <div className="absolute inset-0 z-0">
-                  <Image src={tour.image} alt={tour.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-60" />
-                  <div className="absolute inset-0 bg-linear-to-b from-transparent via-black/20 to-black/90" />
-                </div>
+              <motion.div key={tour.id} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} viewport={{ once: true }}
+                className="group relative h-[500px] rounded-[40px] overflow-hidden flex flex-col justify-end p-8 md:p-10 hover:shadow-2xl hover:shadow-terracotta/10 transition-all duration-700">
                 
-                <div className="relative z-10 p-8 flex flex-col justify-end h-full">
-                  <div className="inline-flex items-center gap-1.5 text-[10px] uppercase font-bold text-terracotta mb-2 bg-white/5 px-2 py-1 rounded w-fit backdrop-blur-md border border-white/5 tracking-widest">
-                    <MapPin size={10} /> {tour.location}
+                {/* Image & Overlay */}
+                <Image src={tour.img} alt={tour.title} fill className="object-cover group-hover:scale-105 transition-transform duration-1000 saturate-[0.8] group-hover:saturate-100" />
+                <div className="absolute inset-0 bg-linear-to-b from-transparent via-black/20 to-black/90 group-hover:via-black/40 transition-all" />
+                
+                <div className="relative z-10 space-y-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="text-[9px] font-bold text-white bg-terracotta px-3 py-1 rounded-full uppercase tracking-widest">{tour.tag}</span>
+                    <div className="h-[1px] flex-1 bg-white/20" />
                   </div>
-                  <h3 className="text-2xl font-serif text-white mb-2 leading-tight group-hover:text-terracotta transition-colors">{tour.title}</h3>
-                  <p className="text-xs text-white/50 mb-6 italic font-medium leading-relaxed uppercase tracking-wider">Top Experience Found by AI Explorer</p>
                   
-                  <div className="flex items-center justify-between pt-4 border-t border-white/10 gap-4">
-                    <span className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em]">Verified Partner</span>
-                    <a 
-                      href={`https://tp.media/r?marker=715711&trs=257697&u=${encodeURIComponent(tour.link)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="h-10 px-5 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full text-xs font-bold hover:bg-terracotta hover:border-terracotta transition-all flex items-center justify-center gap-2 group/btn"
-                    >
-                      View on Klook <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
-                    </a>
+                  <div>
+                    <span className="text-[10px] font-bold text-white/50 uppercase tracking-widest block mb-1">{tour.loc}</span>
+                    <h3 className="text-2xl md:text-3xl font-serif text-white tracking-tight">{tour.title}</h3>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4 gap-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                     <div className="flex items-center gap-1.5 grayscale opacity-50 underline decoration-white/20 underline-offset-4 text-[10px] font-bold text-white uppercase tracking-widest">
+                       Official Agency
+                     </div>
+                     <a 
+                       href={`https://tp.media/r?marker=715711&trs=257697&u=${encodeURIComponent(tour.link)}`}
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       className="h-12 w-12 bg-white text-black rounded-full flex items-center justify-center hover:bg-terracotta hover:text-white transition-all shadow-xl"
+                     >
+                       <ArrowRight size={20} />
+                     </a>
                   </div>
                 </div>
               </motion.div>
