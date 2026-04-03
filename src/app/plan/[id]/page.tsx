@@ -267,7 +267,7 @@ export default function PlanHistoryViewer() {
                                 
                                 {act.type !== 'food' && (
                                     <a 
-                                        href={`https://tp.media/r?marker=715711&u=https%3A%2F%2Fwww.klook.com%2Fen-US%2Fsearch%2Fresult%2F%3Fquery%3D${encodeURIComponent(act.title + ' ' + act.location)}`}
+                                        href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(act.title + ' ' + act.location)}&marker=715711`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="text-[11px] font-bold text-terracotta hover:text-terracotta/80 flex items-center gap-1 transition-all"
@@ -308,7 +308,7 @@ export default function PlanHistoryViewer() {
                           <span className="text-terracotta">${hotel.pricePerNight} / night</span>
                       </div>
                       <a 
-                        href={`https://tp.media/r?marker=715711&u=https%3A%2F%2Fwww.klook.com%2Fen-US%2Fhotels%2Fsearch%2Fresult%2F%3Fsearch_text%3D${encodeURIComponent(hotel.name + ' ' + hotel.location)}`}
+                        href={`https://www.klook.com/en-US/hotels/search/result/?search_text=${encodeURIComponent(hotel.name + ' ' + hotel.location)}&marker=715711`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center justify-center gap-2 w-full py-2 bg-terracotta text-white rounded-xl text-xs font-bold hover:bg-terracotta/90 transition-all shadow-lg shadow-terracotta/20"
@@ -426,7 +426,7 @@ export default function PlanHistoryViewer() {
                                     <span className="text-[11px] font-bold text-foreground">Airalo</span>
                                 </div>
                                 <a 
-                                    href={`https://tp.media/r?marker=715711&u=https%3A%2F%2Fwww.airalo.com%2F`}
+                                    href={`https://www.airalo.com/?marker=715711`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="w-full sm:w-auto h-11 px-6 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold hover:bg-terracotta hover:text-white transition-all flex items-center justify-center uppercase tracking-widest"
@@ -456,7 +456,7 @@ export default function PlanHistoryViewer() {
                                     <span className="text-[11px] font-bold text-foreground">Klook Transfer</span>
                                 </div>
                                 <a 
-                                    href={`https://tp.media/r?marker=715711&u=https%3A%2F%2Fwww.klook.com%2Fen-US%2Ftransport%2Fairport-transfers%2F`}
+                                    href={`https://www.klook.com/en-US/transport/airport-transfers/?marker=715711`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="w-full sm:w-auto h-11 px-6 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold hover:bg-yellow-600 hover:text-white transition-all flex items-center justify-center uppercase tracking-widest"
@@ -486,7 +486,7 @@ export default function PlanHistoryViewer() {
                                     <span className="text-[11px] font-bold text-foreground">Verification Support</span>
                                 </div>
                                 <a 
-                                    href={`https://tp.media/r?marker=715711&u=https%3A%2F%2Fwww.visitorscoverage.com%2F`}
+                                    href={`https://www.visitorscoverage.com/?marker=715711`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="w-full sm:w-auto h-11 px-6 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold hover:bg-blue-500 hover:text-white transition-all flex items-center justify-center uppercase tracking-widest"
