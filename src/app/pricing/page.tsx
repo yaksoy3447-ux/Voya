@@ -62,7 +62,7 @@ export default function PricingPage() {
       name: 'Explorer',
       icon: <Star size={24} />,
       monthlyPrice: 12,
-      yearlyPrice: 79,
+      yearlyPrice: 108,
       desc: 'Full access for regular travelers',
       cta: 'Choose Explorer',
       ctaStyle: 'border border-glass-border bg-white/5 hover:bg-white/10 text-foreground',
@@ -84,7 +84,7 @@ export default function PricingPage() {
       name: 'Nomad',
       icon: <Crown size={24} className="fill-terracotta" />,
       monthlyPrice: 18,
-      yearlyPrice: 119,
+      yearlyPrice: 162,
       desc: 'Everything, unlimited, forever',
       cta: 'Choose Nomad',
       ctaStyle: 'bg-terracotta text-white hover:bg-terracotta/90 shadow-xl shadow-terracotta/20',
@@ -120,7 +120,7 @@ export default function PricingPage() {
           <motion.div custom={3} variants={fadeUp} className="inline-flex items-center gap-1 mt-8 p-1 rounded-full border border-glass-border bg-white/5 backdrop-blur-md">
             <button onClick={() => setBilling('monthly')} className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${billing === 'monthly' ? 'bg-terracotta text-white' : 'text-foreground/60 hover:text-foreground'}`}>Monthly</button>
             <button onClick={() => setBilling('yearly')} className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${billing === 'yearly' ? 'bg-terracotta text-white' : 'text-foreground/60 hover:text-foreground'}`}>
-              Yearly <span className="text-xs opacity-70">Save 40%</span>
+              Yearly <span className="text-xs opacity-70">3 Months Gift</span>
             </button>
           </motion.div>
         </motion.div>
