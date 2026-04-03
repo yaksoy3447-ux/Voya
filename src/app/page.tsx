@@ -324,16 +324,17 @@ export default function LandingPage() {
               { id: 5, title: "Amalfi Coast Sailing", loc: "Italy", tag: "Romantic", img: "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/5520-santorini-sunset-catamaran-cruise/" },
               { id: 6, title: "Osaka Tower Dinner", loc: "Japan", tag: "Foodie Choice", img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/2424-umeda-sky-building-floating-garden-observatory-osaka/" },
             ].map((tour, i) => (
-              <motion.a 
+              <motion.div 
                 key={tour.id} 
-                href={`https://tp.media/r?marker=715711&trs=257697&p=3447&u=${encodeURIComponent(tour.link)}`}
-                target="_blank"
-                rel="noopener noreferrer"
                 initial={{ opacity: 0, y: 40 }} 
                 whileInView={{ opacity: 1, y: 0 }} 
                 transition={{ delay: i * 0.1 }} 
                 viewport={{ once: true }}
-                className="group relative h-[500px] rounded-[40px] overflow-hidden flex flex-col justify-end p-8 md:p-10 hover:shadow-2xl hover:shadow-terracotta/20 transition-all duration-700 cursor-pointer block"
+                onClick={() => {
+                   const affUrl = `https://tp.media/r?marker=715711&trs=257697&p=3447&u=${encodeURIComponent(tour.link)}`;
+                   window.open(affUrl, '_blank');
+                }}
+                className="group relative h-[500px] rounded-[40px] overflow-hidden flex flex-col justify-end p-8 md:p-10 hover:shadow-2xl hover:shadow-terracotta/20 transition-all duration-700 cursor-pointer"
               >
                 
                 {/* Image & Overlay */}
@@ -360,7 +361,7 @@ export default function LandingPage() {
                      </div>
                   </div>
                 </div>
-              </motion.a>
+              </motion.div>
             ))}
           </div>
         </div>
