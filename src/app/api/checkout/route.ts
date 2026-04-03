@@ -14,18 +14,20 @@ export async function POST(req: Request) {
     const { planId, billing } = await req.json();
     const isYearly = billing === 'yearly';
 
-    let priceId = "";
+    let monthlyAmount = 0;
+    let name = "";
     
     if (planId === 'explorer') {
-      priceId = isYearly ? process.env.STRIPE_EXPLORER_YEARLY_PRICE_ID as string : process.env.STRIPE_EXPLORER_MONTHLY_PRICE_ID as string;
+      monthlyAmount = 12;
+      name = "Explorer Plan";
     } else if (planId === 'nomad') {
-      priceId = isYearly ? process.env.STRIPE_NOMAD_YEARLY_PRICE_ID as string : process.env.STRIPE_NOMAD_MONTHLY_PRICE_ID as string;
+      monthlyAmount = 18;
+      name = "Nomad Plan";
     }
 
-    if (!priceId) {
-       console.error("Missing Price ID for plan:", planId, billing);
-       return NextResponse.json({ error: `Price configuration for ${planId} plan is missing.` }, { status: 400 });
-    }
+    // Yıllık fiyat = Aylık fiyat * 9
+    const unitAmount = isYearly ? (monthlyAmount * 9 * 100) : (monthlyAmount * 100);
+    const displayName = `${name} (${isYearly ? 'Yearly' : 'Monthly'})`;
 
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -39,7 +41,15 @@ export async function POST(req: Request) {
       customer_email: user.email,
       line_items: [
         {
-          price: priceId,
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: displayName,
+              description: `Rovago AI ${displayName} Subscription`,
+            },
+            unit_amount: unitAmount,
+            recurring: { interval: isYearly ? 'year' : 'month' },
+          },
           quantity: 1,
         },
       ],
