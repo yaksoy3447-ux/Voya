@@ -35,6 +35,7 @@ export default function LandingPage() {
   const [showPassengers, setShowPassengers] = useState(false)
   const [fromIdx, setFromIdx] = useState(0)
   const [toIdx, setToIdx] = useState(3)
+  const [searchError, setSearchError] = useState('')
   const passengersRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -55,9 +56,20 @@ export default function LandingPage() {
     return () => document.removeEventListener('mousedown', handleClick)
   }, [])
 
+  const getCode = (id: string) => {
+    const el = document.getElementById(id) as HTMLInputElement | null
+    if (!el) return ''
+    if (el.dataset.code) return el.dataset.code
+    const match = el.value.match(/\(([A-Z]{3})\)/)
+    return match ? match[1] : ''
+  }
+
   const handleSearch = () => {
-    const fromCode = (document.getElementById('search-from-v2') as HTMLInputElement)?.dataset.code || FROM_CITIES[fromIdx].code
-    const toCode = (document.getElementById('search-to-v2') as HTMLInputElement)?.dataset.code || TO_CITIES[toIdx].code
+    const fromCode = getCode('search-from-v2')
+    const toCode = getCode('search-to-v2')
+    if (!fromCode) { setSearchError('Please select a departure city from the dropdown.'); return }
+    if (!toCode) { setSearchError('Please select a destination city from the dropdown.'); return }
+    setSearchError('')
     const depVal = (document.getElementById('search-dep-date') as HTMLInputElement)?.value
     const retVal = (document.getElementById('search-ret-date') as HTMLInputElement)?.value
     const dep = depVal ? new Date(depVal) : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
@@ -324,6 +336,9 @@ export default function LandingPage() {
                   Search Deals <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
+              {searchError && (
+                <p className="mt-3 text-xs text-terracotta font-medium text-center">{searchError}</p>
+              )}
 
               <div className="mt-8 flex justify-center items-center gap-8 text-[10px] uppercase tracking-widest font-bold text-foreground/30">
                 <span className="flex items-center gap-2 italic"><Zap size={12} className="text-terracotta"/> 24/7 Live Rates</span>
@@ -456,7 +471,7 @@ export default function LandingPage() {
               { id: 1, title: "Private Seine Cruise", loc: "Paris", tag: "Most Booked", img: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/1736-seine-river-cruise-paris/?marker=715711" },
               { id: 2, title: "Shibuya Sky Views", loc: "Tokyo", tag: "Trending", img: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/27701-shibuya-sky-observation-deck-ticket-tokyo/?marker=715711" },
               { id: 3, title: "Warner Bros. Studios", loc: "London", tag: "Family Favorite", img: "https://images.unsplash.com/photo-1486299267070-83823f5448dd?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/3307-warner-bros-studio-tour-london-the-making-of-harry-potter/?marker=715711" },
-              { id: 4, title: "Desert Safari Dunes", loc: "Dubai", tag: "Adventure", img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/218-desert-safari-dubai/?marker=715711" },
+              { id: 4, title: "Desert Safari Dunes", loc: "Dubai", tag: "Adventure", img: "https://images.unsplash.com/photo-1509023464722-18d996393565?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/218-desert-safari-dubai/?marker=715711" },
               { id: 5, title: "Amalfi Coast Sailing", loc: "Italy", tag: "Romantic", img: "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/10360-sorrento-amalfi-coast-full-day-cruise-naples/?marker=715711" },
               { id: 6, title: "Osaka Tower Dinner", loc: "Japan", tag: "Foodie Choice", img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/2424-umeda-sky-building-floating-garden-observatory-osaka/?marker=715711" },
             ].map((tour, i) => (
