@@ -11,7 +11,7 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 export async function POST(req: Request) {
   const body = await req.text();
-  const signature = (await headers()).get('stripe-signature');
+  const signature = (await (headers() as any)).get('stripe-signature');
 
   let event: Stripe.Event;
 
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
 
   // Handle the event
   if (event.type === 'checkout.session.completed') {
-    const session = event.data.object as Stripe.Checkout.Session;
+    const session = event.data.object as any;
     const { userId, planId } = session.metadata || {};
 
     if (userId && planId) {
@@ -37,14 +37,16 @@ export async function POST(req: Request) {
       if (session.subscription) {
         try {
           const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
-          subscriptionEndDate = new Date(subscription.current_period_end * 1000).toISOString();
+          subscriptionEndDate = new Date((subscription as any).current_period_end * 1000).toISOString();
         } catch (err) {
           console.error("Failed to retrieve subscription:", err);
         }
       }
 
-      const updatePayload: Record<string, string> = { tier: planId };
-      if (subscriptionEndDate) updatePayload.subscription_end_date = subscriptionEndDate;
+      const updatePayload: any = { tier: planId };
+      if (subscriptionEndDate) {
+        updatePayload.subscription_end_date = subscriptionEndDate;
+      }
 
       // Update user tier and renewal date
       const { error } = await supabase
