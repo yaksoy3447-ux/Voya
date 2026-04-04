@@ -210,12 +210,12 @@ export default function PlanHistoryViewer() {
               <MapPin className="text-terracotta"/> Your Itinerary
             </h2>
 
-            {/* Day Selector */}
-            <div className="flex overflow-x-auto gap-2 pb-2 scrollbar-none">
+            {/* Day Selector — screen only */}
+            <div className="print:hidden flex overflow-x-auto gap-2 pb-2 scrollbar-none">
               {(itinerary.days || []).map((d: Day) => {
                 const isLocked = !isPro && d.day > 1;
                 return (
-                  <button 
+                  <button
                     key={d.day}
                     onClick={() => setActiveDay(d.day)}
                     className={`shrink-0 px-6 py-3 rounded-xl text-sm font-medium transition-all ${activeDay === d.day ? 'bg-terracotta text-white shadow-xl shadow-terracotta/20' : 'glass-card border border-glass-border text-foreground/70 hover:border-foreground/20'}`}
@@ -226,78 +226,97 @@ export default function PlanHistoryViewer() {
               })}
             </div>
 
-            {/* Active Day Activities */}
-            <AnimatePresence mode="wait">
-              {(itinerary.days || []).filter((d: Day) => d.day === activeDay).map((day: Day) => {
-                const isDayLocked = !isPro && day.day > 1;
-                return (
-                <motion.div key={day.day} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4 relative">
-                   
-                   {/* Paywall Overlay for Day 2+ */}
-                   {isDayLocked && (
-                     <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-background/40 backdrop-blur-md rounded-3xl border border-glass-border p-6 text-center">
-                       <Lock className="w-12 h-12 text-terracotta mb-4" />
-                       <h3 className="text-2xl font-serif mb-2">Unlock Day {day.day}</h3>
-                       <p className="text-sm text-foreground/60 mb-6 max-w-xs">Upgrade to Explorer or Nomad to unlock full day-by-day itineraries and hidden travel gems.</p>
-                       <button onClick={() => router.push('/pricing')} className="h-10 px-6 bg-terracotta text-white font-medium rounded-full shadow-lg hover:bg-terracotta/90 transition-all">Upgrade Now</button>
+            {/* Active Day — screen only */}
+            <div className="print:hidden">
+              <AnimatePresence mode="wait">
+                {(itinerary.days || []).filter((d: Day) => d.day === activeDay).map((day: Day) => {
+                  const isDayLocked = !isPro && day.day > 1;
+                  return (
+                  <motion.div key={day.day} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4 relative">
+                     {isDayLocked && (
+                       <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-background/40 backdrop-blur-md rounded-3xl border border-glass-border p-6 text-center">
+                         <Lock className="w-12 h-12 text-terracotta mb-4" />
+                         <h3 className="text-2xl font-serif mb-2">Unlock Day {day.day}</h3>
+                         <p className="text-sm text-foreground/60 mb-6 max-w-xs">Upgrade to Explorer or Nomad to unlock full day-by-day itineraries and hidden travel gems.</p>
+                         <button onClick={() => router.push('/pricing')} className="h-10 px-6 bg-terracotta text-white font-medium rounded-full shadow-lg hover:bg-terracotta/90 transition-all">Upgrade Now</button>
+                       </div>
+                     )}
+                     <div className={`px-2 py-4 border-b border-glass-border/40 flex justify-between items-end mb-4 ${isDayLocked ? 'opacity-30 blur-sm pointer-events-none' : ''}`}>
+                       <div>
+                         <span className="text-xs font-medium text-terracotta uppercase tracking-wider">{day.date}</span>
+                         <h3 className="text-xl font-medium text-foreground">{day.title}</h3>
+                       </div>
                      </div>
-                   )}
-
-                   <div className={`px-2 py-4 border-b border-glass-border/40 flex justify-between items-end mb-4 ${isDayLocked ? 'opacity-30 blur-sm pointer-events-none' : ''}`}>
-                     <div>
-                       <span className="text-xs font-medium text-terracotta uppercase tracking-wider">{day.date}</span>
-                       <h3 className="text-xl font-medium text-foreground">{day.title}</h3>
-                     </div>
-                   </div>
-
-                   <div className={`relative pl-6 space-y-8 before:absolute before:inset-0 before:ml-[11px] before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-linear-to-b before:from-transparent before:via-glass-border before:to-transparent ${isDayLocked ? 'opacity-30 blur-sm pointer-events-none' : ''}`}>
-                      {(day.activities || []).map((act: Activity, index: number) => {
-                        const isFoodLocked = !isPro && act.type === "food" && !isDayLocked;
-                        return (
-                        <div key={index} className="relative flex items-start gap-6 group">
-                          <div className="absolute -left-6 w-3 h-3 bg-terracotta rounded-full border-4 border-background shadow-[0_0_0_4px_rgba(215,92,61,0.1)] group-hover:scale-125 transition-transform" />
-                          <div className={`glass-card flex-1 p-5 rounded-2xl border border-glass-border transition-colors relative overflow-hidden ${isFoodLocked ? 'opacity-80' : 'hover:border-terracotta/30'}`}>
-                            
-                            {isFoodLocked && (
-                               <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-background/40 backdrop-blur-md">
-                                 <Lock className="w-6 h-6 text-terracotta mb-2" />
-                                 <span className="text-xs font-semibold uppercase tracking-wider mb-2">Dining Secret Locked</span>
-                                 <button onClick={() => router.push('/pricing')} className="text-[10px] px-3 py-1 bg-terracotta text-white rounded-full">Unlock</button>
-                               </div>
-                            )}
-
-                            <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3 ${isFoodLocked ? 'blur-sm' : ''}`}>
-                              <h4 className="font-medium text-foreground">{act.title}</h4>
-                              <div className="flex gap-3 text-xs font-medium text-foreground/60">
-                                <span className="flex items-center gap-1"><ClockIcon size={14}/> {act.time}</span>
-                                {act.estimatedCost > 0 && <span className="flex items-center gap-1 text-green-400/80 text-[11px]">~${act.estimatedCost}</span>}
+                     <div className={`relative pl-6 space-y-8 before:absolute before:inset-0 before:ml-[11px] before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-linear-to-b before:from-transparent before:via-glass-border before:to-transparent ${isDayLocked ? 'opacity-30 blur-sm pointer-events-none' : ''}`}>
+                        {(day.activities || []).map((act: Activity, index: number) => {
+                          const isFoodLocked = !isPro && act.type === "food" && !isDayLocked;
+                          return (
+                          <div key={index} className="relative flex items-start gap-6 group">
+                            <div className="absolute -left-6 w-3 h-3 bg-terracotta rounded-full border-4 border-background shadow-[0_0_0_4px_rgba(215,92,61,0.1)] group-hover:scale-125 transition-transform" />
+                            <div className={`glass-card flex-1 p-5 rounded-2xl border border-glass-border transition-colors relative overflow-hidden ${isFoodLocked ? 'opacity-80' : 'hover:border-terracotta/30'}`}>
+                              {isFoodLocked && (
+                                 <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-background/40 backdrop-blur-md">
+                                   <Lock className="w-6 h-6 text-terracotta mb-2" />
+                                   <span className="text-xs font-semibold uppercase tracking-wider mb-2">Dining Secret Locked</span>
+                                   <button onClick={() => router.push('/pricing')} className="text-[10px] px-3 py-1 bg-terracotta text-white rounded-full">Unlock</button>
+                                 </div>
+                              )}
+                              <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3 ${isFoodLocked ? 'blur-sm' : ''}`}>
+                                <h4 className="font-medium text-foreground">{act.title}</h4>
+                                <div className="flex gap-3 text-xs font-medium text-foreground/60">
+                                  <span className="flex items-center gap-1"><ClockIcon size={14}/> {act.time}</span>
+                                  {act.estimatedCost > 0 && <span className="flex items-center gap-1 text-green-400/80 text-[11px]">~${act.estimatedCost}</span>}
+                                </div>
                               </div>
-                            </div>
-                            <p className={`text-sm text-foreground/70 mb-4 ${isFoodLocked ? 'blur-sm' : ''}`}>{act.description}</p>
-                            
-                            <div className={`flex flex-wrap items-center justify-between gap-3 ${isFoodLocked ? 'blur-sm' : ''}`}>
+                              <p className={`text-sm text-foreground/70 mb-4 ${isFoodLocked ? 'blur-sm' : ''}`}>{act.description}</p>
+                              <div className={`flex flex-wrap items-center justify-between gap-3 ${isFoodLocked ? 'blur-sm' : ''}`}>
                                 <span className="inline-flex items-center gap-1 text-xs text-foreground/50 border border-glass-border/40 rounded-full px-2 py-1 bg-white/5">
-                                    <MapPin size={12}/> {act.location}
+                                  <MapPin size={12}/> {act.location}
                                 </span>
                                 {act.type !== 'food' && (
-                                  <a
-                                    href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(act.title + ' ' + act.location)}&marker=715711`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-terracotta text-white px-3 py-1.5 rounded-full hover:bg-terracotta/90 transition-all"
-                                  >
+                                  <a href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(act.title + ' ' + act.location)}&marker=715711`} target="_blank" rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-terracotta text-white px-3 py-1.5 rounded-full hover:bg-terracotta/90 transition-all">
                                     <Compass size={11} /> Book on Klook
                                   </a>
                                 )}
+                              </div>
                             </div>
                           </div>
+                          )
+                        })}
+                     </div>
+                  </motion.div>
+                )})}
+              </AnimatePresence>
+            </div>
+
+            {/* All Days — print only */}
+            <div className="hidden print:block space-y-10">
+              {(itinerary.days || []).map((day: Day) => {
+                const isDayLocked = !isPro && day.day > 1;
+                if (isDayLocked) return null;
+                return (
+                  <div key={day.day} className="space-y-4">
+                    <div className="px-2 py-3 border-b border-gray-300 mb-4">
+                      <span className="text-xs font-bold text-terracotta uppercase tracking-wider">{day.date}</span>
+                      <h3 className="text-lg font-bold text-black">Day {day.day}: {day.title}</h3>
+                    </div>
+                    <div className="space-y-4">
+                      {(day.activities || []).map((act: Activity, index: number) => (
+                        <div key={index} className="pl-4 border-l-2 border-terracotta/40 space-y-1">
+                          <div className="flex justify-between items-start">
+                            <h4 className="font-semibold text-black text-sm">{act.title}</h4>
+                            <span className="text-xs text-gray-500 shrink-0 ml-4">{act.time}{act.estimatedCost > 0 ? ` · $${act.estimatedCost}` : ''}</span>
+                          </div>
+                          <p className="text-xs text-gray-700 leading-relaxed">{act.description}</p>
+                          <span className="text-[10px] text-gray-400">{act.location}</span>
                         </div>
-                        )
-                      })}
-                   </div>
-                </motion.div>
-              )})}
-            </AnimatePresence>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           {/* Sidebar */}
