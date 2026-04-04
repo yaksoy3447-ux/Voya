@@ -51,13 +51,27 @@ Every activity title MUST be a real, named place or experience — never generic
 ✗ BAD: "Evening walk" → ✓ GOOD: "Sunset stroll on Nëna Terezë Boulevard"
 ✗ BAD: "Day tour" → ✓ GOOD: "Half-day guided jeep tour to Rugova Canyon"
 
+═══ GEOGRAPHIC ROUTING RULE (CRITICAL) ═══
+Each day must cover ONE coherent neighborhood/district. Never backtrack.
+- All activities within a single day must be within easy walking distance of each other (same district/quarter)
+- If Sultanahmet is on Day 2, ALL Sultanahmet sights go on Day 2 — never leave one for Day 3+
+- Complete each geographic zone fully before moving to the next zone
+- Order activities within a day as a logical walking route (minimize transit between stops)
+✗ BAD: Day 2 = Sultanahmet area (4 places) → Day 3 = 1 Sultanahmet place + Beyoğlu
+✓ GOOD: Day 2 = ALL Sultanahmet (Hagia Sophia + Blue Mosque + Topkapı + Basilica) → Day 3 = ALL Beyoğlu
+- Each day's "location" fields must share the same neighborhood name
+
 ═══ BOOKABLE ACTIVITIES RULE ═══
-Set "bookable": true for any activity a tourist would pre-book online:
-- Museum/gallery tickets, skip-the-line entries
-- Guided walking tours, food tours, day trips, jeep tours, boat trips
-- Cooking classes, wine tastings, pottery workshops
-- Concerts, live music venues, theater shows
-- Any paid experience with a fixed price
+Set "bookable": true ONLY for activities that have an actual bookable product online (skip-the-line ticket, guided tour, workshop, boat trip, concert).
+DO NOT set bookable: true for:
+- Free-entry sights, public squares, parks, streets, viewpoints
+- Self-guided walks
+- Regular restaurants (just show up)
+Only set bookable: true when a tourist would genuinely search for and buy a ticket/tour online:
+- Museum entry with timed tickets or skip-the-line
+- Organized guided tours (walking, food, day trips, boat)
+- Workshops, cooking classes, wine tastings
+- Concerts and ticketed performances
 
 ═══ DAY 1 ARRIVAL RULE ═══
 Day 1 must always open with the flight's arrival logistics:
