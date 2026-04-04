@@ -24,10 +24,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Blog posts (Hardcoded since we use a static Record in blog page)
   const blogSlugs = [
-    'the-hidden-cafes-of-balat',
-    'surviving-tokyo-rush-hour',
-    'ultimate-guide-to-bali-digital-nomads',
-    'secret-beaches-of-thailand',
+    'ai-travel-planning-guide',
+    'digital-nomads-2026',
+    'istanbul-local-tips',
+    'mykonos-experience',
+    'thailand-travel-guide-2026',
+    'bali-complete-guide',
+    'morocco-7-day-itinerary',
+    'budget-travel-europe-2026',
+    'hidden-gems-japan',
+    'solo-female-travel-tips',
+    'southeast-asia-budget-guide',
+    'dubai-travel-guide',
+    'greece-island-hopping',
   ]
 
   const blogRoutes = blogSlugs.map((slug) => ({
