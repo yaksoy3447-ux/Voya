@@ -51,7 +51,14 @@ function LoginContent() {
   const handleOAuth = async (provider: 'google' | 'facebook') => {
     await supabase.auth.signInWithOAuth({
       provider,
-      options: { redirectTo: `${window.location.origin}/auth/callback?next=/create` }
+      options: { 
+        redirectTo: `${window.location.origin}/auth/callback?next=/create`,
+        queryParams: provider === 'facebook' ? {
+          access_type: 'offline',
+          prompt: 'consent',
+          scope: 'email,public_profile'
+        } : undefined
+      }
     })
   }
 
