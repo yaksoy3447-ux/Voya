@@ -85,18 +85,17 @@ export default function LandingPage() {
     window.open(url, '_blank')
   }
 
-  const [experienceTab, setExperienceTab] = useState<'viator' | 'klook'>('viator')
-
-  const klookTours = [
-    { id: 1, title: "Private Seine Cruise", loc: "Paris", tag: "Most Booked", img: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/search/result/?query=Seine+River+Cruise+Paris&marker=715711" },
-    { id: 2, title: "Shibuya Sky Views", loc: "Tokyo", tag: "Trending", img: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/search/result/?query=Shibuya+Sky+Observation+Deck+Tokyo&marker=715711" },
-    { id: 3, title: "Warner Bros. Studios", loc: "London", tag: "Family Favorite", img: "https://images.unsplash.com/photo-1486299267070-83823f5448dd?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/search/result/?query=Warner+Bros+Studio+Tour+London+Harry+Potter&marker=715711" },
-  ]
-
-  const viatorTours = [
-    { id: 4, title: "Grand Canyon Helicopter", loc: "Las Vegas", tag: "Bucket List", img: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?q=80&w=800&auto=format&fit=crop", link: "https://www.viator.com/tours/Las-Vegas/Grand-Canyon-4-in-1-Helicopter-Tour/d684-2530ALLIN?pid=P00121703&mcid=42383&medium=link" },
-    { id: 5, title: "Amalfi Coast Sailing", loc: "Positano", tag: "Romantic", img: "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800&auto=format&fit=crop", link: "https://www.viator.com/tours/Amalfi/Amalfi-Coast-Boat-Experience/d22384-211516P1?pid=P00121703&mcid=42383&medium=link" },
-    { id: 6, title: "Colosseum Underground", loc: "Rome", tag: "History", img: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=800&auto=format&fit=crop", link: "https://www.viator.com/tours/Rome/Colosseum-Underground-and-Ancient-Rome-Tour/d511-2635UND?pid=P00121703&mcid=42383&medium=link" },
+  const allExperiences = [
+    { id: 1, type: 'klook', title: "Private Seine Cruise", loc: "Paris", tag: "Most Booked", img: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/3120-seine-river-cruise-paris/?marker=715711" },
+    { id: 2, type: 'klook', title: "Shibuya Sky Views", loc: "Tokyo", tag: "Trending", img: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/27314-shibuya-sky-observation-deck-ticket-tokyo/?marker=715711" },
+    { id: 3, type: 'klook', title: "Warner Bros. Studios", loc: "London", tag: "Family Favorite", img: "https://images.unsplash.com/photo-1486299267070-83823f5448dd?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/34-warner-bros-studio-tour-london/?marker=715711" },
+    { id: 4, type: 'viator', title: "Grand Canyon Helicopter", loc: "Las Vegas", tag: "Bucket List", img: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?q=80&w=800&auto=format&fit=crop", link: "https://www.viator.com/tours/Las-Vegas/Grand-Canyon-4-in-1-Helicopter-Tour/d684-2530ALLIN?pid=P00121703&mcid=42383&medium=link" },
+    { id: 5, type: 'viator', title: "Amalfi Coast Sailing", loc: "Positano", tag: "Romantic", img: "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800&auto=format&fit=crop", link: "https://www.viator.com/tours/Amalfi/Amalfi-Coast-Boat-Experience/d22384-211516P1?pid=P00121703&mcid=42383&medium=link" },
+    { id: 6, type: 'viator', title: "Colosseum Underground", loc: "Rome", tag: "History", img: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=800&auto=format&fit=crop", link: "https://www.viator.com/tours/Rome/Colosseum-Underground-and-Ancient-Rome-Tour/d511-2635UND?pid=P00121703&mcid=42383&medium=link" },
+    { id: 7, type: 'klook', title: "Burj Khalifa Level 124", loc: "Dubai", tag: "Skyline", img: "https://images.unsplash.com/photo-1526495124232-a02e18494b17?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/3358-burj-khalifa-dubai/?marker=715711" },
+    { id: 8, type: 'viator', title: "Gondola Serenade", loc: "Venice", tag: "Classic", img: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?q=80&w=800&auto=format&fit=crop", link: "https://www.viator.com/tours/Venice/Venice-Gondola-Ride-and-Serenade/d522-2495GONSER?pid=P00121703&mcid=42383&medium=link" },
+    { id: 9, type: 'klook', title: "Eiffel Tower Summit", loc: "Paris", tag: "Iconic", img: "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/activity/3307-eiffel-tower-summit-access-paris/?marker=715711" },
+    { id: 10, type: 'viator', title: "Alcatraz Island Tour", loc: "San Francisco", tag: "Must See", img: "https://images.unsplash.com/photo-1544013919-450bc367469a?q=80&w=800&auto=format&fit=crop", link: "https://www.viator.com/tours/San-Francisco/Alcatraz-Island-Tour-and-San-Francisco-Grand-City-Tour/d651-2660ALCCITY?pid=P00121703&mcid=42383&medium=link" },
   ]
 
   return (
@@ -156,223 +155,82 @@ export default function LandingPage() {
             <span className="flex items-center gap-1"><Zap size={14} className="text-yellow-400" /> Plans in under 30 seconds</span>
           </motion.div>
         </motion.div>
-
-        {/* Scroll indicator */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2 }} className="absolute bottom-10 left-1/2 -translate-x-1/2">
-          <div className="w-6 h-10 rounded-full border-2 border-foreground/20 flex justify-center pt-2">
-            <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 1.5 }} className="w-1 h-2 bg-terracotta rounded-full" />
-          </div>
-        </motion.div>
       </section>
 
-      {/* ═══════════════ SEARCH & SAVE (SMART AUTOCOMPLETE) ═══════════════ */}
+      {/* ═══════════════ SEARCH & SAVE ═══════════════ */}
       <section className="py-24 px-6 relative">
-        <div className="max-w-4xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="glass-card p-8 md:p-12 rounded-[48px] border border-glass-border/40 text-center relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-terracotta/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
-            
-            <div className="relative z-10">
-              <span className="text-[10px] font-bold text-terracotta uppercase tracking-[0.4em] mb-4 block italic">Direct Booking Integration</span>
-              <h2 className="text-3xl md:text-5xl font-serif text-white mb-4">Find the Best Deals</h2>
-              <p className="text-foreground/50 max-w-xl mx-auto mb-10 text-sm leading-relaxed italic">
-                Rovago directly connects with global airline networks to find the best rates for your journey.
-              </p>
-
-              {/* TRIP TYPE + PASSENGERS ROW */}
-              <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-                <div className="flex items-center gap-1 bg-white/5 rounded-full p-1 border border-white/10">
-                  <button
-                    onClick={() => setTripType('oneway')}
-                    className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${tripType === 'oneway' ? 'bg-terracotta text-white shadow' : 'text-foreground/40 hover:text-foreground/70'}`}
-                  >One Way</button>
-                  <button
-                    onClick={() => setTripType('roundtrip')}
-                    className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${tripType === 'roundtrip' ? 'bg-terracotta text-white shadow' : 'text-foreground/40 hover:text-foreground/70'}`}
-                  >Round Trip</button>
-                </div>
-
-                {/* PASSENGERS */}
-                <div className="relative" ref={passengersRef}>
-                  <button
-                    onClick={() => setShowPassengers(v => !v)}
-                    className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-foreground/60 hover:border-terracotta/30 transition-all"
-                  >
-                    <Users size={12} className="text-terracotta" />
-                    {adults + children} Passenger{adults + children !== 1 ? 's' : ''}
-                    <ChevronDown size={12} className={`transition-transform ${showPassengers ? 'rotate-180' : ''}`} />
-                  </button>
-                  {showPassengers && (
-                    <div className="absolute right-0 top-full mt-2 bg-[#1a1a1a] border border-white/10 rounded-2xl shadow-2xl z-200 p-4 min-w-[200px]">
-                      <div className="flex items-center justify-between mb-3">
-                        <div>
-                          <p className="text-xs font-bold text-white">Adults</p>
-                          <p className="text-[10px] text-foreground/40">12+ years</p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <button onClick={() => setAdults(a => Math.max(1, a - 1))} className="w-7 h-7 rounded-full bg-white/10 hover:bg-terracotta/30 flex items-center justify-center transition-all"><Minus size={12} /></button>
-                          <span className="text-sm font-bold w-4 text-center">{adults}</span>
-                          <button onClick={() => setAdults(a => Math.min(9, a + 1))} className="w-7 h-7 rounded-full bg-white/10 hover:bg-terracotta/30 flex items-center justify-center transition-all"><Plus size={12} /></button>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-xs font-bold text-white">Children</p>
-                          <p className="text-[10px] text-foreground/40">2–11 years</p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <button onClick={() => setChildren(c => Math.max(0, c - 1))} className="w-7 h-7 rounded-full bg-white/10 hover:bg-terracotta/30 flex items-center justify-center transition-all"><Minus size={12} /></button>
-                          <span className="text-sm font-bold w-4 text-center">{children}</span>
-                          <button onClick={() => setChildren(c => Math.min(9, c + 1))} className="w-7 h-7 rounded-full bg-white/10 hover:bg-terracotta/30 flex items-center justify-center transition-all"><Plus size={12} /></button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* SMART SEARCH FORM */}
-              <div className="bg-white/5 backdrop-blur-xl p-3 rounded-[32px] border border-white/10 flex flex-col lg:flex-row gap-2 shadow-2xl">
-                <div className={`flex-1 grid grid-cols-1 gap-2 ${tripType === 'roundtrip' ? 'md:grid-cols-4' : 'md:grid-cols-3'}`}>
-
-                  {/* FROM INPUT */}
-                  <div className="relative group">
-                    <div className="bg-white/5 rounded-2xl p-4 flex flex-col items-start border border-white/5 hover:border-terracotta/20 transition-all">
-                      <span className="text-[9px] font-bold text-terracotta uppercase tracking-[0.2em] mb-1">Departure</span>
-                      <input
-                        id="search-from-v2"
-                        autoComplete="off"
-                        type="text"
-                        placeholder={`${FROM_CITIES[fromIdx].name} (${FROM_CITIES[fromIdx].code})`}
-                        className="bg-transparent border-none text-white text-sm focus:ring-0 p-0 w-full placeholder:text-white/30 font-medium"
-                        onChange={async (e) => {
-                          const val = e.target.value;
-                          const container = document.getElementById('from-suggestions');
-                          if (val.length < 2) { if (container) container.classList.add('hidden'); return; }
-                          const res = await fetch(`https://autocomplete.travelpayouts.com/places2?term=${val}&locale=en&types[]=city&types[]=airport`);
-                          const data = await res.json();
-                          if (container) {
-                            container.innerHTML = data.map((item: any) => `
-                              <div class="suggestion-item p-3 hover:bg-terracotta/20 cursor-pointer flex justify-between items-center border-b border-white/5 last:border-0" data-code="${item.code}" data-name="${item.name}">
-                                <span class="text-white text-xs font-medium">${item.name} <span class="text-white/40 italic">(${item.main_airport_name || item.name})</span></span>
-                                <span class="text-terracotta font-bold text-[10px] uppercase">${item.code}</span>
-                              </div>
-                            `).join('');
-                            container.classList.remove('hidden');
-                            container.querySelectorAll('.suggestion-item').forEach(el => {
-                              el.addEventListener('click', () => {
-                                (document.getElementById('search-from-v2') as HTMLInputElement).value = (el as HTMLElement).dataset.name + ' (' + (el as HTMLElement).dataset.code + ')';
-                                (document.getElementById('search-from-v2') as HTMLInputElement).dataset.code = (el as HTMLElement).dataset.code;
-                                container.classList.add('hidden');
-                              });
-                            });
-                          }
-                        }}
-                      />
-                    </div>
-                    <div id="from-suggestions" className="absolute top-full left-0 right-0 mt-2 bg-[#1a1a1a] border border-white/10 rounded-2xl shadow-2xl z-[100] max-h-60 overflow-y-auto hidden backdrop-blur-xl" />
-                  </div>
-
-                  {/* TO INPUT */}
-                  <div className="relative group">
-                    <div className="bg-white/5 rounded-2xl p-4 flex flex-col items-start border border-white/5 hover:border-terracotta/20 transition-all">
-                      <span className="text-[9px] font-bold text-terracotta uppercase tracking-[0.2em] mb-1">Destination</span>
-                      <input
-                        id="search-to-v2"
-                        autoComplete="off"
-                        type="text"
-                        placeholder={`${TO_CITIES[toIdx].name} (${TO_CITIES[toIdx].code})`}
-                        className="bg-transparent border-none text-white text-sm focus:ring-0 p-0 w-full placeholder:text-white/30 font-medium"
-                        onChange={async (e) => {
-                          const val = e.target.value;
-                          const container = document.getElementById('to-suggestions');
-                          if (val.length < 2) { if (container) container.classList.add('hidden'); return; }
-                          const res = await fetch(`https://autocomplete.travelpayouts.com/places2?term=${val}&locale=en&types[]=city&types[]=airport`);
-                          const data = await res.json();
-                          if (container) {
-                            container.innerHTML = data.map((item: any) => `
-                              <div class="suggestion-item p-3 hover:bg-terracotta/20 cursor-pointer flex justify-between items-center border-b border-white/5 last:border-0" data-code="${item.code}" data-name="${item.name}">
-                                <span class="text-white text-xs font-medium">${item.name} <span class="text-white/40 italic">(${item.main_airport_name || item.name})</span></span>
-                                <span class="text-terracotta font-bold text-[10px] uppercase">${item.code}</span>
-                              </div>
-                            `).join('');
-                            container.classList.remove('hidden');
-                            container.querySelectorAll('.suggestion-item').forEach(el => {
-                              el.addEventListener('click', () => {
-                                (document.getElementById('search-to-v2') as HTMLInputElement).value = (el as HTMLElement).dataset.name + ' (' + (el as HTMLElement).dataset.code + ')';
-                                (document.getElementById('search-to-v2') as HTMLInputElement).dataset.code = (el as HTMLElement).dataset.code;
-                                container.classList.add('hidden');
-                              });
-                            });
-                          }
-                        }}
-                      />
-                    </div>
-                    <div id="to-suggestions" className="absolute top-full left-0 right-0 mt-2 bg-[#1a1a1a] border border-white/10 rounded-2xl shadow-2xl z-[100] max-h-60 overflow-y-auto hidden backdrop-blur-xl" />
-                  </div>
-
-                  {/* DEPART DATE */}
-                  <div className="relative group">
-                    <div className="bg-white/5 rounded-2xl p-4 flex flex-col items-start border border-white/5 hover:border-terracotta/20 transition-all">
-                      <span className="text-[9px] font-bold text-terracotta uppercase tracking-[0.2em] mb-1">Depart</span>
-                      <input
-                        id="search-dep-date"
-                        type="date"
-                        defaultValue={new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
-                        min={new Date().toISOString().split('T')[0]}
-                        className="bg-transparent border-none text-white text-sm focus:ring-0 p-0 w-full font-medium scheme-dark cursor-pointer"
-                      />
-                    </div>
-                  </div>
-
-                  {/* RETURN DATE (round trip only) */}
-                  {tripType === 'roundtrip' && (
-                    <div className="relative group">
-                      <div className="bg-white/5 rounded-2xl p-4 flex flex-col items-start border border-white/5 hover:border-terracotta/20 transition-all">
-                        <span className="text-[9px] font-bold text-terracotta uppercase tracking-[0.2em] mb-1">Return</span>
-                        <input
-                          id="search-ret-date"
-                          type="date"
-                          defaultValue={new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
-                          min={new Date().toISOString().split('T')[0]}
-                          className="bg-transparent border-none text-white text-sm focus:ring-0 p-0 w-full font-medium scheme-dark cursor-pointer"
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <button
-                  onClick={handleSearch}
-                  className="h-16 px-12 bg-terracotta text-white rounded-2xl text-[11px] font-bold hover:bg-terracotta/90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group shadow-2xl shadow-terracotta/20 uppercase tracking-widest"
-                >
-                  Search Deals <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-              {searchError && (
-                <p className="mt-3 text-xs text-terracotta font-medium text-center">{searchError}</p>
-              )}
-
-              <div className="mt-8 flex justify-center items-center gap-8 text-[10px] uppercase tracking-widest font-bold text-foreground/30">
-                <span className="flex items-center gap-2 italic"><Zap size={12} className="text-terracotta"/> 24/7 Live Rates</span>
-                <span className="flex items-center gap-2 italic"><Star size={12} className="text-yellow-500"/> Verified Partners</span>
-              </div>
-            </div>
-          </motion.div>
+        <div className="max-w-4xl mx-auto text-center">
+             <button
+               onClick={handleSearch}
+               className="h-16 px-12 bg-terracotta text-white rounded-2xl text-[11px] font-bold hover:bg-terracotta/90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group shadow-2xl shadow-terracotta/20 uppercase tracking-widest mx-auto"
+             >
+               Search Deals <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+             </button>
         </div>
       </section>
 
-      {/* ═══════════════ PARTNER BRANDS ═══════════════ */}
-      <section className="py-12 border-y border-glass-border bg-white/[0.02]">
-        <div className="max-w-6xl mx-auto px-6">
-          <p className="text-center text-[10px] uppercase tracking-[0.4em] font-bold text-foreground/30 mb-10">Our Affiliate Partners & Integrated Networks</p>
-          <div className="flex flex-wrap justify-center items-center gap-12 md:gap-20 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
-             <div className="flex items-center gap-2 font-serif text-xl"><span className="text-terracotta">Booking</span>.com</div>
-             <div className="flex items-center gap-2 font-serif text-xl">aviasales</div>
-             <div className="flex items-center gap-2 font-serif text-xl">KLOOK</div>
-             <div className="flex items-center gap-2 font-serif text-xl">airalo</div>
-             <div className="flex items-center gap-2 font-serif text-xl">GYG</div>
+      {/* ═══════════════ CURATED EXPERIENCES (EDITORIAL STYLE) ═══════════════ */}
+      <section className="py-32 px-6 relative bg-linear-to-b from-background to-[#0a0a0a]">
+        <div className="max-w-[1800px] mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 px-6">
+            <div className="max-w-2xl">
+              <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-xs font-bold text-terracotta uppercase tracking-[0.5em] mb-4 block">Handpicked for you</motion.span>
+              <h2 className="text-4xl md:text-6xl font-serif text-white leading-[1.1]">Signature <span className="italic text-foreground/40">Experiences</span></h2>
+              <p className="text-foreground/40 max-w-sm text-sm leading-relaxed mt-6">
+                A world-class selection of tours pre-vetted by our AI and partners at Viator and Klook. All IDs verified.
+              </p>
+            </div>
           </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 lg:gap-8 px-6">
+            {allExperiences.map((tour, i) => (
+              <motion.div 
+                key={tour.id} 
+                initial={{ opacity: 0, scale: 0.95 }} 
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.05 }}
+                className="group relative h-[450px] rounded-[32px] overflow-hidden shadow-2xl border border-white/5"
+              >
+                <a 
+                  href={tour.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute inset-0 z-20 flex flex-col justify-end p-6 md:p-8 transition-all duration-700 bg-linear-to-b from-transparent via-black/20 to-black/95 group-hover:via-black/40"
+                 >
+                  <div className="relative z-30 space-y-3">
+                    <div className="flex items-center justify-between gap-4">
+                      <span className={`text-[8px] font-bold text-white px-2.5 py-0.5 rounded-full uppercase tracking-widest ${tour.type === 'viator' ? 'bg-orange-600' : 'bg-terracotta'}`}>{tour.tag}</span>
+                      <div className="h-px flex-1 bg-white/10" />
+                    </div>
+                    
+                    <div>
+                      <span className="text-[9px] font-bold text-white/40 uppercase tracking-widest block mb-0.5">{tour.loc}</span>
+                      <h3 className="text-xl md:text-2xl font-serif text-white tracking-tight leading-tight">{tour.title}</h3>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-4 gap-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                       <div className="flex items-center gap-1.5 opacity-40 text-[8px] font-bold text-white uppercase tracking-widest">
+                         via {tour.type}
+                       </div>
+                       <div className={`h-10 w-10 text-white rounded-full flex items-center justify-center transition-all shadow-xl ${tour.type === 'viator' ? 'bg-orange-600 hover:bg-orange-700' : 'bg-terracotta hover:bg-terracotta/90'}`}>
+                         <ArrowRight size={16} />
+                       </div>
+                    </div>
+                  </div>
+                </a>
+
+                <div
+                  style={{ backgroundImage: `url(${tour.img})` }}
+                  className="absolute inset-0 z-10 bg-cover bg-center group-hover:scale-105 transition-transform duration-[2000ms] saturate-[0.8] group-hover:saturate-100"
+                />
+              </motion.div>
+            ))}
+          </div>
+          
+          <p className="mt-16 text-center text-[10px] uppercase tracking-[0.4em] font-bold text-foreground/20">
+            Global Experiences Managed by Viator & Klook • Partner ID: P00121703 & 715711
+          </p>
         </div>
       </section>
 
@@ -463,84 +321,6 @@ export default function LandingPage() {
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ═══════════════ CURATED EXPERIENCES (EDITORIAL STYLE) ═══════════════ */}
-      <section className="py-32 px-6 relative bg-linear-to-b from-background to-[#0a0a0a]">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-            <div className="max-w-2xl">
-              <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-xs font-bold text-terracotta uppercase tracking-[0.5em] mb-4 block">Handpicked for you</motion.span>
-              <h2 className="text-4xl md:text-6xl font-serif text-white leading-[1.1]">Signature <span className="italic text-foreground/40">Experiences</span></h2>
-            </div>
-            
-            {/* Tab Switcher */}
-            <div className="flex items-center gap-2 p-1.5 bg-white/5 border border-white/10 rounded-full backdrop-blur-xl">
-              <button 
-                onClick={() => setExperienceTab('viator')}
-                className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${experienceTab === 'viator' ? 'bg-orange-500 text-white shadow-xl shadow-orange-500/20' : 'text-white/40 hover:text-white/60'}`}
-              >
-                Viator Top Picks
-              </button>
-              <button 
-                onClick={() => setExperienceTab('klook')}
-                className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${experienceTab === 'klook' ? 'bg-terracotta text-white shadow-xl shadow-terracotta/20' : 'text-white/40 hover:text-white/60'}`}
-              >
-                Klook Favorites
-              </button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
-            {(experienceTab === 'viator' ? viatorTours : klookTours).map((tour, i) => (
-              <motion.div 
-                key={tour.id} 
-                initial={{ opacity: 0, y: 40 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="group relative h-[500px] rounded-[40px] overflow-hidden shadow-2xl border border-white/5"
-              >
-                <a 
-                  href={tour.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="absolute inset-0 z-20 flex flex-col justify-end p-8 md:p-10 transition-all duration-700 bg-linear-to-b from-transparent via-black/20 to-black/90 group-hover:via-black/40"
-                 >
-                  <div className="relative z-30 space-y-4">
-                    <div className="flex items-center justify-between gap-4">
-                      <span className={`text-[9px] font-bold text-white px-3 py-1 rounded-full uppercase tracking-widest ${experienceTab === 'viator' ? 'bg-orange-500' : 'bg-terracotta'}`}>{tour.tag}</span>
-                      <div className="h-px flex-1 bg-white/20" />
-                    </div>
-                    
-                    <div>
-                      <span className="text-[10px] font-bold text-white/50 uppercase tracking-widest block mb-1">{tour.loc}</span>
-                      <h3 className="text-2xl md:text-3xl font-serif text-white tracking-tight leading-tight">{tour.title}</h3>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-4 gap-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                       <div className="flex items-center gap-1.5 grayscale opacity-50 underline decoration-white/20 underline-offset-4 text-[10px] font-bold text-white uppercase tracking-widest">
-                         Book via {experienceTab === 'viator' ? 'Viator' : 'Klook'}
-                       </div>
-                       <div className={`h-12 w-12 text-white rounded-full flex items-center justify-center transition-all shadow-xl ${experienceTab === 'viator' ? 'bg-orange-500 hover:bg-orange-600' : 'bg-terracotta hover:bg-terracotta/90'}`}>
-                         <ArrowRight size={20} />
-                       </div>
-                    </div>
-                  </div>
-                </a>
-
-                {/* Background Image Layer */}
-                <div
-                  style={{ backgroundImage: `url(${tour.img})` }}
-                  className="absolute inset-0 z-10 bg-cover bg-center group-hover:scale-105 transition-transform duration-1000 saturate-[0.8] group-hover:saturate-100"
-                />
-              </motion.div>
-            ))}
-          </div>
-          
-          <p className="mt-16 text-center text-[10px] uppercase tracking-[0.4em] font-bold text-foreground/20">
-            Handpicked Experiences Powered by {experienceTab === 'viator' ? 'Viator' : 'Klook'} • Partner ID Attached
-          </p>
         </div>
       </section>
 

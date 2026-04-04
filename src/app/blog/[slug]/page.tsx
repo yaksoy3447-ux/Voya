@@ -4,7 +4,7 @@ import { useParams } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import { motion, Variants } from "framer-motion"
-import { ArrowLeft, Calendar, Clock, ThumbsUp, ThumbsDown, Compass } from "lucide-react"
+import { ArrowLeft, Calendar, Clock, ThumbsUp, ThumbsDown, Compass, Zap, ArrowRight, Utensils } from "lucide-react"
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -538,6 +538,61 @@ export default function BlogPostDetail() {
           </div>
         )}
       </article>
+
+      {/* EXPLORER'S TOOLKIT - Affiliate Section */}
+      <section className="max-w-7xl mx-auto px-6 md:px-20 py-16">
+        <div className="glass-card p-10 md:p-16 rounded-[48px] border border-glass-border bg-white/[0.02] relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-terracotta/5 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/2" />
+          
+          <div className="relative z-10 text-center space-y-10">
+            <div className="space-y-4">
+              <span className="text-[10px] font-bold text-terracotta uppercase tracking-[0.5em] block">Support our explorers</span>
+              <h3 className="text-3xl md:text-5xl font-serif italic text-white leading-tight">The Explorer&apos;s Toolkit</h3>
+              <p className="text-foreground/40 max-w-xl mx-auto text-sm leading-relaxed">
+                We handpicked the essentials we used for this journey. Booking through these links directly supports our team at no extra cost to you.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+              <a href="https://airalo.tp.st/u5B2B5B2" target="_blank" rel="noopener noreferrer" 
+                className="group p-8 bg-white/5 border border-white/5 rounded-3xl hover:border-terracotta/30 transition-all hover:bg-white/10">
+                <div className="w-12 h-12 bg-orange-500/10 rounded-2xl flex items-center justify-center text-orange-500 mb-6 group-hover:scale-110 transition-transform">
+                  <Zap size={24} />
+                </div>
+                <h4 className="text-lg font-medium mb-2 text-white">Stay Connected</h4>
+                <p className="text-xs text-foreground/50 mb-6 leading-relaxed">We used Airalo eSIMs to stay online from day one. Reliable and affordable data.</p>
+                <div className="text-[10px] font-bold text-terracotta uppercase tracking-widest group-hover:translate-x-2 transition-transform inline-flex items-center gap-2">
+                  Get Airalo App <ArrowRight size={12} />
+                </div>
+              </a>
+
+              <a href="https://expedia.tp.st/u5B2B5B2?marker=715711" target="_blank" rel="noopener noreferrer" 
+                className="group p-8 bg-white/5 border border-white/5 rounded-3xl hover:border-terracotta/30 transition-all hover:bg-white/10">
+                <div className="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform">
+                  <Utensils size={24} />
+                </div>
+                <h4 className="text-lg font-medium mb-2 text-white">Handpicked Stays</h4>
+                <p className="text-xs text-foreground/50 mb-6 leading-relaxed">Our favorite boutique hotels and hidden gems across the city, booked via Expedia.</p>
+                <div className="text-[10px] font-bold text-terracotta uppercase tracking-widest group-hover:translate-x-2 transition-transform inline-flex items-center gap-2">
+                  Book on Expedia <ArrowRight size={12} />
+                </div>
+              </a>
+
+              <a href={`https://www.viator.com/search/${encodeURIComponent(post.category === 'City Guide' ? post.title.split(':')[0] : post.category)}?pid=P00121703&mcid=42383&medium=link`} target="_blank" rel="noopener noreferrer" 
+                className="group p-8 bg-white/5 border border-white/5 rounded-3xl hover:border-terracotta/30 transition-all hover:bg-white/10">
+                <div className="w-12 h-12 bg-orange-500/10 rounded-2xl flex items-center justify-center text-orange-400 mb-6 group-hover:scale-110 transition-transform">
+                  <Compass size={24} />
+                </div>
+                <h4 className="text-lg font-medium mb-2 text-white">Reliable Transfers</h4>
+                <p className="text-xs text-foreground/50 mb-6 leading-relaxed">Skip the taxi lines. We pre-booked our airport transfers and day tours through Viator.</p>
+                <div className="text-[10px] font-bold text-terracotta uppercase tracking-widest group-hover:translate-x-2 transition-transform inline-flex items-center gap-2">
+                  Browse Transfers <ArrowRight size={12} />
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Social interaction section */}
       <footer className="max-w-4xl mx-auto px-6 border-t border-glass-border pt-20 text-center">
