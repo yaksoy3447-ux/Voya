@@ -4,7 +4,7 @@ import { useParams } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import { motion, Variants } from "framer-motion"
-import { ArrowLeft, Calendar, Clock, ThumbsUp, ThumbsDown } from "lucide-react"
+import { ArrowLeft, Calendar, Clock, ThumbsUp, ThumbsDown, Compass } from "lucide-react"
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -474,30 +474,61 @@ export default function BlogPostDetail() {
       <article className="max-w-7xl mx-auto px-6 md:px-20 py-24 space-y-32">
         {post.sections.length > 0 ? (
           post.sections.map((section: BlogSection, i: number) => (
-            <motion.div 
-              key={i} 
-              initial="hidden" 
-              whileInView="visible" 
-              viewport={{ once: true, margin: "-100px" }}
-              className={`flex flex-col ${section.layout === 'text-left' ? 'md:flex-row' : 'md:flex-row-reverse'} gap-16 md:gap-28 items-center`}
-            >
-              <div className="flex-1 space-y-8">
-                <motion.div variants={fadeUp} custom={0}>
-                  <div className="w-16 h-1 bg-terracotta/40 mb-10 rounded-full" />
-                  <p className="text-2xl md:text-3xl text-foreground/80 leading-relaxed font-light italic">
-                    &quot;{section.text}&quot;
-                  </p>
+            <div key={i} className="contents">
+              <motion.div 
+                initial="hidden" 
+                whileInView="visible" 
+                viewport={{ once: true, margin: "-100px" }}
+                className={`flex flex-col ${section.layout === 'text-left' ? 'md:flex-row' : 'md:flex-row-reverse'} gap-16 md:gap-28 items-center`}
+              >
+                <div className="flex-1 space-y-8">
+                  <motion.div variants={fadeUp} custom={0}>
+                    <div className="w-16 h-1 bg-terracotta/40 mb-10 rounded-full" />
+                    <p className="text-2xl md:text-3xl text-foreground/80 leading-relaxed font-light italic">
+                      &quot;{section.text}&quot;
+                    </p>
+                  </motion.div>
+                </div>
+                
+                <div className="flex-1 w-full">
+                  <motion.div variants={scaleIn} className="relative aspect-4/3 rounded-4xl overflow-hidden shadow-2xl shadow-black/30 group border border-glass-border">
+                    <Image src={section.image} alt={`Visual diary ${i+1}`} fill className="object-cover group-hover:scale-110 transition-transform duration-1000" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+                    <div className="absolute bottom-5 right-6 text-[10px] text-white/50 font-mono tracking-widest uppercase bg-black/20 backdrop-blur-sm px-2 py-1 rounded">Captured on Smartphone • 2026</div>
+                  </motion.div>
+                </div>
+              </motion.div>
+
+              {/* DYNAMIC AFFILIATE BANNER - Insert after the 2nd section */}
+              {i === 1 && (
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  className="w-full glass-card p-10 md:p-16 rounded-[48px] border border-glass-border bg-terracotta/5 relative overflow-hidden"
+                >
+                  <div className="absolute top-0 right-0 p-10 opacity-10 pointer-events-none">
+                    <Compass size={120} />
+                  </div>
+                  <div className="relative z-10 max-w-2xl">
+                    <h3 className="text-3xl md:text-4xl font-serif mb-6 italic">Ready to experience this for yourself?</h3>
+                    <p className="text-lg text-foreground/60 mb-10 leading-relaxed">
+                      We&apos;ve curated the highest-rated tours and experiences for this destination. Check live availability and book your next adventure today.
+                    </p>
+                    <div className="flex flex-wrap gap-4">
+                      <a href={`https://www.viator.com/search/${encodeURIComponent(post.category === 'City Guide' ? post.title.split(':')[0] : post.category)}?pid=P00121703&mcid=42383&medium=link`} target="_blank" rel="noopener noreferrer"
+                        className="h-14 px-8 bg-orange-500 text-white rounded-full font-bold flex items-center gap-2 hover:scale-105 transition-all shadow-xl shadow-orange-500/20">
+                        Explore Viator Tours
+                      </a>
+                      <a href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(post.category === 'City Guide' ? post.title.split(':')[0] : post.category)}&marker=715711`} target="_blank" rel="noopener noreferrer"
+                        className="h-14 px-8 bg-terracotta text-white rounded-full font-bold flex items-center gap-2 hover:scale-105 transition-all shadow-xl shadow-terracotta/20">
+                        Check on Klook
+                      </a>
+                    </div>
+                  </div>
                 </motion.div>
-              </div>
-              
-              <div className="flex-1 w-full">
-                <motion.div variants={scaleIn} className="relative aspect-4/3 rounded-4xl overflow-hidden shadow-2xl shadow-black/30 group border border-glass-border">
-                  <Image src={section.image} alt={`Visual diary ${i+1}`} fill className="object-cover group-hover:scale-110 transition-transform duration-1000" />
-                  <div className="absolute inset-0 bg-linear-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
-                  <div className="absolute bottom-5 right-6 text-[10px] text-white/50 font-mono tracking-widest uppercase bg-black/20 backdrop-blur-sm px-2 py-1 rounded">Captured on Smartphone • 2026</div>
-                </motion.div>
-              </div>
-            </motion.div>
+              )}
+            </div>
           ))
         ) : (
           <div className="text-center py-32 space-y-8">
