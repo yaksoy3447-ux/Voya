@@ -85,6 +85,20 @@ export default function LandingPage() {
     window.open(url, '_blank')
   }
 
+  const [experienceTab, setExperienceTab] = useState<'viator' | 'klook'>('viator')
+
+  const klookTours = [
+    { id: 1, title: "Private Seine Cruise", loc: "Paris", tag: "Most Booked", img: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/search/result/?query=Seine+River+Cruise+Paris&marker=715711" },
+    { id: 2, title: "Shibuya Sky Views", loc: "Tokyo", tag: "Trending", img: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/search/result/?query=Shibuya+Sky+Observation+Deck+Tokyo&marker=715711" },
+    { id: 3, title: "Warner Bros. Studios", loc: "London", tag: "Family Favorite", img: "https://images.unsplash.com/photo-1486299267070-83823f5448dd?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/search/result/?query=Warner+Bros+Studio+Tour+London+Harry+Potter&marker=715711" },
+  ]
+
+  const viatorTours = [
+    { id: 4, title: "Grand Canyon Helicopter", loc: "Las Vegas", tag: "Bucket List", img: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?q=80&w=800&auto=format&fit=crop", link: "https://www.viator.com/tours/Las-Vegas/Grand-Canyon-4-in-1-Helicopter-Tour/d684-2530ALLIN?pid=P00121703&mcid=42383&medium=link" },
+    { id: 5, title: "Amalfi Coast Sailing", loc: "Positano", tag: "Romantic", img: "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800&auto=format&fit=crop", link: "https://www.viator.com/tours/Amalfi/Amalfi-Coast-Boat-Experience/d22384-211516P1?pid=P00121703&mcid=42383&medium=link" },
+    { id: 6, title: "Colosseum Underground", loc: "Rome", tag: "History", img: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=800&auto=format&fit=crop", link: "https://www.viator.com/tours/Rome/Colosseum-Underground-and-Ancient-Rome-Tour/d511-2635UND?pid=P00121703&mcid=42383&medium=link" },
+  ]
+
   return (
     <div className="min-h-dvh bg-background text-foreground overflow-x-hidden">
 
@@ -455,32 +469,37 @@ export default function LandingPage() {
       {/* ═══════════════ CURATED EXPERIENCES (EDITORIAL STYLE) ═══════════════ */}
       <section className="py-32 px-6 relative bg-linear-to-b from-background to-[#0a0a0a]">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
             <div className="max-w-2xl">
               <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-xs font-bold text-terracotta uppercase tracking-[0.5em] mb-4 block">Handpicked for you</motion.span>
               <h2 className="text-4xl md:text-6xl font-serif text-white leading-[1.1]">Signature <span className="italic text-foreground/40">Experiences</span></h2>
             </div>
-            <p className="text-foreground/40 max-w-xs text-sm leading-relaxed font-medium border-l border-terracotta/30 pl-6 hidden md:block">
-              Exclusive Access. Unforgettable Memories. Powered by global leader Klook.
-            </p>
+            
+            {/* Tab Switcher */}
+            <div className="flex items-center gap-2 p-1.5 bg-white/5 border border-white/10 rounded-full backdrop-blur-xl">
+              <button 
+                onClick={() => setExperienceTab('viator')}
+                className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${experienceTab === 'viator' ? 'bg-orange-500 text-white shadow-xl shadow-orange-500/20' : 'text-white/40 hover:text-white/60'}`}
+              >
+                Viator Top Picks
+              </button>
+              <button 
+                onClick={() => setExperienceTab('klook')}
+                className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${experienceTab === 'klook' ? 'bg-terracotta text-white shadow-xl shadow-terracotta/20' : 'text-white/40 hover:text-white/60'}`}
+              >
+                Klook Favorites
+              </button>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
-            {[
-              { id: 1, title: "Private Seine Cruise", loc: "Paris", tag: "Most Booked", img: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/search/result/?query=Seine+River+Cruise+Paris&marker=715711" },
-              { id: 2, title: "Shibuya Sky Views", loc: "Tokyo", tag: "Trending", img: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/search/result/?query=Shibuya+Sky+Observation+Deck+Tokyo&marker=715711" },
-              { id: 3, title: "Warner Bros. Studios", loc: "London", tag: "Family Favorite", img: "https://images.unsplash.com/photo-1486299267070-83823f5448dd?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/search/result/?query=Warner+Bros+Studio+Tour+London+Harry+Potter&marker=715711" },
-              { id: 4, title: "Desert Safari Dunes", loc: "Dubai", tag: "Adventure", img: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/search/result/?query=Desert+Safari+Dubai&marker=715711" },
-              { id: 5, title: "Amalfi Coast Sailing", loc: "Italy", tag: "Romantic", img: "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/search/result/?query=Amalfi+Coast+Boat+Tour&marker=715711" },
-              { id: 6, title: "Osaka Tower Dinner", loc: "Japan", tag: "Foodie Choice", img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/search/result/?query=Umeda+Sky+Building+Osaka&marker=715711" },
-            ].map((tour, i) => (
+            {(experienceTab === 'viator' ? viatorTours : klookTours).map((tour, i) => (
               <motion.div 
                 key={tour.id} 
                 initial={{ opacity: 0, y: 40 }} 
-                whileInView={{ opacity: 1, y: 0 }} 
-                transition={{ delay: i * 0.1 }} 
-                viewport={{ once: true }}
-                className="group relative h-[500px] rounded-[40px] overflow-hidden shadow-2xl"
+                animate={{ opacity: 1, y: 0 }} 
+                transition={{ duration: 0.6, delay: i * 0.1 }}
+                className="group relative h-[500px] rounded-[40px] overflow-hidden shadow-2xl border border-white/5"
               >
                 <a 
                   href={tour.link}
@@ -490,7 +509,7 @@ export default function LandingPage() {
                  >
                   <div className="relative z-30 space-y-4">
                     <div className="flex items-center justify-between gap-4">
-                      <span className="text-[9px] font-bold text-white bg-terracotta px-3 py-1 rounded-full uppercase tracking-widest">{tour.tag}</span>
+                      <span className={`text-[9px] font-bold text-white px-3 py-1 rounded-full uppercase tracking-widest ${experienceTab === 'viator' ? 'bg-orange-500' : 'bg-terracotta'}`}>{tour.tag}</span>
                       <div className="h-px flex-1 bg-white/20" />
                     </div>
                     
@@ -501,9 +520,9 @@ export default function LandingPage() {
 
                     <div className="flex items-center justify-between pt-4 gap-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                        <div className="flex items-center gap-1.5 grayscale opacity-50 underline decoration-white/20 underline-offset-4 text-[10px] font-bold text-white uppercase tracking-widest">
-                         Official Agency
+                         Book via {experienceTab === 'viator' ? 'Viator' : 'Klook'}
                        </div>
-                       <div className="h-12 w-12 bg-white text-black rounded-full flex items-center justify-center group-hover:bg-terracotta group-hover:text-white transition-all shadow-xl">
+                       <div className={`h-12 w-12 text-white rounded-full flex items-center justify-center transition-all shadow-xl ${experienceTab === 'viator' ? 'bg-orange-500 hover:bg-orange-600' : 'bg-terracotta hover:bg-terracotta/90'}`}>
                          <ArrowRight size={20} />
                        </div>
                     </div>
@@ -518,6 +537,10 @@ export default function LandingPage() {
               </motion.div>
             ))}
           </div>
+          
+          <p className="mt-16 text-center text-[10px] uppercase tracking-[0.4em] font-bold text-foreground/20">
+            Handpicked Experiences Powered by {experienceTab === 'viator' ? 'Viator' : 'Klook'} • Partner ID Attached
+          </p>
         </div>
       </section>
 
