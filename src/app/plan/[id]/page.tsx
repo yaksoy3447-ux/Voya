@@ -295,9 +295,9 @@ export default function PlanHistoryViewer() {
                                   <MapPin size={12}/> {act.location}
                                 </span>
                                 {act.type !== 'food' && (
-                                  <a href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(act.title + ' ' + act.location)}&marker=715711`} target="_blank" rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-terracotta text-white px-3 py-1.5 rounded-full hover:bg-terracotta/90 transition-all">
-                                    <Compass size={11} /> Book on Klook
+                                  <a href={`https://www.viator.com/search/${encodeURIComponent(act.title + ' ' + act.location)}?pid=P00121703&mcid=42383&medium=link`} target="_blank" rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-orange-500 text-white px-3 py-1.5 rounded-full hover:bg-orange-600 transition-all">
+                                    <Compass size={11} /> Book on Viator
                                   </a>
                                 )}
                               </div>
