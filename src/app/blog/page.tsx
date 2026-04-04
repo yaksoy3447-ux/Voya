@@ -162,7 +162,7 @@ export default function BlogPage() {
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={3} variants={fadeUp}
             className="glass-card mb-16 rounded-[40px] border border-glass-border overflow-hidden group cursor-pointer hover:border-terracotta/30 transition-all">
             <div className="grid grid-cols-1 lg:grid-cols-2">
-              <div className="relative h-64 lg:h-auto overflow-hidden">
+              <div className="relative h-64 lg:h-full min-h-[320px] overflow-hidden">
                 <Image src={featured.image} alt={featured.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700" priority />
                 <div className="absolute top-6 left-6 px-4 py-1.5 rounded-full bg-terracotta text-white text-xs font-bold uppercase tracking-widest flex items-center gap-2">
                   <Sparkles size={12} /> Latest Entry
