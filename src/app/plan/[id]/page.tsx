@@ -601,11 +601,11 @@ export default function PlanHistoryViewer() {
               },
               {
                 icon: <Compass size={20} className="text-orange-400" />,
-                title: "Things To Do",
-                desc: "Tours & activities on-site.",
-                partner: "Klook",
-                label: "Explore",
-                href: `https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(itinerary.selectedCity || itinerary.selectedCountry || 'travel')}&marker=715711`,
+                title: "Tours & Tickets",
+                desc: "Book top-rated tours & activities.",
+                partner: "Viator",
+                label: "Explore Tours",
+                href: `https://www.viator.com/search/${encodeURIComponent(itinerary.selectedCity || itinerary.selectedCountry || 'travel')}?pid=P00121703&mcid=42383&medium=link`,
               },
             ].map((item, i) => (
               <a
