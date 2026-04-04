@@ -95,6 +95,27 @@ export default function PlanHistoryViewer() {
     fetchData()
   }, [params.id, router])
 
+  const [viatorTours, setViatorTours] = useState<any[]>([])
+  const [viatorLoading, setViatorLoading] = useState(false)
+
+  // Fetch Viator Tours based on destination
+  useEffect(() => {
+    const city = itinerary?.selectedCity || itinerary?.days?.[0]?.activities?.[0]?.location;
+    if (!city || city === 'Unknown') return;
+
+    setViatorLoading(true);
+    fetch(`/api/viator?q=${encodeURIComponent(city)}`)
+      .then(res => res.json())
+      .then(data => {
+        setViatorTours(data.products || []);
+        setViatorLoading(false);
+      })
+      .catch(err => {
+        console.error('Viator fetch error:', err);
+        setViatorLoading(false);
+      });
+  }, [itinerary]);
+
   // Fetch real flight prices from Travelpayouts when itinerary loads
   useEffect(() => {
     if (!itinerary?.flights?.length) return;
@@ -343,6 +364,55 @@ export default function PlanHistoryViewer() {
                   </a>
                 </div>
               </div>
+            </div>
+
+            {/* Viator Tours */}
+            <div className="glass-card p-6 rounded-3xl border border-glass-border bg-orange-500/5">
+              <h3 className="font-serif text-lg text-foreground flex items-center gap-2 mb-4">
+                <Compass className="text-orange-400" /> Viator Top Activities
+              </h3>
+              <div className="space-y-4">
+                {viatorLoading ? (
+                  Array.from({ length: 3 }).map((_, i) => (
+                    <div key={i} className="h-32 bg-white/5 rounded-2xl animate-pulse" />
+                  ))
+                ) : viatorTours.length > 0 ? (
+                  viatorTours.slice(0, 4).map((tour: any) => (
+                    <a
+                      key={tour.id}
+                      href={tour.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block overflow-hidden bg-white/5 border border-glass-border rounded-2xl hover:border-orange-400/40 hover:bg-white/10 transition-all group"
+                    >
+                      <div className="relative h-24 w-full">
+                        <img 
+                          src={tour.image} 
+                          alt={tour.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                        <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg flex items-center gap-1">
+                          <Star size={10} className="text-yellow-400 fill-yellow-400" />
+                          <span className="text-[10px] font-bold text-white">{tour.rating}</span>
+                        </div>
+                      </div>
+                      <div className="p-3">
+                        <h4 className="font-medium text-[13px] line-clamp-1 mb-1 group-hover:text-orange-400 transition-colors">{tour.title}</h4>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] text-foreground/50">{tour.reviewCount} reviews</span>
+                          <span className="text-sm font-bold text-orange-400">from ${tour.price}</span>
+                        </div>
+                      </div>
+                    </a>
+                  ))
+                ) : (
+                  <p className="text-xs text-foreground/40 italic">No Viator tours found for this location.</p>
+                )}
+              </div>
+              <a href="https://www.viator.com/?pid=P00121703&mcid=42383&medium=link" target="_blank" rel="noopener noreferrer"
+                className="mt-4 block text-center text-[10px] font-bold text-orange-400 hover:text-orange-300 uppercase tracking-widest transition-all">
+                Browse more on Viator →
+              </a>
             </div>
 
             {/* Hotels */}
