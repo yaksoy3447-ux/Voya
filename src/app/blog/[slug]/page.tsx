@@ -554,7 +554,7 @@ export default function BlogPostDetail() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-              <a href="https://www.airalo.com/?marker=715711" target="_blank" rel="noopener noreferrer" 
+              <a href="https://www.airalo.com/" target="_blank" rel="noopener noreferrer" 
                 className="group p-8 bg-white/5 border border-white/5 rounded-3xl hover:border-terracotta/30 transition-all hover:bg-white/10">
                 <div className="w-12 h-12 bg-orange-500/10 rounded-2xl flex items-center justify-center text-orange-500 mb-6 group-hover:scale-110 transition-transform">
                   <Zap size={24} />

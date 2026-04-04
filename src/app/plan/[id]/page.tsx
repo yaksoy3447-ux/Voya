@@ -358,7 +358,7 @@ export default function PlanHistoryViewer() {
                       Pick up a local SIM at the airport — or activate an Airalo eSIM before you land for instant connectivity in {itinerary.selectedCity || 'your destination'}.
                     </p>
                   )}
-                  <a href="https://www.airalo.com/?marker=715711" target="_blank" rel="noopener noreferrer"
+                  <a href="https://www.airalo.com/" target="_blank" rel="noopener noreferrer"
                     className="mt-2 inline-flex items-center gap-1 text-[10px] font-bold text-blue-400 hover:text-blue-300 transition-all uppercase tracking-widest">
                     Get eSIM via Airalo →
                   </a>
@@ -565,7 +565,7 @@ export default function PlanHistoryViewer() {
                 desc: "Stay connected from minute one.",
                 partner: "Airalo",
                 label: "Get eSIM",
-                href: "https://www.airalo.com/?marker=715711",
+                href: "https://www.airalo.com/",
               },
               {
                 icon: <Car size={20} className="text-yellow-500" />,
