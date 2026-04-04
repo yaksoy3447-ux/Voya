@@ -202,25 +202,14 @@ export default function PlanDashboard() {
                                 <MapPin size={12}/> {act.location}
                               </span>
                               {act.type !== 'food' && (
-                                (act as any).bookable ? (
-                                  <a
-                                    href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(act.title + ' ' + act.location)}&marker=715711`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-terracotta text-white px-3 py-1.5 rounded-full hover:bg-terracotta/90 transition-all"
-                                  >
-                                    <Compass size={11} /> Book on Klook
-                                  </a>
-                                ) : (
-                                  <a
-                                    href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(act.title + ' ' + act.location)}&marker=715711`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-[11px] font-bold text-terracotta hover:text-terracotta/80 flex items-center gap-1 transition-all"
-                                  >
-                                    <Compass size={12} /> Find Tickets & Tours
-                                  </a>
-                                )
+                                <a
+                                  href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(act.title + ' ' + act.location)}&marker=715711`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-terracotta text-white px-3 py-1.5 rounded-full hover:bg-terracotta/90 transition-all"
+                                >
+                                  <Compass size={11} /> Book on Klook
+                                </a>
                               )}
                             </div>
                           </div>

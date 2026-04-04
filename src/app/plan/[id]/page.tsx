@@ -202,8 +202,99 @@ export default function PlanHistoryViewer() {
           </div>
         </div>
 
+        {/* ── Summary Row: Flights · Hotels · Insider Tips ── */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+          {/* Flights */}
+          <div className="glass-card p-5 rounded-3xl border border-glass-border flex flex-col gap-3">
+            <h3 className="font-serif text-base text-foreground flex items-center gap-2">
+              <Plane className="text-terracotta" size={16} /> Flight Options
+            </h3>
+            {(itinerary.flights || []).map((flight: FlightInfo, idx: number) => {
+              const rp = realPrices[idx];
+              const depDate = flight.date ? new Date(flight.date) : null;
+              const dd = depDate ? String(depDate.getUTCDate()).padStart(2,'0') : '01';
+              const mm = depDate ? String(depDate.getUTCMonth()+1).padStart(2,'0') : '06';
+              return (
+                <a key={idx} href={`https://www.aviasales.com/search/${flight.departure}${dd}${mm}${flight.arrival}1?marker=715711`}
+                  target="_blank" rel="noopener noreferrer"
+                  className="block p-3 rounded-xl bg-white/5 border border-glass-border hover:border-terracotta/30 transition-all group">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium group-hover:text-terracotta transition-colors">
+                      {flight.departure} → {flight.arrival}
+                    </span>
+                    {rp?.loading ? (
+                      <span className="text-[10px] text-foreground/30 animate-pulse">...</span>
+                    ) : rp?.price ? (
+                      <span className="text-xs font-bold text-green-400">${rp.price}</span>
+                    ) : (
+                      <span className="text-xs font-bold text-terracotta">${flight.price}</span>
+                    )}
+                  </div>
+                  <div className="text-[10px] text-foreground/40 mt-1">{rp?.airline || flight.airline} · {flight.date}</div>
+                </a>
+              );
+            })}
+            <a href="https://www.aviasales.com?marker=715711" target="_blank" rel="noopener noreferrer"
+              className="text-[10px] text-terracotta hover:underline mt-auto">
+              Search more flights →
+            </a>
+          </div>
+
+          {/* Hotels */}
+          <div className="glass-card p-5 rounded-3xl border border-glass-border flex flex-col gap-3">
+            <h3 className="font-serif text-base text-foreground flex items-center gap-2">
+              <Hotel className="text-terracotta" size={16} /> Recommended Stays
+            </h3>
+            {(itinerary.hotels || []).map((hotel: HotelInfo, idx: number) => (
+              <a key={idx}
+                href={`https://www.expedia.com/Hotel-Search?destination=${encodeURIComponent(hotel.name)}&affcid=ZOorfcw`}
+                target="_blank" rel="noopener noreferrer"
+                className="block p-3 rounded-xl bg-white/5 border border-glass-border hover:border-terracotta/30 transition-all group">
+                <div className="flex justify-between items-center gap-2">
+                  <span className="text-xs font-medium group-hover:text-terracotta transition-colors line-clamp-1">{hotel.name}</span>
+                  <span className="text-xs font-bold text-terracotta shrink-0">${hotel.pricePerNight}/n</span>
+                </div>
+                <div className="flex items-center gap-1 mt-1">
+                  <Star size={10} className="text-yellow-500 fill-yellow-500" />
+                  <span className="text-[10px] text-foreground/40">{hotel.rating} · {hotel.location}</span>
+                </div>
+              </a>
+            ))}
+            <a href={`https://www.expedia.com/Hotel-Search?destination=${encodeURIComponent((itinerary.selectedCity || '') + ' ' + (itinerary.selectedCountry || ''))}&affcid=ZOorfcw`}
+              target="_blank" rel="noopener noreferrer"
+              className="text-[10px] text-terracotta hover:underline mt-auto">
+              More hotels on Expedia →
+            </a>
+          </div>
+
+          {/* Insider Tips */}
+          <div className="glass-card p-5 rounded-3xl border border-glass-border bg-terracotta/5 relative overflow-hidden flex flex-col gap-3">
+            {!isPro && (
+              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-background/60 backdrop-blur-md rounded-3xl">
+                <Lock className="w-7 h-7 text-terracotta mb-2" />
+                <span className="text-sm font-medium mb-3">Insider Tips Locked</span>
+                <button onClick={() => router.push('/pricing')} className="text-xs px-4 py-2 bg-terracotta text-white rounded-full">Unlock</button>
+              </div>
+            )}
+            <h3 className={`font-serif text-base text-terracotta flex items-center gap-2 ${!isPro ? 'opacity-30 blur-sm pointer-events-none' : ''}`}>
+              <Sparkles size={16} /> Insider Tips
+            </h3>
+            <ul className={`space-y-2.5 ${!isPro ? 'opacity-30 blur-sm pointer-events-none' : ''}`}>
+              {(itinerary.insiderTips || []).map((tip: string, idx: number) => (
+                <li key={idx} className="flex items-start gap-2 text-xs text-foreground/80">
+                  <Check size={13} className="text-green-400 mt-0.5 shrink-0" />
+                  <span className="leading-snug">{tip}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+        </div>
+
+        {/* ── Itinerary + Sidebar ── */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+
           {/* Main Content (Itinerary Days) */}
           <div className="lg:col-span-2 space-y-6">
             <h2 className="text-2xl font-serif text-foreground mb-6 flex items-center gap-2">
@@ -280,25 +371,14 @@ export default function PlanHistoryViewer() {
                                     <MapPin size={12}/> {act.location}
                                 </span>
                                 {act.type !== 'food' && (
-                                  act.bookable ? (
-                                    <a
-                                      href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(act.title + ' ' + act.location)}&marker=715711`}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-terracotta text-white px-3 py-1.5 rounded-full hover:bg-terracotta/90 transition-all"
-                                    >
-                                      <Compass size={11} /> Book on Klook
-                                    </a>
-                                  ) : (
-                                    <a
-                                      href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(act.title + ' ' + act.location)}&marker=715711`}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="text-[11px] font-bold text-terracotta hover:text-terracotta/80 flex items-center gap-1 transition-all"
-                                    >
-                                      <Compass size={12} /> Find Tickets & Tours
-                                    </a>
-                                  )
+                                  <a
+                                    href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(act.title + ' ' + act.location)}&marker=715711`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-terracotta text-white px-3 py-1.5 rounded-full hover:bg-terracotta/90 transition-all"
+                                  >
+                                    <Compass size={11} /> Book on Klook
+                                  </a>
                                 )}
                             </div>
                           </div>
@@ -311,10 +391,8 @@ export default function PlanHistoryViewer() {
             </AnimatePresence>
           </div>
 
-          {/* Sidebar (Flights, Hotels, Tips) */}
+          {/* Sidebar — SIM card only */}
           <div className="space-y-6 lg:mt-14">
-
-            {/* SIM CARD TIP */}
             <div className="glass-card p-5 rounded-3xl border border-glass-border bg-blue-500/5">
               <div className="flex items-start gap-3">
                 <div className="w-9 h-9 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0">
@@ -326,178 +404,48 @@ export default function PlanHistoryViewer() {
                     <p className="text-xs text-foreground/70 leading-relaxed">{itinerary.simCard.tip}</p>
                   ) : (
                     <p className="text-xs text-foreground/70 leading-relaxed">
-                      Get a local SIM at the airport or use an eSIM for instant connectivity in {itinerary.selectedCity || itinerary.selectedCountry || 'your destination'}.
+                      Pick up a local SIM at the airport — or activate an Airalo eSIM before you even land for instant connectivity in {itinerary.selectedCity || itinerary.selectedCountry || 'your destination'}.
                     </p>
                   )}
-                  <a
-                    href="https://www.airalo.com/?marker=715711"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-2 inline-flex items-center gap-1 text-[10px] font-bold text-blue-400 hover:text-blue-300 transition-all uppercase tracking-widest"
-                  >
+                  <a href="https://www.airalo.com/?marker=715711" target="_blank" rel="noopener noreferrer"
+                    className="mt-2 inline-flex items-center gap-1 text-[10px] font-bold text-blue-400 hover:text-blue-300 transition-all uppercase tracking-widest">
                     Get eSIM via Airalo →
                   </a>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* MAP */}
+        {/* ── Day Map — full width, updates with active day ── */}
+        {(() => {
+          const day = (itinerary.days || []).find((d: Day) => d.day === activeDay);
+          const locs = (day?.activities || []).map((a: Activity) => a.location).filter(Boolean);
+          const mapQ = locs[0] || itinerary.selectedCity || '';
+          const gmUrl = `https://www.google.com/maps/search/${encodeURIComponent(locs.join(' ') || mapQ)}`;
+          return (
             <div className="glass-card rounded-3xl border border-glass-border overflow-hidden">
-              <div className="px-5 pt-5 pb-3 flex items-center gap-2">
-                <Globe className="text-terracotta" size={18} />
-                <h3 className="font-serif text-lg text-foreground">Destination Map</h3>
-              </div>
-              <iframe
-                title="Destination Map"
-                src={`https://maps.google.com/maps?q=${encodeURIComponent((itinerary.selectedCity || '') + ' ' + (itinerary.selectedCountry || ''))}&z=13&output=embed`}
-                className="w-full h-52 border-0"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-              <div className="px-5 py-3">
-                <a
-                  href={`https://www.google.com/maps/search/${encodeURIComponent((itinerary.selectedCity || '') + ' ' + (itinerary.selectedCountry || ''))}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[10px] text-foreground/40 hover:text-terracotta transition-all uppercase tracking-widest"
-                >
+              <div className="px-6 py-4 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Globe className="text-terracotta" size={18} />
+                  <h3 className="font-serif text-lg text-foreground">Day {activeDay} — {day?.title || 'Itinerary Map'}</h3>
+                </div>
+                <a href={gmUrl} target="_blank" rel="noopener noreferrer"
+                  className="text-[10px] text-foreground/40 hover:text-terracotta transition-all uppercase tracking-widest">
                   Open in Google Maps →
                 </a>
               </div>
+              <iframe
+                key={activeDay}
+                title={`Day ${activeDay} Map`}
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(mapQ)}&z=14&output=embed`}
+                className="w-full h-72 border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
-
-            {/* Hotels */}
-            <div className="glass-card p-6 rounded-3xl border border-glass-border">
-              <h3 className="font-serif text-lg text-foreground flex items-center gap-2 mb-4">
-                <Hotel className="text-terracotta" /> Perfect Stays
-              </h3>
-              <div className="space-y-4">
-                {itinerary.hotels && itinerary.hotels.length > 0 ? (
-                  itinerary.hotels.map((hotel: HotelInfo, idx: number) => (
-                    <a
-                      key={idx}
-                      href={`https://www.expedia.com/Hotel-Search?destination=${encodeURIComponent(hotel.name + ' ' + hotel.location)}&affcid=ZOorfcw`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block p-4 bg-white/5 border border-glass-border rounded-2xl hover:border-terracotta/40 hover:bg-white/10 transition-all cursor-pointer group"
-                    >
-                      <div className="flex justify-between items-start mb-2">
-                        <h4 className="font-medium text-sm group-hover:text-terracotta transition-colors">{hotel.name}</h4>
-                        <span className="flex items-center gap-1 text-xs bg-yellow-500/20 text-yellow-500 px-2 py-1 rounded-full shrink-0 ml-2"><Star size={12} className="fill-yellow-500" /> {hotel.rating}</span>
-                      </div>
-                      <p className="text-xs text-foreground/60 mb-3 line-clamp-2">{hotel.description}</p>
-                      <div className="flex items-center justify-between text-xs font-medium mb-3">
-                        <span className="text-foreground/50"><MapPin size={12} className="inline mr-1"/>{hotel.location}</span>
-                        <span className="text-terracotta font-bold">${hotel.pricePerNight} / night</span>
-                      </div>
-                      <div className="w-full py-2 bg-terracotta/10 border border-terracotta/30 rounded-xl text-center text-xs font-bold text-terracotta group-hover:bg-terracotta group-hover:text-white transition-all">
-                        Book on Expedia →
-                      </div>
-                    </a>
-                  ))
-                ) : (
-                  <div className="p-4 border border-glass-border/20 rounded-2xl text-center text-xs text-foreground/40 font-medium">
-                    Finding the best stays for you...
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Flights */}
-            <div className="glass-card p-6 rounded-3xl border border-glass-border">
-              <h3 className="font-serif text-lg text-foreground flex items-center gap-2 mb-4">
-                <Plane className="text-terracotta" /> Flight Options
-              </h3>
-              <div className="space-y-3">
-                {itinerary.flights && itinerary.flights.length > 0 ? (
-                  itinerary.flights.map((flight: FlightInfo, idx: number) => {
-                    const rp = realPrices[idx];
-                    const depDate = flight.date ? new Date(flight.date) : null;
-                    const dd = depDate ? String(depDate.getUTCDate()).padStart(2,'0') : '01';
-                    const mm = depDate ? String(depDate.getUTCMonth()+1).padStart(2,'0') : '06';
-                    const bookingUrl = `https://www.aviasales.com/search/${flight.departure}${dd}${mm}${flight.arrival}1?marker=715711`;
-                    return (
-                    <a
-                      key={idx}
-                      href={bookingUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block p-3 border border-glass-border/40 rounded-xl bg-white/5 hover:border-terracotta/40 hover:bg-white/10 transition-all cursor-pointer group space-y-3"
-                    >
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <div className="font-medium text-sm flex items-center gap-2 group-hover:text-terracotta transition-colors">
-                            {flight.departure} <Plane size={14} className="text-foreground/40 rotate-90"/> {flight.arrival}
-                          </div>
-                          <div className="text-xs text-foreground/50 font-medium mt-0.5">
-                            {rp?.airline || flight.airline} • {flight.date}
-                          </div>
-                        </div>
-                        <div className="text-right shrink-0 ml-3">
-                          {rp?.loading ? (
-                            <span className="text-xs text-foreground/30 animate-pulse">Loading...</span>
-                          ) : rp?.price ? (
-                            <div>
-                              <span className="text-[9px] text-green-400/70 uppercase tracking-widest block">Live Price</span>
-                              <span className="font-bold text-sm text-green-400">${rp.price}</span>
-                            </div>
-                          ) : (
-                            <span className="text-xs text-foreground/40">—</span>
-                          )}
-                        </div>
-                      </div>
-                      <div className="w-full py-2 bg-terracotta/10 border border-terracotta/30 rounded-lg text-center text-xs font-bold text-terracotta group-hover:bg-terracotta group-hover:text-white transition-all">
-                        Book this Flight on Aviasales →
-                      </div>
-                    </a>
-                    )
-                  })
-                ) : (
-                  <div className="p-3 border border-glass-border/20 rounded-xl text-center text-xs text-foreground/40 font-medium">
-                    Optimizing flight routes...
-                  </div>
-                )}
-                {itinerary.flights && itinerary.flights.length > 0 && (
-                   <div className="pt-2">
-                     <a 
-                       href={`https://www.aviasales.com?marker=715711`}
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       className="text-[10px] text-foreground/40 hover:text-terracotta transition-all block text-center underline"
-                     >
-                       Looking for more options? Check all flights
-                     </a>
-                   </div>
-                )}
-              </div>
-            </div>
-
-            {/* Insider Tips */}
-            <div className="glass-card p-6 rounded-3xl border border-glass-border bg-terracotta/5 relative overflow-hidden">
-               
-               {!isPro && (
-                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-background/60 backdrop-blur-md">
-                   <Lock className="w-8 h-8 text-terracotta mb-2" />
-                   <span className="text-sm font-medium mb-3">Insider Tips Locked</span>
-                   <button onClick={() => router.push('/pricing')} className="text-xs px-4 py-2 bg-terracotta text-white rounded-full">Unlock Everything</button>
-                 </div>
-               )}
-
-              <h3 className={`font-serif text-lg text-terracotta flex items-center gap-2 mb-4 ${!isPro ? 'opacity-30 blur-sm pointer-events-none' : ''}`}>
-                <Sparkles size={18} /> Insider Tips
-              </h3>
-              <ul className={`space-y-3 ${!isPro ? 'opacity-30 blur-sm pointer-events-none' : ''}`}>
-                {(itinerary.insiderTips || []).map((tip: string, idx: number) => (
-                  <li key={idx} className="flex items-start gap-2 text-sm text-foreground/80">
-                    <Check size={16} className="text-green-400 mt-0.5 shrink-0" />
-                    <span className="leading-snug">{tip}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-          </div>
-        </div>
+          );
+        })()}
 
         {/* TRAVEL ESSENTIALS - full width below the grid */}
         <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mt-4">

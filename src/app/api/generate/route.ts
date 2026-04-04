@@ -59,12 +59,22 @@ Set "bookable": true for any activity a tourist would pre-book online:
 - Concerts, live music venues, theater shows
 - Any paid experience with a fixed price
 
+═══ DAY 1 ARRIVAL RULE ═══
+Day 1 must always open with the flight's arrival logistics:
+1. First activity: title = "Arrive at [Full Airport Name] ([IATA])", type: "transit", bookable: false, estimatedCost: 0
+   time = realistic arrival time based on departure city & flight duration
+   description: "Clear customs, collect baggage. Welcome to [city]!"
+2. Second activity: title = "Airport Transfer to Hotel", type: "transit", bookable: true, estimatedCost: [realistic local transfer cost in USD]
+   location: Airport Name, time = 30–45 min after arrival
+   description: "Book a private transfer in advance — easiest way to arrive stress-free. Available on Klook for this route."
+Then plan afternoon/evening activities based on realistic remaining daylight hours.
+
 ═══ MANDATORY CONTENT RULES ═══
 1. LOCAL MARKET (mandatory): Include at least 1 real named bazaar/food market/pazar per 3 days. Include opening days.
 2. MUSEUM/CULTURE (mandatory): Include at least 1 real named museum or historical site per 2 days.
 3. BOOKABLE TOUR (mandatory): Include at least 1 guided tour or unique bookable experience per trip.
 4. FOOD SPOTS: Name specific restaurants or street food spots — not "a local restaurant".
-5. SIM CARD: Always fill simCard.tip with real operator info for the destination country.
+5. SIM CARD: Always fill simCard.tip with real local operator info. Format: "Get a [Operator] SIM at [Airport/Store] on arrival — [data plan & cost]. [Operator] offers the best coverage in [region]. Alternatively, activate an Airalo eSIM before you land for instant connectivity."
 
 ═══ COST ACCURACY RULE ═══
 estimatedCost > 0 only for known admission/ticket prices you are confident about. Set 0 for free or variable activities.
