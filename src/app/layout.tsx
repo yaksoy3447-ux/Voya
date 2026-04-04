@@ -14,29 +14,43 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://rovago.app"),
   title: {
-    default: "Rovago — AI Powered Travel Planner",
+    default: "Rovago — AI-Powered Smart Travel Planner",
     template: "%s | Rovago",
   },
-  description: "Craft your personalized journey in seconds with Rovago's AI travel assistant. Day-by-day itineraries, hotel picks, and insider tips — all powered by Claude AI.",
-  keywords: ["AI travel planner", "travel itinerary", "personalized travel", "AI trip planner", "travel assistant"],
+  description: "Plan your dream journey in minutes with Rovago's AI seyahat asistanı. Day-by-day itineraries, premium hotel picks, and local insider tips — all powered by advanced intelligence.",
+  keywords: ["AI travel planner", "travel itinerary", "personalized travel", "AI trip planner", "travel assistant", "luxury travel AI"],
   authors: [{ name: "Rovago" }],
   creator: "Rovago",
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "Rovago — AI Powered Travel Planner",
-    description: "Craft your personalized journey in seconds with Rovago's AI travel assistant.",
+    url: "https://rovago.app",
+    title: "Rovago — AI-Powered Smart Travel Planner",
+    description: "Plan your dream journey in minutes with Rovago's AI travel assistant. Experience travel like never before.",
     siteName: "Rovago",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=1200&auto=format&fit=crop",
+        width: 1200,
+        height: 630,
+        alt: "Rovago AI Travel Planner",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rovago — AI Powered Travel Planner",
-    description: "Craft your personalized journey in seconds with Rovago's AI travel assistant.",
+    title: "Rovago — AI-Powered Smart Travel Planner",
+    description: "Plan your dream journey in minutes with Rovago's AI travel assistant.",
+    images: ["https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=1200&auto=format&fit=crop"],
   },
   robots: {
     index: true,
     follow: true,
+  },
+  alternates: {
+    canonical: "https://rovago.app",
   },
 };
 
