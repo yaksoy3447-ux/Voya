@@ -42,7 +42,7 @@ export default function LandingPage() {
       setFromIdx(i => (i + 1) % FROM_CITIES.length)
       setToIdx(i => (i + 1) % TO_CITIES.length)
     }, 3000)
-    return () => clearInterval(interval)
+    return () => interval
   }, [])
 
   useEffect(() => {
@@ -66,12 +66,12 @@ export default function LandingPage() {
   const handleSearch = () => {
     const fromCode = getCode('search-from-v2')
     const toCode = getCode('search-to-v2')
-    if (!fromCode) { setSearchError('Please select a departure city from the dropdown.'); return }
-    if (!toCode) { setSearchError('Please select a destination city from the dropdown.'); return }
+    if (!fromCode) { setSearchError('Please select a departure city.'); return }
+    if (!toCode) { setSearchError('Please select a destination.'); return }
     setSearchError('')
     const depVal = (document.getElementById('search-dep-date') as HTMLInputElement)?.value
     const retVal = (document.getElementById('search-ret-date') as HTMLInputElement)?.value
-    const dep = depVal ? new Date(depVal) : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+    const dep = depVal ? new Date(depVal) : new Date()
     const depDD = String(dep.getUTCDate()).padStart(2, '0')
     const depMM = String(dep.getUTCMonth() + 1).padStart(2, '0')
     const pax = adults + children
@@ -157,227 +157,140 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      {/* ═══════════════ SEARCH & SAVE ═══════════════ */}
+      {/* ═══════════════ SEARCH & DEALS SECTION ═══════════════ */}
       <section className="py-24 px-6 relative">
-        <div className="max-w-4xl mx-auto text-center">
-             <button
-               onClick={handleSearch}
-               className="h-16 px-12 bg-terracotta text-white rounded-2xl text-[11px] font-bold hover:bg-terracotta/90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group shadow-2xl shadow-terracotta/20 uppercase tracking-widest mx-auto"
-             >
-               Search Deals <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-             </button>
+        <div className="max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="glass-card p-8 md:p-12 rounded-[48px] border border-glass-border/40 text-center relative overflow-hidden">
+            <div className="relative z-10">
+              <span className="text-[10px] font-bold text-terracotta uppercase tracking-[0.4em] mb-4 block italic">Direct Booking Integration</span>
+              <h2 className="text-3xl md:text-5xl font-serif text-white mb-4">Find the Best Deals</h2>
+
+              {/* TRIP TYPE + PASSENGERS */}
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+                <div className="flex items-center gap-1 bg-white/5 rounded-full p-1 border border-white/10">
+                  <button onClick={() => setTripType('oneway')} className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${tripType === 'oneway' ? 'bg-terracotta text-white' : 'text-foreground/40 hover:text-foreground/70'}`}>One Way</button>
+                  <button onClick={() => setTripType('roundtrip')} className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${tripType === 'roundtrip' ? 'bg-terracotta text-white' : 'text-foreground/40 hover:text-foreground/70'}`}>Round Trip</button>
+                </div>
+
+                <div className="relative" ref={passengersRef}>
+                  <button onClick={() => setShowPassengers(v => !v)} className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-foreground/60 hover:border-terracotta/30 transition-all">
+                    <Users size={12} className="text-terracotta" /> {adults + children} Passengers
+                  </button>
+                  {showPassengers && (
+                    <div className="absolute right-0 top-full mt-2 bg-background border border-white/10 rounded-2xl p-4 min-w-[220px] shadow-2xl z-50">
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-xs font-bold">Adults</span>
+                        <div className="flex items-center gap-3">
+                          <button onClick={() => setAdults(v => Math.max(1, v - 1))} className="w-8 h-8 rounded-full bg-white/5">-</button>
+                          <span>{adults}</span>
+                          <button onClick={() => setAdults(v => v + 1)} className="w-8 h-8 rounded-full bg-white/5">+</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold">Children</span>
+                        <div className="flex items-center gap-3">
+                          <button onClick={() => setChildren(v => Math.max(0, v - 1))} className="w-8 h-8 rounded-full bg-white/5">-</button>
+                          <span>{children}</span>
+                          <button onClick={() => setChildren(v => v + 1)} className="w-8 h-8 rounded-full bg-white/5">+</button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* SEARCH FORM */}
+              <div className="bg-white/5 backdrop-blur-xl p-3 rounded-[32px] border border-white/10 flex flex-col lg:flex-row gap-2">
+                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+                  <div className="bg-white/5 rounded-2xl p-4 text-left">
+                    <span className="text-[9px] font-bold text-terracotta uppercase">From</span>
+                    <input id="search-from-v2" placeholder="Istanbul (IST)" className="bg-transparent border-none text-white text-sm w-full focus:ring-0 p-0" />
+                  </div>
+                  <div className="bg-white/5 rounded-2xl p-4 text-left">
+                    <span className="text-[9px] font-bold text-terracotta uppercase">To</span>
+                    <input id="search-to-v2" placeholder="Bali (DPS)" className="bg-transparent border-none text-white text-sm w-full focus:ring-0 p-0" />
+                  </div>
+                  <div className="bg-white/5 rounded-2xl p-4 text-left">
+                    <span className="text-[9px] font-bold text-terracotta uppercase">Date</span>
+                    <input id="search-dep-date" type="date" className="bg-transparent border-none text-white text-sm w-full focus:ring-0 p-0" />
+                  </div>
+                  {tripType === 'roundtrip' && (
+                    <div className="bg-white/5 rounded-2xl p-4 text-left">
+                      <span className="text-[9px] font-bold text-terracotta uppercase">Return</span>
+                      <input id="search-ret-date" type="date" className="bg-transparent border-none text-white text-sm w-full focus:ring-0 p-0" />
+                    </div>
+                  )}
+                </div>
+                <button onClick={handleSearch} className="h-16 px-10 bg-terracotta text-white rounded-2xl text-xs font-bold hover:scale-[1.02] transition-all">
+                  Search Deals
+                </button>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* ═══════════════ CURATED EXPERIENCES (EDITORIAL STYLE) ═══════════════ */}
+      {/* ═══════════════ CURATED EXPERIENCES ═══════════════ */}
       <section className="py-32 px-6 relative bg-linear-to-b from-background to-[#0a0a0a]">
         <div className="max-w-[1800px] mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 px-6">
             <div className="max-w-2xl">
               <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-xs font-bold text-terracotta uppercase tracking-[0.5em] mb-4 block">Handpicked for you</motion.span>
               <h2 className="text-4xl md:text-6xl font-serif text-white leading-[1.1]">Signature <span className="italic text-foreground/40">Experiences</span></h2>
-              <p className="text-foreground/40 max-w-sm text-sm leading-relaxed mt-6">
-                A world-class selection of tours pre-vetted by our AI and partners at Viator and Klook. All IDs verified.
-              </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 lg:gap-8 px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 px-6">
             {allExperiences.map((tour, i) => (
-              <motion.div 
-                key={tour.id} 
-                initial={{ opacity: 0, scale: 0.95 }} 
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.05 }}
-                className="group relative h-[450px] rounded-[32px] overflow-hidden shadow-2xl border border-white/5"
-              >
-                <a 
-                  href={tour.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="absolute inset-0 z-20 flex flex-col justify-end p-6 md:p-8 transition-all duration-700 bg-linear-to-b from-transparent via-black/20 to-black/95 group-hover:via-black/40"
-                 >
+              <motion.div key={tour.id} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: i * 0.05 }} className="group relative h-[450px] rounded-[32px] overflow-hidden border border-white/5">
+                <a href={tour.link} target="_blank" rel="noopener noreferrer" className="absolute inset-0 z-20 flex flex-col justify-end p-8 bg-linear-to-b from-transparent to-black/90">
                   <div className="relative z-30 space-y-3">
-                    <div className="flex items-center justify-between gap-4">
-                      <span className={`text-[8px] font-bold text-white px-2.5 py-0.5 rounded-full uppercase tracking-widest ${tour.type === 'viator' ? 'bg-orange-600' : 'bg-terracotta'}`}>{tour.tag}</span>
-                      <div className="h-px flex-1 bg-white/10" />
-                    </div>
-                    
-                    <div>
-                      <span className="text-[9px] font-bold text-white/40 uppercase tracking-widest block mb-0.5">{tour.loc}</span>
-                      <h3 className="text-xl md:text-2xl font-serif text-white tracking-tight leading-tight">{tour.title}</h3>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-4 gap-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                       <div className="flex items-center gap-1.5 opacity-40 text-[8px] font-bold text-white uppercase tracking-widest">
-                         via {tour.type}
-                       </div>
-                       <div className={`h-10 w-10 text-white rounded-full flex items-center justify-center transition-all shadow-xl ${tour.type === 'viator' ? 'bg-orange-600 hover:bg-orange-700' : 'bg-terracotta hover:bg-terracotta/90'}`}>
-                         <ArrowRight size={16} />
-                       </div>
+                    <span className={`text-[8px] font-bold text-white px-2.5 py-0.5 rounded-full uppercase ${tour.type === 'viator' ? 'bg-orange-600' : 'bg-terracotta'}`}>{tour.tag}</span>
+                    <h3 className="text-xl font-serif text-white">{tour.title}</h3>
+                    <div className="flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-500">
+                       <span className="text-[8px] text-white/50 uppercase">via {tour.type}</span>
+                       <div className="h-10 w-10 bg-white/10 rounded-full flex items-center justify-center"><ArrowRight size={16} /></div>
                     </div>
                   </div>
                 </a>
-
-                <div
-                  style={{ backgroundImage: `url(${tour.img})` }}
-                  className="absolute inset-0 z-10 bg-cover bg-center group-hover:scale-105 transition-transform duration-[2000ms] saturate-[0.8] group-hover:saturate-100"
-                />
+                <div style={{ backgroundImage: `url(${tour.img})` }} className="absolute inset-0 z-10 bg-cover bg-center group-hover:scale-105 transition-transform duration-[2000ms]" />
               </motion.div>
             ))}
           </div>
-          
-          <p className="mt-16 text-center text-[10px] uppercase tracking-[0.4em] font-bold text-foreground/20">
-            Global Experiences Managed by Viator & Klook • Partner ID: P00121703 & 715711
-          </p>
-        </div>
-      </section>
-
-      {/* ═══════════════ HOW IT WORKS ═══════════════ */}
-      <section className="py-24 px-6">
-        <div className="max-w-6xl mx-auto">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="text-center mb-16">
-            <motion.span custom={0} variants={fadeUp} className="text-sm font-medium text-terracotta uppercase tracking-widest">The Process</motion.span>
-            <motion.h2 custom={1} variants={fadeUp} className="text-3xl md:text-5xl font-serif mt-3">From Idea to Itinerary in 3 Steps</motion.h2>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { icon: <MapPin className="text-terracotta" />, step: "01", title: "Share Your Vision", desc: "Just tell us where you want to go and what you love. We handle the rest." },
-              { icon: <Brain className="text-terracotta" />, step: "02", title: "AI Intelligence", desc: "Our engine analyzes thousands of spots to find your perfect matches." },
-              { icon: <Compass className="text-terracotta" />, step: "03", title: "Instant Magic", desc: "Receive a day-by-day itinerary tailored precisely to your preferences." },
-            ].map((item, i) => (
-              <motion.div key={i} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}
-                className="glass-card p-8 rounded-3xl border border-glass-border hover:border-terracotta/20 transition-all group relative overflow-hidden">
-                <div className="absolute top-4 right-4 text-6xl font-serif text-foreground/5 font-bold">{item.step}</div>
-                <div className="w-12 h-12 flex items-center justify-center rounded-2xl bg-terracotta/10 mb-6 group-hover:scale-110 transition-transform">{item.icon}</div>
-                <h3 className="text-xl font-medium mb-3">{item.title}</h3>
-                <p className="text-foreground/60 leading-relaxed">{item.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════ FEATURES BENTO GRID ═══════════════ */}
-      <section className="py-24 px-6 relative">
-        <div className="absolute inset-0 bg-linear-to-b from-transparent via-terracotta/3 to-transparent pointer-events-none" />
-        <div className="max-w-6xl mx-auto relative z-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="text-center mb-16">
-            <motion.span custom={0} variants={fadeUp} className="text-sm font-medium text-terracotta uppercase tracking-widest">Why Rovago?</motion.span>
-            <motion.h2 custom={1} variants={fadeUp} className="text-3xl md:text-5xl font-serif mt-3">Smart Features for Smart Travelers</motion.h2>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { icon: <Globe size={22} />, title: "Hyper-Local Content", desc: "Access hidden gems and local favorites that standard guides miss." },
-              { icon: <Utensils size={22} />, title: "Dining Optimization", desc: "Personalized food recommendations based on your unique dietary needs." },
-              { icon: <Star size={22} />, title: "Premium Access", desc: "Unlock exclusive spots and insider tips with Nomad and Explorer tiers." },
-              { icon: <Clock size={22} />, title: "Time Optimization", desc: "Our AI groups nearby locations to minimize travel time between spots." },
-              { icon: <DollarSign size={22} />, title: "Budget Planning", desc: "Real-time cost estimates for every activity in your personalized plan." },
-              { icon: <Users size={22} />, title: "Group Sync", desc: "Collaborate on travel plans with friends and family in real-time." },
-            ].map((f, i) => (
-              <motion.div key={i} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}
-                className="glass-card p-6 rounded-2xl border border-glass-border hover:border-terracotta/20 transition-all">
-                <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-terracotta/10 text-terracotta mb-4">{f.icon}</div>
-                <h3 className="text-lg font-medium mb-2">{f.title}</h3>
-                <p className="text-sm text-foreground/60 leading-relaxed">{f.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════ TESTIMONIALS ═══════════════ */}
-      <section className="py-24 px-6">
-        <div className="max-w-6xl mx-auto">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="text-center mb-16">
-            <motion.span custom={0} variants={fadeUp} className="text-sm font-medium text-terracotta uppercase tracking-widest">Global Feedback</motion.span>
-            <motion.h2 custom={1} variants={fadeUp} className="text-3xl md:text-5xl font-serif mt-3">Trusted by Travelers Worldwide</motion.h2>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { name: "Sarah M.", location: "New York, USA", text: "Rovago planned my 10-day Italy trip in under a minute. Every restaurant suggestion was a hit. I didn't have to Google a single thing during the entire trip.", stars: 5, avatar: "SM" },
-              { name: "Thomas K.", location: "Berlin, Germany", text: "As a digital nomad, I've tried dozens of travel planners. Rovago is the only one that actually understands budget constraints and gives realistic insider tips.", stars: 5, avatar: "TK" },
-              { name: "Yuki T.", location: "Tokyo, Japan", text: "The route optimization is incredible. It saved us hours of walking by grouping nearby attractions together. The dining secrets were absolutely worth the upgrade.", stars: 5, avatar: "YT" },
-            ].map((t, i) => (
-              <motion.div key={i} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}
-                className="glass-card p-8 rounded-3xl border border-glass-border">
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: t.stars }).map((_, j) => (
-                    <Star key={j} size={16} className="fill-yellow-500 text-yellow-500" />
-                  ))}
-                </div>
-                <p className="text-foreground/80 leading-relaxed mb-6 italic">&quot;{t.text}&quot;</p>
-                <div className="flex items-center gap-3 border-t border-glass-border pt-4">
-                  <div className="w-10 h-10 rounded-full bg-terracotta/20 text-terracotta flex items-center justify-center text-sm font-bold">{t.avatar}</div>
-                  <div>
-                    <div className="font-medium text-sm">{t.name}</div>
-                    <div className="text-xs text-foreground/50">{t.location}</div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════ CTA SECTION ═══════════════ */}
-      <section className="py-24 px-6">
-        <div className="max-w-4xl mx-auto">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }}
-            className="glass-card p-12 md:p-16 rounded-[32px] border border-terracotta/20 bg-terracotta/5 text-center relative overflow-hidden">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[300px] bg-terracotta/10 rounded-full blur-[120px] pointer-events-none" />
-            <motion.div custom={0} variants={fadeUp} className="relative z-10">
-              <Compass size={48} className="text-terracotta mx-auto mb-6" />
-              <h2 className="text-3xl md:text-5xl font-serif mb-4">Ready for Your Next Adventure?</h2>
-              <p className="text-foreground/60 max-w-lg mx-auto mb-8 text-lg">Stop researching and start exploring. Create your perfect travel plan today with AI.</p>
-              <Link href="/create" className="group inline-flex items-center gap-2 h-14 px-10 bg-terracotta text-white font-medium rounded-full shadow-xl shadow-terracotta/20 hover:shadow-terracotta/40 hover:scale-105 transition-all duration-300 text-lg">
-                Start Now <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </motion.div>
-          </motion.div>
         </div>
       </section>
 
       {/* ═══════════════ FOOTER ═══════════════ */}
-      <footer className="border-t border-glass-border py-16 px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+      <footer className="border-t border-glass-border py-20 px-6 text-center">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-left mb-16">
           <div className="col-span-2 md:col-span-1">
-            <h3 className="font-serif text-2xl mb-3">Rovago.</h3>
-            <p className="text-sm text-foreground/50 leading-relaxed">Where AI meets the art of travel.</p>
+            <h3 className="font-serif text-2xl mb-4">Rovago.</h3>
+            <p className="text-sm text-foreground/40 leading-relaxed">Artfully crafted seyahatler, powered by AI.</p>
           </div>
           <div>
-            <h4 className="font-medium text-sm text-foreground/70 uppercase tracking-wider mb-4">Product</h4>
-            <ul className="space-y-2 text-sm text-foreground/50">
-              <li><Link href="/create" className="hover:text-terracotta transition-colors">Create Plan</Link></li>
-              <li><Link href="/pricing" className="hover:text-terracotta transition-colors">Pricing</Link></li>
-              <li><Link href="/login" className="hover:text-terracotta transition-colors">Sign In</Link></li>
+            <h4 className="font-bold text-xs uppercase tracking-widest mb-6 translate-y-[-2px]">Product</h4>
+            <ul className="space-y-3 text-sm text-foreground/40">
+              <li><Link href="/create">Create Plan</Link></li>
+              <li><Link href="/pricing">Pricing</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="font-medium text-sm text-foreground/70 uppercase tracking-wider mb-4">Company</h4>
-            <ul className="space-y-2 text-sm text-foreground/50">
-              <li><Link href="/about" className="hover:text-terracotta transition-colors">About</Link></li>
-              <li><Link href="/blog" className="hover:text-terracotta transition-colors">Blog</Link></li>
-              <li><Link href="/contact" className="hover:text-terracotta transition-colors">Contact</Link></li>
+            <h4 className="font-bold text-xs uppercase tracking-widest mb-6 translate-y-[-2px]">Company</h4>
+            <ul className="space-y-3 text-sm text-foreground/40">
+               <li><Link href="/about">About</Link></li>
+               <li><Link href="/blog">Blog</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="font-medium text-sm text-foreground/70 uppercase tracking-wider mb-4">Legal</h4>
-            <ul className="space-y-2 text-sm text-foreground/50">
-              <li><Link href="/terms" className="hover:text-terracotta transition-colors">Terms of Service</Link></li>
-              <li><Link href="/privacy" className="hover:text-terracotta transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/cookies" className="hover:text-terracotta transition-colors">Cookie Policy</Link></li>
+            <h4 className="font-bold text-xs uppercase tracking-widest mb-6 translate-y-[-2px]">Legal</h4>
+            <ul className="space-y-3 text-sm text-foreground/40">
+               <li><Link href="/privacy">Privacy</Link></li>
+               <li><Link href="/terms">Terms</Link></li>
             </ul>
           </div>
         </div>
-        <div className="max-w-6xl mx-auto mt-12 pt-8 border-t border-glass-border/50 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-foreground/40">© 2026 Rovago. All rights reserved.</p>
-          <p className="text-xs text-foreground/40">Built with AI ✦ Designed for explorers</p>
-        </div>
+        <p className="text-[10px] text-foreground/20 uppercase tracking-[0.4em]">© 2026 Rovago - All Rights Reserved</p>
       </footer>
 
     </div>
