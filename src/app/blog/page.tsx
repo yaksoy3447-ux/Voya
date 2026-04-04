@@ -49,7 +49,7 @@ export default function BlogPage() {
       date: "April 2, 2026",
       readTime: "5 min read",
       category: "Experience",
-      image: "https://images.unsplash.com/photo-1548574505-12ca0a174b6d?q=80&w=800&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Thailand Travel Guide 2026: Bangkok, Beaches & Beyond",
