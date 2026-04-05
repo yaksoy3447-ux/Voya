@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react'
 import { Calendar, MapPin, Plane, Hotel, DollarSign, Compass, Star, Check, Sparkles, Lock, Download, Globe, Shield, Car, Utensils } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '@/lib/supabase/client'
+import WeatherWidget from '@/components/plan/WeatherWidget'
+import EventsSection from '@/components/plan/EventsSection'
 
 interface Activity {
   title: string;
@@ -283,6 +285,9 @@ export default function PlanDashboard() {
               </div>
             </div>
 
+            {/* Weather Widget */}
+            <WeatherWidget city={itinerary.selectedCity || itinerary.selectedCountry || ''} />
+
             {/* Today's Tours */}
             {(() => {
               const day = itinerary.days.find((d: Day) => d.day === activeDay);
@@ -468,6 +473,9 @@ export default function PlanDashboard() {
 
           </div>
         </div>
+
+        {/* EVENTS & SHOWS */}
+        <EventsSection city={itinerary.selectedCity || ''} country={itinerary.selectedCountry} />
 
         {/* TRAVEL ESSENTIALS */}
         <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mt-4">

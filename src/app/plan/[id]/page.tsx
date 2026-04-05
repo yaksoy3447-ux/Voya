@@ -8,6 +8,8 @@ import { Calendar, MapPin, Plane, Hotel, DollarSign, Compass, Star, Check, Spark
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '@/lib/supabase/client'
 import Image from 'next/image'
+import WeatherWidget from '@/components/plan/WeatherWidget'
+import EventsSection from '@/components/plan/EventsSection'
 
 interface Activity {
   title: string;
@@ -366,6 +368,9 @@ export default function PlanHistoryViewer() {
               </div>
             </div>
 
+            {/* Weather Widget */}
+            <WeatherWidget city={itinerary.selectedCity || itinerary.selectedCountry || ''} />
+
             {/* Viator Tours */}
             <div className="glass-card p-6 rounded-3xl border border-glass-border bg-orange-500/5">
               <h3 className="font-serif text-lg text-foreground flex items-center gap-2 mb-4">
@@ -568,6 +573,9 @@ export default function PlanHistoryViewer() {
             </div>
           );
         })()}
+
+        {/* ── Events & Shows ── */}
+        <EventsSection city={itinerary.selectedCity || ''} country={itinerary.selectedCountry} />
 
         {/* ── Day Map — full width, updates with active day ── */}
         {(() => {
