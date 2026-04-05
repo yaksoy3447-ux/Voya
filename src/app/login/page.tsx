@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from "react"
 import { createBrowserClient } from "@supabase/ssr"
 import { motion } from "framer-motion"
 import Link from "next/link"
+import Image from "next/image"
 import { ArrowRight, Mail, Lock, Eye, EyeOff, Compass } from "lucide-react"
 import { useSearchParams } from "next/navigation"
 
@@ -76,8 +77,8 @@ function LoginContent() {
       >
         {/* Logo */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-block mb-10 group">
-            <span className="font-serif text-2xl font-medium tracking-tight">Rovago.</span>
+          <Link href="/" className="inline-block mb-10 bg-white rounded-xl px-4 py-2 shadow-md hover:shadow-lg transition-shadow">
+            <Image src="/logo.jpeg" alt="Rovago" width={120} height={38} className="h-9 w-auto object-contain" />
           </Link>
           <h1 className="text-2xl md:text-3xl font-serif mb-2">
             {isSignUp ? 'Create your account' : 'Welcome back'}

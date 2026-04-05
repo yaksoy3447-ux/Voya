@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { User, LogOut } from 'lucide-react'
 
@@ -8,8 +9,8 @@ export async function Header() {
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 px-4 md:px-8 py-5 flex justify-between items-center bg-transparent pointer-events-none">
-      <Link href="/" className="text-3xl font-serif text-foreground tracking-wider font-bold pointer-events-auto">
-        Rovago.
+      <Link href="/" className="pointer-events-auto bg-white rounded-xl px-3 py-1.5 shadow-md hover:shadow-lg transition-shadow">
+        <Image src="/logo.jpeg" alt="Rovago" width={110} height={36} className="h-9 w-auto object-contain" />
       </Link>
 
       <nav className="hidden md:flex items-center gap-8 pointer-events-auto">

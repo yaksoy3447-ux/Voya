@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { Sparkles, MapPin, Calendar, Compass, Star, ArrowRight, Shield, Zap, Globe, Users, ChevronRight, Clock, DollarSign, Utensils, Brain, ChevronDown, Plus, Minus } from "lucide-react"
 
@@ -391,7 +392,9 @@ export default function LandingPage() {
       <footer className="border-t border-glass-border py-20 px-6 text-center">
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-left mb-16">
           <div className="col-span-2 md:col-span-1">
-            <h3 className="font-serif text-2xl mb-4">Rovago.</h3>
+            <div className="mb-4 inline-block bg-white rounded-xl px-3 py-1.5 shadow-md">
+              <Image src="/logo.jpeg" alt="Rovago" width={100} height={32} className="h-8 w-auto object-contain" />
+            </div>
             <p className="text-sm text-foreground/40 leading-relaxed">Artfully crafted seyahatler, powered by AI.</p>
           </div>
           <div>
