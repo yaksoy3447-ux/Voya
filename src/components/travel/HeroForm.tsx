@@ -112,7 +112,7 @@ export function HeroForm() {
   const getStepValidation = () => {
     if (step === 1) return selectedDepCityObj && (isFlexible || selectedDestCityObj);
     if (step === 2) return startDate && endDate;
-    if (step === 3) return budget && accommodation;
+    if (step === 3) return !!budget;
     if (step === 4) return interests.length > 0 && (!isFlexible || vibe);
     return false;
   };
@@ -216,9 +216,15 @@ export function HeroForm() {
                     <div className="space-y-6">
                        <h2 className="text-2xl font-serif text-foreground/90 flex items-center gap-2"><Wallet className="text-terracotta"/> Daily Budget</h2>
                        <div className="grid grid-cols-3 gap-3">
-                         {['budget', 'mid', 'luxury'].map(b => (
-                           <button key={b} onClick={() => setBudget(b)} className={`p-4 rounded-xl border-2 transition-all ${budget === b ? 'border-terracotta bg-terracotta/10' : 'border-glass-border hover:border-terracotta/30'}`}>
-                             <span className="capitalize text-sm font-bold">{b}</span>
+                         {[
+                           { value: 'budget', label: 'Budget', range: 'Under $75/day', desc: 'Hostels, street food, public transport' },
+                           { value: 'mid', label: 'Mid', range: '$75–200/day', desc: '3★ hotels, restaurants, some tours' },
+                           { value: 'luxury', label: 'Luxury', range: '$200+/day', desc: '5★ hotels, fine dining, private tours' },
+                         ].map(b => (
+                           <button key={b.value} onClick={() => setBudget(b.value)} className={`p-4 rounded-xl border-2 transition-all text-left ${budget === b.value ? 'border-terracotta bg-terracotta/10' : 'border-glass-border hover:border-terracotta/30'}`}>
+                             <span className="block text-sm font-bold mb-1">{b.label}</span>
+                             <span className="block text-xs text-terracotta font-medium mb-1">{b.range}</span>
+                             <span className="block text-[10px] text-foreground/40 leading-tight">{b.desc}</span>
                            </button>
                          ))}
                        </div>
