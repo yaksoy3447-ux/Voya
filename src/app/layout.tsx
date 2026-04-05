@@ -15,6 +15,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://rovago.app"),
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
   title: {
     default: "Rovago — AI-Powered Smart Travel Planner",
     template: "%s | Rovago",
@@ -48,6 +52,12 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+
+verification: {
+    other: {
+      'impact-site-verification': '081dad6c-848e-4147-bc61-7ac09b83669d',
+    },
   },
   alternates: {
     canonical: "https://rovago.app",
