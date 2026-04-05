@@ -104,7 +104,7 @@ export function HeroForm() {
 
   const handleHotelSearch = () => {
     if (selectedHotelCity) {
-      const url = `https://www.booking.com/searchresults.html?aid=2841090&ss=${encodeURIComponent(selectedHotelCity.name)}&lang=en-us&sb_lp=1`;
+      const url = `https://www.expedia.com/Hotel-Search?destination=${encodeURIComponent(selectedHotelCity.name)}&affcid=ZOorfcw`;
       window.open(url, '_blank');
     }
   };
@@ -248,7 +248,7 @@ export function HeroForm() {
             <motion.div key="hotels" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="flex-1 flex flex-col space-y-8">
               <div className="space-y-2">
                 <h2 className="text-3xl font-serif text-foreground/90">Find Your Perfect Stay</h2>
-                <p className="text-foreground/50 text-sm">Direct access to 2.5 million+ hotels worldwide via Booking.com</p>
+                <p className="text-foreground/50 text-sm">Search hotels worldwide via Expedia</p>
               </div>
               
               <div className="relative group">
@@ -280,7 +280,7 @@ export function HeroForm() {
 
               <div className="mt-auto pt-8">
                 <Button onClick={handleHotelSearch} disabled={!selectedHotelCity} className="w-full h-14 text-lg font-bold shadow-xl shadow-terracotta/20 hover:scale-[1.02] active:scale-[0.98]">
-                  Search Deals on Booking.com <ArrowRight className="ml-2" />
+                  Search Deals on Expedia <ArrowRight className="ml-2" />
                 </Button>
               </div>
             </motion.div>
