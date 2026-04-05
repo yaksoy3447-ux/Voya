@@ -587,7 +587,33 @@ export default function BlogPostDetail() {
                   <motion.div variants={fadeUp} custom={0}>
                     <div className="w-16 h-1 bg-terracotta/40 mb-10 rounded-full" />
                     <p className="text-2xl md:text-3xl text-foreground/80 leading-relaxed font-light italic">
-                      &quot;{section.text}&quot;
+                      {(() => {
+                        const links: { label: string; url: string }[] = [];
+                        const cleanedText = section.text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, label, url) => {
+                          links.push({ label, url });
+                          return label;
+                        });
+                        return (
+                          <>
+                            &quot;{cleanedText}&quot;
+                            {links.length > 0 && (
+                              <div className="flex flex-wrap gap-4 mt-8 not-italic">
+                                {links.map((link, idx) => (
+                                  <a 
+                                    key={idx} 
+                                    href={link.url} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="inline-flex h-10 px-6 items-center gap-2 rounded-full border border-terracotta/30 bg-terracotta/5 text-[10px] uppercase tracking-widest font-bold text-white hover:bg-terracotta hover:border-terracotta transition-all shadow-lg shadow-terracotta/10"
+                                  >
+                                    Explore {link.label.split(' ')[0]} <ArrowRight size={12} />
+                                  </a>
+                                ))}
+                              </div>
+                            )}
+                          </>
+                        );
+                      })()}
                     </p>
                   </motion.div>
                 </div>
