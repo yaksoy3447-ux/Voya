@@ -4,7 +4,6 @@ export const dynamic = 'force-dynamic';
 
 import { usePlanStore } from '@/store/usePlanStore'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Calendar, MapPin, Plane, Hotel, DollarSign, Compass, Star, Check, Sparkles, Lock, Download, Globe, Shield, Car, Utensils } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -206,14 +205,24 @@ export default function PlanDashboard() {
                                   <MapPin size={12}/> {act.location}
                                 </span>
                                 {act.type !== 'food' && (
-                                  <a
-                                    href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(act.title + ' ' + act.location)}&marker=715711`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-terracotta text-white px-3 py-1.5 rounded-full hover:bg-terracotta/90 transition-all"
-                                  >
-                                    <Compass size={11} /> Book on Klook
-                                  </a>
+                                  <div className="flex items-center gap-2">
+                                    <a
+                                      href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(act.title + ' ' + act.location)}&marker=715711`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-terracotta text-white px-3 py-1.5 rounded-full hover:bg-terracotta/90 transition-all"
+                                    >
+                                      <Compass size={11} /> Book on Klook
+                                    </a>
+                                    <a
+                                      href={`https://www.getyourguide.com/s/?q=${encodeURIComponent(act.title + ' ' + act.location)}&partner_id=1JGDJCM`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-[10px] font-bold text-emerald-400 hover:text-emerald-300 transition-all"
+                                    >
+                                      GYG →
+                                    </a>
+                                  </div>
                                 )}
                               </div>
                             </div>
@@ -530,12 +539,12 @@ export default function PlanDashboard() {
                 href: "https://www.expedia.com/Cars?affcid=ZOorfcw",
               },
               {
-                icon: <Compass size={20} className="text-orange-400" />,
-                title: "Things To Do",
-                desc: "Tours & activities on-site.",
-                partner: "Klook",
-                label: "Explore",
-                href: `https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(itinerary.selectedCity || itinerary.selectedCountry || 'travel')}&marker=715711`,
+                icon: <Compass size={20} className="text-emerald-400" />,
+                title: "Tours & Experiences",
+                desc: "Day trips & local activities.",
+                partner: "GetYourGuide",
+                label: "Discover",
+                href: `https://www.getyourguide.com/s/?q=${encodeURIComponent(itinerary.selectedCity || itinerary.selectedCountry || 'travel')}&partner_id=1JGDJCM`,
               },
             ].map((item, i) => (
               <a

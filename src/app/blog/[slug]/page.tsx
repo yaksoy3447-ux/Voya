@@ -4,7 +4,7 @@ import { useParams } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import { motion, Variants } from "framer-motion"
-import { ArrowLeft, Calendar, Clock, ThumbsUp, ThumbsDown, Compass, Zap, ArrowRight, Utensils } from "lucide-react"
+import { ArrowLeft, Calendar, Clock, ThumbsUp, ThumbsDown, Compass, Zap, ArrowRight, Hotel, Shield, Map } from "lucide-react"
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -515,16 +515,25 @@ export default function BlogPostDetail() {
                     <p className="text-lg text-foreground/60 mb-10 leading-relaxed">
                       We&apos;ve curated the highest-rated tours and experiences for this destination. Check live availability and book your next adventure today.
                     </p>
-                    <div className="flex flex-wrap gap-4">
-                      <a href={`https://www.viator.com/search/${encodeURIComponent(post.category === 'City Guide' ? post.title.split(':')[0] : post.category)}?pid=P00121703&mcid=42383&medium=link`} target="_blank" rel="noopener noreferrer"
-                        className="h-14 px-8 bg-orange-500 text-white rounded-full font-bold flex items-center gap-2 hover:scale-105 transition-all shadow-xl shadow-orange-500/20">
-                        Explore Viator Tours
-                      </a>
-                      <a href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(post.category === 'City Guide' ? post.title.split(':')[0] : post.category)}&marker=715711`} target="_blank" rel="noopener noreferrer"
-                        className="h-14 px-8 bg-terracotta text-white rounded-full font-bold flex items-center gap-2 hover:scale-105 transition-all shadow-xl shadow-terracotta/20">
-                        Check on Klook
-                      </a>
-                    </div>
+                    {(() => {
+                      const q = encodeURIComponent(post.title.split(':')[0].trim())
+                      return (
+                        <div className="flex flex-wrap gap-4">
+                          <a href={`https://www.viator.com/search/${q}?pid=P00121703&mcid=42383&medium=link`} target="_blank" rel="noopener noreferrer"
+                            className="h-14 px-8 bg-orange-500 text-white rounded-full font-bold flex items-center gap-2 hover:scale-105 transition-all shadow-xl shadow-orange-500/20">
+                            Explore on Viator
+                          </a>
+                          <a href={`https://www.klook.com/en-US/search/result/?query=${q}&marker=715711`} target="_blank" rel="noopener noreferrer"
+                            className="h-14 px-8 bg-terracotta text-white rounded-full font-bold flex items-center gap-2 hover:scale-105 transition-all shadow-xl shadow-terracotta/20">
+                            Book on Klook
+                          </a>
+                          <a href={`https://www.getyourguide.com/s/?q=${q}&partner_id=1JGDJCM`} target="_blank" rel="noopener noreferrer"
+                            className="h-14 px-8 bg-emerald-600 text-white rounded-full font-bold flex items-center gap-2 hover:scale-105 transition-all shadow-xl shadow-emerald-600/20">
+                            GetYourGuide
+                          </a>
+                        </div>
+                      )
+                    })()}
                   </div>
                 </motion.div>
               )}
@@ -553,40 +562,60 @@ export default function BlogPostDetail() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-              <a href="https://www.airalo.com/" target="_blank" rel="noopener noreferrer" 
-                className="group p-8 bg-white/5 border border-white/5 rounded-3xl hover:border-terracotta/30 transition-all hover:bg-white/10">
-                <div className="w-12 h-12 bg-orange-500/10 rounded-2xl flex items-center justify-center text-orange-500 mb-6 group-hover:scale-110 transition-transform">
-                  <Zap size={24} />
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-left">
+              <a href="https://www.airalo.com/" target="_blank" rel="noopener noreferrer"
+                className="group p-6 bg-white/5 border border-white/5 rounded-3xl hover:border-terracotta/30 transition-all hover:bg-white/10">
+                <div className="w-10 h-10 bg-orange-500/10 rounded-xl flex items-center justify-center text-orange-500 mb-4 group-hover:scale-110 transition-transform">
+                  <Zap size={20} />
                 </div>
-                <h4 className="text-lg font-medium mb-2 text-white">Stay Connected</h4>
-                <p className="text-xs text-foreground/50 mb-6 leading-relaxed">We used Airalo eSIMs to stay online from day one. Reliable and affordable data.</p>
-                <div className="text-[10px] font-bold text-terracotta uppercase tracking-widest group-hover:translate-x-2 transition-transform inline-flex items-center gap-2">
-                  Get Airalo App <ArrowRight size={12} />
-                </div>
-              </a>
-
-              <a href="https://www.expedia.com/hotels?affcid=ZOorfcw" target="_blank" rel="noopener noreferrer" 
-                className="group p-8 bg-white/5 border border-white/5 rounded-3xl hover:border-terracotta/30 transition-all hover:bg-white/10">
-                <div className="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform">
-                  <Utensils size={24} />
-                </div>
-                <h4 className="text-lg font-medium mb-2 text-white">Handpicked Stays</h4>
-                <p className="text-xs text-foreground/50 mb-6 leading-relaxed">Our favorite boutique hotels and hidden gems across the city, booked via Expedia.</p>
-                <div className="text-[10px] font-bold text-terracotta uppercase tracking-widest group-hover:translate-x-2 transition-transform inline-flex items-center gap-2">
-                  Book on Expedia <ArrowRight size={12} />
+                <h4 className="text-base font-medium mb-1 text-white">Stay Connected</h4>
+                <p className="text-xs text-foreground/50 mb-4 leading-relaxed">Airalo eSIM — online from day one.</p>
+                <div className="text-[10px] font-bold text-terracotta uppercase tracking-widest group-hover:translate-x-2 transition-transform inline-flex items-center gap-1">
+                  Airalo <ArrowRight size={10} />
                 </div>
               </a>
-
-              <a href={`https://www.viator.com/search/${encodeURIComponent(post.category === 'City Guide' ? post.title.split(':')[0] : post.category)}?pid=P00121703&mcid=42383&medium=link`} target="_blank" rel="noopener noreferrer" 
-                className="group p-8 bg-white/5 border border-white/5 rounded-3xl hover:border-terracotta/30 transition-all hover:bg-white/10">
-                <div className="w-12 h-12 bg-orange-500/10 rounded-2xl flex items-center justify-center text-orange-400 mb-6 group-hover:scale-110 transition-transform">
-                  <Compass size={24} />
+              <a href="https://www.expedia.com/hotels?affcid=ZOorfcw" target="_blank" rel="noopener noreferrer"
+                className="group p-6 bg-white/5 border border-white/5 rounded-3xl hover:border-terracotta/30 transition-all hover:bg-white/10">
+                <div className="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400 mb-4 group-hover:scale-110 transition-transform">
+                  <Hotel size={20} />
                 </div>
-                <h4 className="text-lg font-medium mb-2 text-white">Reliable Transfers</h4>
-                <p className="text-xs text-foreground/50 mb-6 leading-relaxed">Skip the taxi lines. We pre-booked our airport transfers and day tours through Viator.</p>
-                <div className="text-[10px] font-bold text-terracotta uppercase tracking-widest group-hover:translate-x-2 transition-transform inline-flex items-center gap-2">
-                  Browse Transfers <ArrowRight size={12} />
+                <h4 className="text-base font-medium mb-1 text-white">Best Stays</h4>
+                <p className="text-xs text-foreground/50 mb-4 leading-relaxed">Handpicked hotels booked via Expedia.</p>
+                <div className="text-[10px] font-bold text-terracotta uppercase tracking-widest group-hover:translate-x-2 transition-transform inline-flex items-center gap-1">
+                  Expedia <ArrowRight size={10} />
+                </div>
+              </a>
+              <a href="https://safetywing.com/?referenceID=715711" target="_blank" rel="noopener noreferrer"
+                className="group p-6 bg-white/5 border border-white/5 rounded-3xl hover:border-terracotta/30 transition-all hover:bg-white/10">
+                <div className="w-10 h-10 bg-sky-500/10 rounded-xl flex items-center justify-center text-sky-400 mb-4 group-hover:scale-110 transition-transform">
+                  <Shield size={20} />
+                </div>
+                <h4 className="text-base font-medium mb-1 text-white">Travel Insurance</h4>
+                <p className="text-xs text-foreground/50 mb-4 leading-relaxed">Medical & trip coverage for nomads.</p>
+                <div className="text-[10px] font-bold text-terracotta uppercase tracking-widest group-hover:translate-x-2 transition-transform inline-flex items-center gap-1">
+                  SafetyWing <ArrowRight size={10} />
+                </div>
+              </a>
+              <a href={`https://www.klook.com/en-US/search/result/?query=${encodeURIComponent(post.title.split(':')[0].trim())}&marker=715711`} target="_blank" rel="noopener noreferrer"
+                className="group p-6 bg-white/5 border border-white/5 rounded-3xl hover:border-terracotta/30 transition-all hover:bg-white/10">
+                <div className="w-10 h-10 bg-terracotta/10 rounded-xl flex items-center justify-center text-terracotta mb-4 group-hover:scale-110 transition-transform">
+                  <Compass size={20} />
+                </div>
+                <h4 className="text-base font-medium mb-1 text-white">Tours & Tickets</h4>
+                <p className="text-xs text-foreground/50 mb-4 leading-relaxed">Guided tours and activity passes.</p>
+                <div className="text-[10px] font-bold text-terracotta uppercase tracking-widest group-hover:translate-x-2 transition-transform inline-flex items-center gap-1">
+                  Klook <ArrowRight size={10} />
+                </div>
+              </a>
+              <a href={`https://www.getyourguide.com/s/?q=${encodeURIComponent(post.title.split(':')[0].trim())}&partner_id=1JGDJCM`} target="_blank" rel="noopener noreferrer"
+                className="group p-6 bg-white/5 border border-white/5 rounded-3xl hover:border-terracotta/30 transition-all hover:bg-white/10">
+                <div className="w-10 h-10 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-400 mb-4 group-hover:scale-110 transition-transform">
+                  <Map size={20} />
+                </div>
+                <h4 className="text-base font-medium mb-1 text-white">Experiences</h4>
+                <p className="text-xs text-foreground/50 mb-4 leading-relaxed">Unique day trips & local discoveries.</p>
+                <div className="text-[10px] font-bold text-terracotta uppercase tracking-widest group-hover:translate-x-2 transition-transform inline-flex items-center gap-1">
+                  GetYourGuide <ArrowRight size={10} />
                 </div>
               </a>
             </div>

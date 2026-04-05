@@ -296,10 +296,20 @@ export default function PlanHistoryViewer() {
                                   <MapPin size={12}/> {act.location}
                                 </span>
                                 {act.type !== 'food' && (
-                                  <a href={`https://www.viator.com/search/${encodeURIComponent(act.title + ' ' + act.location)}?pid=P00121703&mcid=42383&medium=link`} target="_blank" rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-orange-500 text-white px-3 py-1.5 rounded-full hover:bg-orange-600 transition-all">
-                                    <Compass size={11} /> Book on Viator
-                                  </a>
+                                  <div className="flex items-center gap-2">
+                                    <a href={`https://www.viator.com/search/${encodeURIComponent(act.title + ' ' + act.location)}?pid=P00121703&mcid=42383&medium=link`} target="_blank" rel="noopener noreferrer"
+                                      className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-orange-500 text-white px-3 py-1.5 rounded-full hover:bg-orange-600 transition-all">
+                                      <Compass size={11} /> Book on Viator
+                                    </a>
+                                    <a
+                                      href={`https://www.getyourguide.com/s/?q=${encodeURIComponent(act.title + ' ' + act.location)}&partner_id=1JGDJCM`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-[10px] font-bold text-emerald-400 hover:text-emerald-300 transition-all"
+                                    >
+                                      GYG →
+                                    </a>
+                                  </div>
                                 )}
                               </div>
                             </div>
@@ -659,12 +669,12 @@ export default function PlanHistoryViewer() {
                 href: "https://www.expedia.com/Cars?affcid=ZOorfcw",
               },
               {
-                icon: <Compass size={20} className="text-orange-400" />,
-                title: "Tours & Tickets",
-                desc: "Book top-rated tours & activities.",
-                partner: "Viator",
-                label: "Explore Tours",
-                href: `https://www.viator.com/search/${encodeURIComponent(itinerary.selectedCity || itinerary.selectedCountry || 'travel')}?pid=P00121703&mcid=42383&medium=link`,
+                icon: <Compass size={20} className="text-emerald-400" />,
+                title: "Tours & Experiences",
+                desc: "Day trips & local activities.",
+                partner: "GetYourGuide",
+                label: "Discover",
+                href: `https://www.getyourguide.com/s/?q=${encodeURIComponent(itinerary.selectedCity || itinerary.selectedCountry || 'travel')}&partner_id=1JGDJCM`,
               },
             ].map((item, i) => (
               <a
