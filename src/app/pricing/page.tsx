@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { Check, X, Compass, Star, Zap, Crown } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
@@ -10,9 +12,11 @@ const fadeUp: any = {
   visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } })
 }
 
-export default function PricingPage() {
+function PricingContent() {
   const [loading, setLoading] = useState<string | null>(null)
   const [billing, setBilling] = useState<'monthly' | 'yearly'>('monthly')
+  const searchParams = useSearchParams()
+  const limitReached = searchParams.get('reason') === 'limit'
 
   const handleSubscribe = async (planId: string) => {
     setLoading(planId)
@@ -128,6 +132,11 @@ export default function PricingPage() {
       <div className="fixed bottom-0 right-1/4 w-[600px] h-[600px] bg-sand/8 rounded-full blur-[150px] translate-x-1/2 translate-y-1/2 pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
+        {limitReached && (
+          <div className="mb-8 p-4 rounded-2xl bg-terracotta/10 border border-terracotta/30 text-center text-sm text-terracotta font-medium">
+            You've used all your free plans. Upgrade to keep exploring.
+          </div>
+        )}
         <motion.div initial="hidden" animate="visible" className="text-center mb-12">
           <motion.span custom={0} variants={fadeUp} className="text-sm font-medium text-terracotta uppercase tracking-widest">Pricing</motion.span>
           <motion.h1 custom={1} variants={fadeUp} className="text-4xl md:text-5xl font-serif mt-3 mb-4">Choose Your Adventure Tier</motion.h1>
@@ -190,5 +199,13 @@ export default function PricingPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function PricingPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background" />}>
+      <PricingContent />
+    </Suspense>
   )
 }

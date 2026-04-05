@@ -132,6 +132,10 @@ export function HeroForm() {
             isFlexible, vibe, startDate, endDate, adults, children, budget, accommodation, interests, pace
           })
         });
+        if (res.status === 403) {
+          router.push('/pricing?reason=limit');
+          return;
+        }
         if (!res.ok) throw new Error(`Server error: ${res.status}`);
         const reader = res.body?.getReader();
         const decoder = new TextDecoder();
