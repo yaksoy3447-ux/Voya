@@ -78,14 +78,14 @@ export default function PricingPage() {
       id: 'explorer',
       name: 'Explorer',
       icon: <Star size={24} />,
-      monthlyPrice: 15,
-      yearlyPrice: 15 * 9,
+      monthlyPrice: 9.99,
+      yearlyPrice: Math.round(9.99 * 9 * 100) / 100,
       desc: 'Full access for regular travelers',
       cta: 'Choose Explorer',
       ctaStyle: 'border border-glass-border bg-white/5 hover:bg-white/10 text-foreground',
       highlight: false,
       features: [
-        { text: '20 plans total', included: true },
+        { text: '15 plans total', included: true },
         { text: 'Full day-by-day itinerary', included: true },
         { text: 'Restaurant & dining secrets', included: true },
         { text: 'Insider tips & local knowledge', included: true },
@@ -100,8 +100,8 @@ export default function PricingPage() {
       id: 'nomad',
       name: 'Nomad',
       icon: <Crown size={24} className="fill-terracotta" />,
-      monthlyPrice: 29,
-      yearlyPrice: 29 * 9,
+      monthlyPrice: 19.99,
+      yearlyPrice: Math.round(19.99 * 9 * 100) / 100,
       desc: 'Everything, unlimited, forever',
       cta: 'Choose Nomad',
       ctaStyle: 'bg-terracotta text-white hover:bg-terracotta/90 shadow-xl shadow-terracotta/20',
@@ -158,7 +158,7 @@ export default function PricingPage() {
               <p className="text-sm text-foreground/50 mb-5">{plan.desc}</p>
 
               <div className="mb-6">
-                <span className="text-4xl font-medium">${billing === 'monthly' ? plan.monthlyPrice : plan.yearlyPrice}</span>
+                <span className="text-4xl font-medium">${billing === 'monthly' ? plan.monthlyPrice.toFixed(plan.monthlyPrice % 1 === 0 ? 0 : 2) : plan.yearlyPrice.toFixed(plan.yearlyPrice % 1 === 0 ? 0 : 2)}</span>
                 <span className="text-foreground/50 text-sm">
                   {plan.monthlyPrice === 0 ? ' forever' : billing === 'monthly' ? ' /mo' : ' /yr'}
                 </span>

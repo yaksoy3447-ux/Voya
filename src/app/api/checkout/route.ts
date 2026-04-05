@@ -18,15 +18,15 @@ export async function POST(req: Request) {
     let name = "";
     
     if (planId === 'explorer') {
-      monthlyAmount = 15;
+      monthlyAmount = 9.99;
       name = "Explorer Plan";
     } else if (planId === 'nomad') {
-      monthlyAmount = 29;
+      monthlyAmount = 19.99;
       name = "Nomad Plan";
     }
 
     // Yıllık fiyat = Aylık fiyat * 9
-    const unitAmount = isYearly ? (monthlyAmount * 9 * 100) : (monthlyAmount * 100);
+    const unitAmount = isYearly ? Math.round(monthlyAmount * 9 * 100) : Math.round(monthlyAmount * 100);
     const displayName = `${name} (${isYearly ? 'Yearly' : 'Monthly'})`;
 
     const supabase = await createClient();

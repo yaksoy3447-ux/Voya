@@ -186,7 +186,7 @@ function ProfileContent() {
                 {(() => {
                   const used = profile?.plan_count ?? 0;
                   const tier = profile?.tier || 'Free';
-                  const limit = tier === 'Free' ? 3 : tier === 'Explorer' ? 20 : null;
+                  const limit = tier === 'Free' ? 3 : tier === 'Explorer' ? 15 : null;
                   const isUnlimited = tier === 'Nomad';
                   const pct = limit ? Math.min(100, (used / limit) * 100) : 0;
                   return (
