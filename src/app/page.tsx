@@ -392,7 +392,7 @@ export default function LandingPage() {
       <footer className="border-t border-glass-border py-20 px-6 text-center">
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-left mb-16">
           <div className="col-span-2 md:col-span-1">
-            <Image src="/logo.png" alt="Rovago" width={120} height={38} className="h-10 w-auto object-contain mb-4" />
+            <Image src="/logo.png" alt="Rovago" width={120} height={38} className="h-10 w-auto object-contain brightness-0 invert mb-4" />
             <p className="text-sm text-foreground/40 leading-relaxed">Artfully crafted seyahatler, powered by AI.</p>
           </div>
           <div>
