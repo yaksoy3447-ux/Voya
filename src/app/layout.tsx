@@ -53,8 +53,7 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-
-verification: {
+  verification: {
     other: {
       'impact-site-verification': '081dad6c-848e-4147-bc61-7ac09b83669d',
     },
