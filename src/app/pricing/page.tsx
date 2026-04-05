@@ -85,7 +85,7 @@ export default function PricingPage() {
       ctaStyle: 'border border-glass-border bg-white/5 hover:bg-white/10 text-foreground',
       highlight: false,
       features: [
-        { text: '10 plans total', included: true },
+        { text: '20 plans total', included: true },
         { text: 'Full day-by-day itinerary', included: true },
         { text: 'Restaurant & dining secrets', included: true },
         { text: 'Insider tips & local knowledge', included: true },
