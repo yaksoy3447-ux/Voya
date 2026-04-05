@@ -18,10 +18,10 @@ export async function POST(req: Request) {
     let name = "";
     
     if (planId === 'explorer') {
-      monthlyAmount = 12;
+      monthlyAmount = 15;
       name = "Explorer Plan";
     } else if (planId === 'nomad') {
-      monthlyAmount = 18;
+      monthlyAmount = 29;
       name = "Nomad Plan";
     }
 
