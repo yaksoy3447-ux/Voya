@@ -70,6 +70,8 @@ export function HeroForm() {
 
   const [depCityPredictions, setDepCityPredictions] = useState<any[]>([]);
   const [destCityPredictions, setDestCityPredictions] = useState<any[]>([]);
+  const [depCityHighlight, setDepCityHighlight] = useState(-1);
+  const [destCityHighlight, setDestCityHighlight] = useState(-1);
 
   // Effects for Autocomplete
   useEffect(() => {
@@ -130,7 +132,19 @@ export function HeroForm() {
             isFlexible, vibe, startDate, endDate, adults, children, budget, accommodation, interests, pace
           })
         });
-        const fullText = await res.text();
+        if (!res.ok) throw new Error(`Server error: ${res.status}`);
+        const reader = res.body?.getReader();
+        const decoder = new TextDecoder();
+        let fullText = '';
+        if (reader) {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            fullText += decoder.decode(value, { stream: true });
+          }
+        } else {
+          fullText = await res.text();
+        }
         const cleaned = fullText.replace(/```json/g, '').replace(/```/g, '').trim();
         const planData = JSON.parse(repairJson(cleaned));
         setItinerary(planData);
@@ -174,11 +188,20 @@ export function HeroForm() {
                       </h2>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-4">
-                           <Input icon={<Globe size={18}/>} placeholder="Departure City" value={depCityQuery} onChange={(e) => {setDepCityQuery(e.target.value); setSelectedDepCityObj(null); setShowDepCityDropdown(true)}} />
+                           <Input icon={<Globe size={18}/>} placeholder="Departure City" value={depCityQuery}
+                             onChange={(e) => {setDepCityQuery(e.target.value); setSelectedDepCityObj(null); setShowDepCityDropdown(true); setDepCityHighlight(-1)}}
+                             onKeyDown={(e) => {
+                               if (!showDepCityDropdown || depCityPredictions.length === 0) return;
+                               if (e.key === 'ArrowDown') { e.preventDefault(); setDepCityHighlight(i => Math.min(i + 1, depCityPredictions.length - 1)); }
+                               else if (e.key === 'ArrowUp') { e.preventDefault(); setDepCityHighlight(i => Math.max(i - 1, 0)); }
+                               else if (e.key === 'Enter' && depCityHighlight >= 0) { e.preventDefault(); const p = depCityPredictions[depCityHighlight]; setSelectedDepCityObj({name: p.structured_formatting.main_text}); setDepCityQuery(p.structured_formatting.main_text); setShowDepCityDropdown(false); }
+                               else if (e.key === 'Escape') setShowDepCityDropdown(false);
+                             }}
+                           />
                            {showDepCityDropdown && depCityPredictions.length > 0 && !selectedDepCityObj && (
                              <div className="glass-card absolute z-50 w-full md:w-[45%] mt-1 max-h-40 overflow-y-auto rounded-xl border border-glass-border">
-                               {depCityPredictions.map(p => (
-                                 <button key={p.place_id} onClick={() => {setSelectedDepCityObj({name: p.structured_formatting.main_text}); setDepCityQuery(p.structured_formatting.main_text); setShowDepCityDropdown(false)}} className="w-full text-left p-3 hover:bg-white/5 border-b border-white/5 last:border-0 text-sm">
+                               {depCityPredictions.map((p, idx) => (
+                                 <button key={p.place_id} onClick={() => {setSelectedDepCityObj({name: p.structured_formatting.main_text}); setDepCityQuery(p.structured_formatting.main_text); setShowDepCityDropdown(false)}} className={`w-full text-left p-3 border-b border-white/5 last:border-0 text-sm transition-colors ${depCityHighlight === idx ? 'bg-terracotta/20' : 'hover:bg-white/5'}`}>
                                    {p.description}
                                  </button>
                                ))}
@@ -186,11 +209,21 @@ export function HeroForm() {
                            )}
                         </div>
                         <div className="space-y-4">
-                           <Input icon={<MapPin size={18}/>} placeholder="Destination City" value={destCityQuery} onChange={(e) => {setDestCityQuery(e.target.value); setSelectedDestCityObj(null); setShowDestCityDropdown(true)}} disabled={isFlexible} className={isFlexible ? 'opacity-30' : ''}/>
+                           <Input icon={<MapPin size={18}/>} placeholder="Destination City" value={destCityQuery}
+                             onChange={(e) => {setDestCityQuery(e.target.value); setSelectedDestCityObj(null); setShowDestCityDropdown(true); setDestCityHighlight(-1)}}
+                             onKeyDown={(e) => {
+                               if (!showDestCityDropdown || destCityPredictions.length === 0) return;
+                               if (e.key === 'ArrowDown') { e.preventDefault(); setDestCityHighlight(i => Math.min(i + 1, destCityPredictions.length - 1)); }
+                               else if (e.key === 'ArrowUp') { e.preventDefault(); setDestCityHighlight(i => Math.max(i - 1, 0)); }
+                               else if (e.key === 'Enter' && destCityHighlight >= 0) { e.preventDefault(); const p = destCityPredictions[destCityHighlight]; setSelectedDestCityObj({name: p.structured_formatting.main_text}); setDestCityQuery(p.structured_formatting.main_text); setShowDestCityDropdown(false); }
+                               else if (e.key === 'Escape') setShowDestCityDropdown(false);
+                             }}
+                             disabled={isFlexible} className={isFlexible ? 'opacity-30' : ''}
+                           />
                            {showDestCityDropdown && destCityPredictions.length > 0 && !selectedDestCityObj && (
                              <div className="glass-card absolute z-50 right-0 w-full md:w-[45%] mt-1 max-h-40 overflow-y-auto rounded-xl border border-glass-border">
-                               {destCityPredictions.map(p => (
-                                 <button key={p.place_id} onClick={() => {setSelectedDestCityObj({name: p.structured_formatting.main_text}); setDestCityQuery(p.structured_formatting.main_text); setShowDestCityDropdown(false)}} className="w-full text-left p-3 hover:bg-white/5 border-b border-white/5 last:border-0 text-sm">
+                               {destCityPredictions.map((p, idx) => (
+                                 <button key={p.place_id} onClick={() => {setSelectedDestCityObj({name: p.structured_formatting.main_text}); setDestCityQuery(p.structured_formatting.main_text); setShowDestCityDropdown(false)}} className={`w-full text-left p-3 border-b border-white/5 last:border-0 text-sm transition-colors ${destCityHighlight === idx ? 'bg-terracotta/20' : 'hover:bg-white/5'}`}>
                                    {p.description}
                                  </button>
                                ))}
@@ -207,8 +240,8 @@ export function HeroForm() {
                     <div className="space-y-6">
                        <h2 className="text-2xl font-serif text-foreground/90 flex items-center gap-2"><Calendar className="text-terracotta"/> Dates</h2>
                        <div className="flex gap-4">
-                          <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="flex-1 bg-glass-bg/40 border border-glass-border rounded-xl p-4 text-sm outline-none focus:border-terracotta/50" />
-                          <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="flex-1 bg-glass-bg/40 border border-glass-border rounded-xl p-4 text-sm outline-none focus:border-terracotta/50" />
+                          <input type="date" value={startDate} min={new Date().toISOString().split('T')[0]} onChange={(e) => { setStartDate(e.target.value); if (endDate && e.target.value > endDate) setEndDate(''); }} className="flex-1 bg-glass-bg/40 border border-glass-border rounded-xl p-4 text-sm outline-none focus:border-terracotta/50" />
+                          <input type="date" value={endDate} min={startDate || new Date().toISOString().split('T')[0]} onChange={(e) => setEndDate(e.target.value)} className="flex-1 bg-glass-bg/40 border border-glass-border rounded-xl p-4 text-sm outline-none focus:border-terracotta/50" />
                        </div>
                     </div>
                   )}
