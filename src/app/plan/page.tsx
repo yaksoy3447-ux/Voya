@@ -6,7 +6,7 @@ import { usePlanStore } from '@/store/usePlanStore'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { Calendar, MapPin, Plane, Hotel, DollarSign, Compass, Star, Check, Sparkles, Lock, Download, Globe, Shield, Car } from 'lucide-react'
+import { Calendar, MapPin, Plane, Hotel, DollarSign, Compass, Star, Check, Sparkles, Lock, Download, Globe, Shield, Car, Utensils } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '@/lib/supabase/client'
 
@@ -282,6 +282,43 @@ export default function PlanDashboard() {
                 </div>
               </div>
             </div>
+
+            {/* Today's Tours */}
+            {(() => {
+              const day = itinerary.days.find((d: Day) => d.day === activeDay);
+              const city = itinerary.selectedCity || itinerary.selectedCountry || '';
+              const tour1Q = encodeURIComponent((day?.title ? `${day.title} ` : '') + city + ' guided tour');
+              const tour2Q = encodeURIComponent(city + ' food walking tour');
+              return (
+                <div className="glass-card p-5 rounded-3xl border border-glass-border">
+                  <p className="text-[10px] font-bold text-foreground/30 uppercase tracking-[0.3em] mb-4">
+                    You Can Also Do — Day {activeDay}
+                  </p>
+                  <div className="grid grid-cols-2 gap-3">
+                    <a
+                      href={`https://www.klook.com/en-US/search/result/?query=${tour1Q}&marker=715711`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="group p-4 bg-terracotta/5 border border-terracotta/20 rounded-2xl hover:bg-terracotta/10 hover:border-terracotta/40 transition-all"
+                    >
+                      <Compass size={16} className="text-terracotta mb-2" />
+                      <p className="text-xs font-bold text-foreground leading-tight mb-1">Guided City Tour</p>
+                      <p className="text-[10px] text-foreground/40 leading-snug">Today's highlights with a local guide</p>
+                      <span className="mt-2 block text-[10px] font-bold text-terracotta group-hover:translate-x-1 transition-transform">Book on Klook →</span>
+                    </a>
+                    <a
+                      href={`https://www.klook.com/en-US/search/result/?query=${tour2Q}&marker=715711`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="group p-4 bg-orange-500/5 border border-orange-500/20 rounded-2xl hover:bg-orange-500/10 hover:border-orange-500/40 transition-all"
+                    >
+                      <Utensils size={16} className="text-orange-400 mb-2" />
+                      <p className="text-xs font-bold text-foreground leading-tight mb-1">Food & Culture Tour</p>
+                      <p className="text-[10px] text-foreground/40 leading-snug">Local flavors and hidden gems</p>
+                      <span className="mt-2 block text-[10px] font-bold text-orange-400 group-hover:translate-x-1 transition-transform">Book on Klook →</span>
+                    </a>
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* MAP */}
             <div className="glass-card rounded-3xl border border-glass-border overflow-hidden">

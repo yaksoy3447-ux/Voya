@@ -86,7 +86,12 @@ Then plan afternoon/evening activities based on realistic remaining daylight hou
 ═══ MANDATORY CONTENT RULES ═══
 1. LOCAL MARKET (mandatory): Include at least 1 real named bazaar/food market/pazar per 3 days. Include opening days.
 2. MUSEUM/CULTURE (mandatory): Include at least 1 real named museum or historical site per 2 days.
-3. BOOKABLE TOUR (mandatory): Include at least 1 guided tour or unique bookable experience per trip.
+3. DAILY TOUR (mandatory): Every day from Day 2 onward must include exactly 1 bookable organized tour as an activity (type: "tour", bookable: true):
+   - Day 2: MUST be a comprehensive city highlights or walking tour — the most popular guided overview of the destination.
+     Example: "Istanbul Old City Walking Tour – 3-hour guided highlights", type: "tour", bookable: true, estimatedCost: 35
+   - Day 3+: A specialized tour matching that day's district (food tour, historical tour, art walk, etc.)
+   - If destination has sea, river, canal, or lake: include 1 boat/cruise tour on an appropriate day (not Day 1 or 2).
+     Example: "Bosphorus Sunset Cruise – 2-hour guided tour", type: "tour", bookable: true, estimatedCost: 40
 4. FOOD SPOTS: Name specific restaurants or street food spots — not "a local restaurant".
 5. SIM CARD: Always fill simCard.tip with real local operator info. Format: "Get a [Operator] SIM at [Airport/Store] on arrival — [data plan & cost]. [Operator] offers the best coverage in [region]. Alternatively, activate an Airalo eSIM before you land for instant connectivity."
 
