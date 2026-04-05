@@ -187,6 +187,15 @@ export function HeroForm() {
                         </div>
                         <div className="space-y-4">
                            <Input icon={<MapPin size={18}/>} placeholder="Destination City" value={destCityQuery} onChange={(e) => {setDestCityQuery(e.target.value); setSelectedDestCityObj(null); setShowDestCityDropdown(true)}} disabled={isFlexible} className={isFlexible ? 'opacity-30' : ''}/>
+                           {showDestCityDropdown && destCityPredictions.length > 0 && !selectedDestCityObj && (
+                             <div className="glass-card absolute z-50 right-0 w-full md:w-[45%] mt-1 max-h-40 overflow-y-auto rounded-xl border border-glass-border">
+                               {destCityPredictions.map(p => (
+                                 <button key={p.place_id} onClick={() => {setSelectedDestCityObj({name: p.structured_formatting.main_text}); setDestCityQuery(p.structured_formatting.main_text); setShowDestCityDropdown(false)}} className="w-full text-left p-3 hover:bg-white/5 border-b border-white/5 last:border-0 text-sm">
+                                   {p.description}
+                                 </button>
+                               ))}
+                             </div>
+                           )}
                            <button onClick={() => setIsFlexible(!isFlexible)} className={`text-[10px] font-bold uppercase p-2 rounded-lg border ${isFlexible ? 'bg-terracotta border-terracotta' : 'border-glass-border text-foreground/40'}`}>
                              {isFlexible ? 'Flexible Mode Active' : 'I am Flexible'}
                            </button>
