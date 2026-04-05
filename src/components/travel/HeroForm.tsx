@@ -149,7 +149,7 @@ export function HeroForm() {
         const planData = JSON.parse(repairJson(cleaned));
         setItinerary(planData);
         router.push('/plan');
-      } catch (e) { alert("Something went wrong. Please try again."); setStep(TOTAL_STEPS); }
+      } catch (e: any) { alert("Error: " + (e?.message || String(e))); setStep(TOTAL_STEPS); }
     } else {
       setStep(step + 1);
     }
