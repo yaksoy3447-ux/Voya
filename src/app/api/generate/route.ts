@@ -119,6 +119,9 @@ export async function POST(req: Request) {
       if (profile && profile.tier === 'Free' && profile.plan_count >= 3) {
         return Response.json({ error: "LIMIT_REACHED" }, { status: 403 });
       }
+      if (profile && profile.tier === 'Explorer' && profile.plan_count >= 10) {
+        return Response.json({ error: "LIMIT_REACHED" }, { status: 403 });
+      }
     }
 
     // MOCK MODE: No API key

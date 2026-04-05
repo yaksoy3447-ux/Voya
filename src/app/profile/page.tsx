@@ -12,6 +12,7 @@ import { supabase } from "@/lib/supabase/client"
 interface ProfileData {
   tier: string;
   id: string;
+  plan_count?: number;
   subscription_end_date?: string;
   scheduled_deletion_date?: string;
 }
@@ -180,6 +181,40 @@ function ProfileContent() {
                   <span className="text-foreground/40">Current Plan</span>
                   <span className="font-medium text-terracotta">{profile?.tier || 'Free'}</span>
                 </div>
+
+                {/* Plan Usage */}
+                {(() => {
+                  const used = profile?.plan_count ?? 0;
+                  const tier = profile?.tier || 'Free';
+                  const limit = tier === 'Free' ? 3 : tier === 'Explorer' ? 10 : null;
+                  const isUnlimited = tier === 'Nomad';
+                  const pct = limit ? Math.min(100, (used / limit) * 100) : 0;
+                  return (
+                    <div className="py-2 border-b border-glass-border/40 space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-foreground/40">Plans Used</span>
+                        <span className="font-medium">
+                          {isUnlimited ? (
+                            <span className="text-terracotta">∞ Unlimited</span>
+                          ) : (
+                            <span className={used >= (limit ?? 0) ? 'text-red-400' : 'text-foreground'}>
+                              {used} <span className="text-foreground/30">/ {limit}</span>
+                            </span>
+                          )}
+                        </span>
+                      </div>
+                      {!isUnlimited && limit && (
+                        <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all ${used >= limit ? 'bg-red-400' : 'bg-terracotta'}`}
+                            style={{ width: `${pct}%` }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
+
                 {profile?.tier === 'Free' ? (
                   <button onClick={() => handleSyncPlan('Explorer')} disabled={syncing} className="w-full mt-4 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-terracotta/20 text-terracotta text-xs font-bold uppercase tracking-wider hover:bg-terracotta/30 transition-all">
                     <RefreshCw size={14} className={syncing ? "animate-spin" : ""} />
@@ -189,7 +224,7 @@ function ProfileContent() {
                   <div className="flex justify-between text-sm py-2">
                     <span className="text-foreground/40">Renews on</span>
                     <span className="font-medium">
-                      {profile?.subscription_end_date 
+                      {profile?.subscription_end_date
                         ? new Date(profile.subscription_end_date).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })
                         : 'Next Month'}
                     </span>
