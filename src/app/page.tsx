@@ -100,6 +100,8 @@ export default function LandingPage() {
     { id: 10, type: 'gyg',    title: "Sahara Desert Overnight",    loc: "Marrakech, Morocco",   tag: "Adventure",      img: "https://images.unsplash.com/photo-1489493585363-d69421e0edd3?q=80&w=800&auto=format&fit=crop", link: "https://www.getyourguide.com/marrakech-l208/sahara-desert-tour-tc24/?partner_id=1JGDJCM" },
     { id: 11, type: 'klook',  title: "Phi Phi Islands Speedboat",  loc: "Phuket, Thailand",     tag: "Trending",       img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/search/result/?query=Phi+Phi+Islands+Speedboat+Phuket&marker=715711" },
     { id: 12, type: 'viator', title: "Sydney Opera House Tour",    loc: "Sydney, Australia",    tag: "Must See",       img: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=800&auto=format&fit=crop", link: "https://www.viator.com/search/Sydney+Opera+House+Tour/?pid=P00121703&mcid=42383&medium=link" },
+    { id: 13, type: 'gyg',    title: "Cappadocia Balloon Ride",   loc: "Cappadocia, Turkey",   tag: "Breathtaking",   img: "https://images.unsplash.com/photo-1527838832700-5059252407fa?q=80&w=800&auto=format&fit=crop", link: "https://www.getyourguide.com/cappadocia-l2277/hot-air-balloon-ride-tc24/?partner_id=1JGDJCM" },
+    { id: 14, type: 'gyg',    title: "Taj Mahal Sunrise Tour",    loc: "Agra, India",          tag: "Iconic",         img: "https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=800&auto=format&fit=crop", link: "https://www.getyourguide.com/agra-l971/taj-mahal-sunrise-tour-tc24/?partner_id=1JGDJCM" },
   ]
 
   return (
