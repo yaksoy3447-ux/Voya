@@ -64,12 +64,12 @@ export default function PricingPage() {
       highlight: false,
       features: [
         { text: '3 travel plans total', included: true },
-        { text: 'Full day-by-day itinerary', included: true },
+        { text: 'Day 1 itinerary preview', included: true },
         { text: 'Flight & hotel links', included: true },
+        { text: 'Full day-by-day itinerary', included: false },
         { text: 'Restaurant & dining picks', included: false },
         { text: 'Insider tips & local knowledge', included: false },
         { text: 'Event discovery & ticket links', included: false },
-        { text: 'SIM card & eSIM suggestions', included: false },
         { text: 'Plan history & shareable links', included: false },
         { text: 'PDF export', included: false },
       ]
