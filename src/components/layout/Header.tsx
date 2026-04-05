@@ -10,7 +10,7 @@ export async function Header() {
   return (
     <header className="fixed top-0 left-0 w-full z-50 px-4 md:px-8 py-5 flex justify-between items-center bg-transparent pointer-events-none">
       <Link href="/" className="pointer-events-auto">
-        <Image src="/logo.png" alt="Rovago" width={180} height={56} className="h-14 w-auto object-contain brightness-0 invert" />
+        <Image src="/logo.png" alt="Rovago" width={330} height={56} className="h-8 w-auto object-contain brightness-0 invert" />
       </Link>
 
       <nav className="hidden md:flex items-center gap-8 pointer-events-auto">
