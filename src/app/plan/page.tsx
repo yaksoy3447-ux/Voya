@@ -289,31 +289,48 @@ export default function PlanDashboard() {
               const city = itinerary.selectedCity || itinerary.selectedCountry || '';
               const tour1Q = encodeURIComponent((day?.title ? `${day.title} ` : '') + city + ' guided tour');
               const tour2Q = encodeURIComponent(city + ' food walking tour');
+              const viatorQ = city.replace(/ /g, '+') + '+tours+activities';
               return (
-                <div className="glass-card p-5 rounded-3xl border border-glass-border">
-                  <p className="text-[10px] font-bold text-foreground/30 uppercase tracking-[0.3em] mb-4">
+                <div className="glass-card p-6 rounded-3xl border border-glass-border">
+                  <p className="text-xs font-bold text-foreground/30 uppercase tracking-[0.3em] mb-5">
                     You Can Also Do — Day {activeDay}
                   </p>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-3">
                     <a
                       href={`https://www.klook.com/en-US/search/result/?query=${tour1Q}&marker=715711`}
                       target="_blank" rel="noopener noreferrer"
-                      className="group p-4 bg-terracotta/5 border border-terracotta/20 rounded-2xl hover:bg-terracotta/10 hover:border-terracotta/40 transition-all"
+                      className="group flex items-center gap-3 p-4 bg-terracotta/5 border border-terracotta/20 rounded-2xl hover:bg-terracotta/10 hover:border-terracotta/40 transition-all"
                     >
-                      <Compass size={16} className="text-terracotta mb-2" />
-                      <p className="text-xs font-bold text-foreground leading-tight mb-1">Guided City Tour</p>
-                      <p className="text-[10px] text-foreground/40 leading-snug">Today's highlights with a local guide</p>
-                      <span className="mt-2 block text-[10px] font-bold text-terracotta group-hover:translate-x-1 transition-transform">Book on Klook →</span>
+                      <Compass size={18} className="text-terracotta shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-foreground leading-tight">Guided City Tour</p>
+                        <p className="text-xs text-foreground/50">Today's highlights with a local guide</p>
+                      </div>
+                      <span className="text-xs font-bold text-terracotta shrink-0 group-hover:translate-x-1 transition-transform">Klook →</span>
                     </a>
                     <a
                       href={`https://www.klook.com/en-US/search/result/?query=${tour2Q}&marker=715711`}
                       target="_blank" rel="noopener noreferrer"
-                      className="group p-4 bg-orange-500/5 border border-orange-500/20 rounded-2xl hover:bg-orange-500/10 hover:border-orange-500/40 transition-all"
+                      className="group flex items-center gap-3 p-4 bg-orange-500/5 border border-orange-500/20 rounded-2xl hover:bg-orange-500/10 hover:border-orange-500/40 transition-all"
                     >
-                      <Utensils size={16} className="text-orange-400 mb-2" />
-                      <p className="text-xs font-bold text-foreground leading-tight mb-1">Food & Culture Tour</p>
-                      <p className="text-[10px] text-foreground/40 leading-snug">Local flavors and hidden gems</p>
-                      <span className="mt-2 block text-[10px] font-bold text-orange-400 group-hover:translate-x-1 transition-transform">Book on Klook →</span>
+                      <Utensils size={18} className="text-orange-400 shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-foreground leading-tight">Food & Culture Tour</p>
+                        <p className="text-xs text-foreground/50">Local flavors and hidden gems</p>
+                      </div>
+                      <span className="text-xs font-bold text-orange-400 shrink-0 group-hover:translate-x-1 transition-transform">Klook →</span>
+                    </a>
+                    <a
+                      href={`https://www.viator.com/search/${viatorQ}/?pid=P00121703&mcid=42383&medium=link`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="group flex items-center gap-3 p-4 bg-purple-500/5 border border-purple-500/20 rounded-2xl hover:bg-purple-500/10 hover:border-purple-500/40 transition-all"
+                    >
+                      <Star size={18} className="text-purple-400 shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-foreground leading-tight">Top Rated Activities</p>
+                        <p className="text-xs text-foreground/50">Bestsellers curated by Viator</p>
+                      </div>
+                      <span className="text-xs font-bold text-purple-400 shrink-0 group-hover:translate-x-1 transition-transform">Viator →</span>
                     </a>
                   </div>
                 </div>
