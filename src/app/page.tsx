@@ -42,7 +42,7 @@ export default function LandingPage() {
       setFromIdx(i => (i + 1) % FROM_CITIES.length)
       setToIdx(i => (i + 1) % TO_CITIES.length)
     }, 3000)
-    return () => interval
+    return () => clearInterval(interval)
   }, [])
 
   useEffect(() => {
