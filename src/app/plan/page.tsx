@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react'
 import { Calendar, MapPin, Plane, Hotel, DollarSign, Compass, Star, Check, Sparkles, Lock, Download, Globe, Shield, Car, Utensils } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '@/lib/supabase/client'
-import WeatherWidget from '@/components/plan/WeatherWidget'
 import EventsSection from '@/components/plan/EventsSection'
 import EventsWidget from '@/components/plan/EventsWidget'
 
@@ -285,9 +284,6 @@ export default function PlanDashboard() {
                 </div>
               </div>
             </div>
-
-            {/* Weather Widget */}
-            <WeatherWidget city={itinerary.selectedCity || itinerary.selectedCountry || ''} />
 
             {/* Today's Tours */}
             {(() => {

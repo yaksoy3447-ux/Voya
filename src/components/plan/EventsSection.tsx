@@ -1,6 +1,6 @@
 "use client"
 
-import { Music, Ticket, Tv2, CalendarDays } from 'lucide-react'
+import { Music, Ticket, Tv2, Map } from 'lucide-react'
 
 interface Props {
   city: string
@@ -11,8 +11,6 @@ export default function EventsSection({ city, country }: Props) {
   if (!city) return null
 
   const q = encodeURIComponent(city)
-  const citySlug = city.toLowerCase().replace(/\s+/g, '-')
-  const countrySlug = (country || 'worldwide').toLowerCase().replace(/\s+/g, '-')
 
   const events = [
     {
@@ -43,13 +41,13 @@ export default function EventsSection({ city, country }: Props) {
       linkClass: 'text-purple-400',
     },
     {
-      icon: <CalendarDays size={20} className="text-green-400" />,
-      title: 'Local Festivals',
-      desc: 'Events, fairs, cultural happenings',
-      platform: 'Eventbrite',
-      href: `https://www.eventbrite.com/d/${countrySlug}/${citySlug}--events/`,
-      cardClass: 'bg-green-500/5 border-green-500/20 hover:bg-green-500/10 hover:border-green-500/40',
-      linkClass: 'text-green-400',
+      icon: <Map size={20} className="text-emerald-400" />,
+      title: 'Tours & Activities',
+      desc: 'Day trips, experiences, guided tours',
+      platform: 'GetYourGuide',
+      href: `https://www.getyourguide.com/s/?q=${encodeURIComponent(city + ' tours activities')}&partner_id=1JGDJCM`,
+      cardClass: 'bg-emerald-500/5 border-emerald-500/20 hover:bg-emerald-500/10 hover:border-emerald-500/40',
+      linkClass: 'text-emerald-400',
     },
   ]
 
@@ -59,14 +57,24 @@ export default function EventsSection({ city, country }: Props) {
         <p className="text-xs font-bold text-foreground/30 uppercase tracking-[0.3em]">
           Events &amp; Shows in {city}
         </p>
-        <a
-          href={`https://www.viator.com/search/${city.replace(/ /g, '+')}+events+shows/?pid=P00121703&mcid=42383&medium=link`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[10px] font-bold text-orange-400 hover:text-orange-300 uppercase tracking-widest transition-all"
-        >
-          Browse Viator →
-        </a>
+        <div className="flex items-center gap-3">
+          <a
+            href={`https://www.getyourguide.com/s/?q=${q}&partner_id=1JGDJCM`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] font-bold text-emerald-400 hover:text-emerald-300 uppercase tracking-widest transition-all"
+          >
+            GetYourGuide →
+          </a>
+          <a
+            href={`https://www.viator.com/search/${city.replace(/ /g, '+')}+events+shows/?pid=P00121703&mcid=42383&medium=link`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] font-bold text-orange-400 hover:text-orange-300 uppercase tracking-widest transition-all"
+          >
+            Viator →
+          </a>
+        </div>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {events.map(e => (
