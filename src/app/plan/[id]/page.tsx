@@ -7,9 +7,9 @@ import { useEffect, useState } from 'react'
 import { Calendar, MapPin, Plane, Hotel, DollarSign, Compass, Star, Check, Sparkles, Lock, Download, Share2, Copy, Check as CheckIcon, Globe, Shield, Car, Utensils } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '@/lib/supabase/client'
-import Image from 'next/image'
 import WeatherWidget from '@/components/plan/WeatherWidget'
 import EventsSection from '@/components/plan/EventsSection'
+import EventsWidget from '@/components/plan/EventsWidget'
 
 interface Activity {
   title: string;
@@ -574,7 +574,14 @@ export default function PlanHistoryViewer() {
           );
         })()}
 
-        {/* ── Events & Shows ── */}
+        {/* ── Real Ticketmaster Events ── */}
+        <EventsWidget
+          city={itinerary.selectedCity || ''}
+          startDate={itinerary.days?.[0]?.date}
+          endDate={itinerary.days?.[itinerary.days.length - 1]?.date}
+        />
+
+        {/* ── Events Search Links ── */}
         <EventsSection city={itinerary.selectedCity || ''} country={itinerary.selectedCountry} />
 
         {/* ── Day Map — full width, updates with active day ── */}

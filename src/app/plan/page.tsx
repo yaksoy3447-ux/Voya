@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '@/lib/supabase/client'
 import WeatherWidget from '@/components/plan/WeatherWidget'
 import EventsSection from '@/components/plan/EventsSection'
+import EventsWidget from '@/components/plan/EventsWidget'
 
 interface Activity {
   title: string;
@@ -474,7 +475,14 @@ export default function PlanDashboard() {
           </div>
         </div>
 
-        {/* EVENTS & SHOWS */}
+        {/* EVENTS & SHOWS — real Ticketmaster events */}
+        <EventsWidget
+          city={itinerary.selectedCity || ''}
+          startDate={itinerary.days?.[0]?.date}
+          endDate={itinerary.days?.[itinerary.days.length - 1]?.date}
+        />
+
+        {/* EVENTS SEARCH LINKS */}
         <EventsSection city={itinerary.selectedCity || ''} country={itinerary.selectedCountry} />
 
         {/* TRAVEL ESSENTIALS */}
