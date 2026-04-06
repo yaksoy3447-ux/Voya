@@ -40,7 +40,18 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code)
 
     if (!error) {
-      // Successful exchange - redirect to intended page
+      // Ensure profile exists - upsert as a fallback in case the DB trigger failed
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        await supabase.from('profiles').upsert({
+          id: user.id,
+          email: user.email,
+          tier: 'Free',
+          plan_count: 0,
+        }, { onConflict: 'id', ignoreDuplicates: true })
+      }
+
+      // Successful - redirect to intended page
       const redirectUrl = new URL(next, origin)
       return NextResponse.redirect(redirectUrl.toString())
     }
