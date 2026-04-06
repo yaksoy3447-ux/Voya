@@ -398,27 +398,30 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-left mb-16">
           <div className="col-span-2 md:col-span-1">
             <Image src="/logo.png" alt="Rovago" width={330} height={56} className="h-9 w-auto object-contain brightness-0 invert mb-4" />
-            <p className="text-sm text-foreground/40 leading-relaxed">Artfully crafted seyahatler, powered by AI.</p>
+            <p className="text-sm text-foreground/40 leading-relaxed">Artfully crafted journeys, powered by AI.</p>
           </div>
           <div>
             <h4 className="font-bold text-xs uppercase tracking-widest mb-6 translate-y-[-2px]">Product</h4>
             <ul className="space-y-3 text-sm text-foreground/40">
-              <li><Link href="/create">Create Plan</Link></li>
-              <li><Link href="/pricing">Pricing</Link></li>
+              <li><Link href="/create" className="hover:text-foreground/80 transition-colors">Create Plan</Link></li>
+              <li><Link href="/pricing" className="hover:text-foreground/80 transition-colors">Pricing</Link></li>
+              <li><Link href="/login" className="hover:text-foreground/80 transition-colors">Sign In</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-bold text-xs uppercase tracking-widest mb-6 translate-y-[-2px]">Company</h4>
             <ul className="space-y-3 text-sm text-foreground/40">
-               <li><Link href="/about">About</Link></li>
-               <li><Link href="/blog">Blog</Link></li>
+               <li><Link href="/about" className="hover:text-foreground/80 transition-colors">About</Link></li>
+               <li><Link href="/blog" className="hover:text-foreground/80 transition-colors">Blog</Link></li>
+               <li><Link href="/contact" className="hover:text-foreground/80 transition-colors">Contact</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-bold text-xs uppercase tracking-widest mb-6 translate-y-[-2px]">Legal</h4>
             <ul className="space-y-3 text-sm text-foreground/40">
-               <li><Link href="/privacy">Privacy</Link></li>
-               <li><Link href="/terms">Terms</Link></li>
+               <li><Link href="/privacy" className="hover:text-foreground/80 transition-colors">Privacy</Link></li>
+               <li><Link href="/terms" className="hover:text-foreground/80 transition-colors">Terms</Link></li>
+               <li><Link href="/cookies" className="hover:text-foreground/80 transition-colors">Cookies</Link></li>
             </ul>
           </div>
         </div>
