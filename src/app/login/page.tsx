@@ -19,8 +19,10 @@ function LoginContent() {
 
   useEffect(() => {
     const urlError = searchParams.get('error')
-    if (urlError === 'auth_failed') setError("Authentication failed. Please try again.")
+    const urlDesc = searchParams.get('desc')
+    if (urlError === 'auth_failed') setError(`Authentication failed. ${urlDesc || 'Please try again.'}`)
     if (urlError === 'invalid_callback') setError("Invalid login attempt. Please try again.")
+    if (urlError === 'access_denied') setError("Access denied. You cancelled the login.")
   }, [searchParams])
 
   const supabase = createBrowserClient(
@@ -54,11 +56,13 @@ function LoginContent() {
       provider,
       options: { 
         redirectTo: `${window.location.origin}/auth/callback?next=/create`,
-        queryParams: provider === 'facebook' ? {
-          access_type: 'offline',
-          prompt: 'consent',
-          scope: 'email,public_profile'
-        } : undefined
+        queryParams: {
+          prompt: 'select_account',
+          ...(provider === 'facebook' && {
+            access_type: 'offline',
+            scope: 'email,public_profile'
+          })
+        }
       }
     })
   }
