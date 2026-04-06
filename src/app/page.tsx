@@ -33,24 +33,26 @@ export default function LandingPage() {
   const [adults, setAdults] = useState(1)
   const [children, setChildren] = useState(0)
   const [showPassengers, setShowPassengers] = useState(false)
-  const [fromIdx, setFromIdx] = useState(0)
-  const [toIdx, setToIdx] = useState(3)
+  const [selectedFrom, setSelectedFrom] = useState(FROM_CITIES[0])
+  const [selectedTo, setSelectedTo] = useState(TO_CITIES[0])
+  const [showFromDropdown, setShowFromDropdown] = useState(false)
+  const [showToDropdown, setShowToDropdown] = useState(false)
   const [searchError, setSearchError] = useState('')
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const passengersRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setFromIdx(i => (i + 1) % FROM_CITIES.length)
-      setToIdx(i => (i + 1) % TO_CITIES.length)
-    }, 3000)
-    return () => clearInterval(interval)
-  }, [])
+  const fromRef = useRef<HTMLDivElement>(null)
+  const toRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (passengersRef.current && !passengersRef.current.contains(e.target as Node)) {
         setShowPassengers(false)
+      }
+      if (fromRef.current && !fromRef.current.contains(e.target as Node)) {
+        setShowFromDropdown(false)
+      }
+      if (toRef.current && !toRef.current.contains(e.target as Node)) {
+        setShowToDropdown(false)
       }
     }
     document.addEventListener('mousedown', handleClick)
@@ -66,8 +68,8 @@ export default function LandingPage() {
   }
 
   const handleSearch = () => {
-    const fromCode = getCode('search-from-v2')
-    const toCode = getCode('search-to-v2')
+    const fromCode = selectedFrom.code
+    const toCode = selectedTo.code
     if (!fromCode) { setSearchError('Please select a departure city.'); return }
     if (!toCode) { setSearchError('Please select a destination.'); return }
     setSearchError('')
@@ -209,13 +211,39 @@ export default function LandingPage() {
               {/* SEARCH FORM */}
               <div className="bg-white/5 backdrop-blur-xl p-3 rounded-[32px] border border-white/10 flex flex-col lg:flex-row gap-2">
                 <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
-                  <div className="bg-white/5 rounded-2xl p-4 text-left">
-                    <span className="text-[9px] font-bold text-terracotta uppercase">From</span>
-                    <input id="search-from-v2" placeholder="Istanbul (IST)" className="bg-transparent border-none text-white text-sm w-full focus:ring-0 p-0" />
+                  <div className="relative" ref={fromRef}>
+                    <button onClick={() => { setShowFromDropdown(v => !v); setShowToDropdown(false) }}
+                      className="bg-white/5 rounded-2xl p-4 text-left w-full hover:bg-white/10 transition-all">
+                      <span className="text-[9px] font-bold text-terracotta uppercase block">From</span>
+                      <span className="text-white text-sm">{selectedFrom.name} ({selectedFrom.code})</span>
+                    </button>
+                    {showFromDropdown && (
+                      <div className="absolute left-0 top-full mt-1 bg-[#111] border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-50 min-w-[180px]">
+                        {FROM_CITIES.map(city => (
+                          <button key={city.code} onClick={() => { setSelectedFrom(city); setShowFromDropdown(false) }}
+                            className={`w-full text-left px-4 py-3 text-sm hover:bg-white/10 transition-all flex items-center justify-between ${selectedFrom.code === city.code ? 'text-terracotta font-bold' : 'text-white/80'}`}>
+                            {city.name} <span className="text-xs text-white/40">{city.code}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  <div className="bg-white/5 rounded-2xl p-4 text-left">
-                    <span className="text-[9px] font-bold text-terracotta uppercase">To</span>
-                    <input id="search-to-v2" placeholder="Bali (DPS)" className="bg-transparent border-none text-white text-sm w-full focus:ring-0 p-0" />
+                  <div className="relative" ref={toRef}>
+                    <button onClick={() => { setShowToDropdown(v => !v); setShowFromDropdown(false) }}
+                      className="bg-white/5 rounded-2xl p-4 text-left w-full hover:bg-white/10 transition-all">
+                      <span className="text-[9px] font-bold text-terracotta uppercase block">To</span>
+                      <span className="text-white text-sm">{selectedTo.name} ({selectedTo.code})</span>
+                    </button>
+                    {showToDropdown && (
+                      <div className="absolute left-0 top-full mt-1 bg-[#111] border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-50 min-w-[180px]">
+                        {TO_CITIES.map(city => (
+                          <button key={city.code} onClick={() => { setSelectedTo(city); setShowToDropdown(false) }}
+                            className={`w-full text-left px-4 py-3 text-sm hover:bg-white/10 transition-all flex items-center justify-between ${selectedTo.code === city.code ? 'text-terracotta font-bold' : 'text-white/80'}`}>
+                            {city.name} <span className="text-xs text-white/40">{city.code}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   <div className="bg-white/5 rounded-2xl p-4 text-left">
                     <span className="text-[9px] font-bold text-terracotta uppercase">Date</span>
