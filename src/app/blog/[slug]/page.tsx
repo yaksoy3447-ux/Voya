@@ -198,7 +198,7 @@ export default function BlogPostDetail() {
         },
         {
           text: "One of the most used features of Rovago is the 'Affiliate Smart Hub'. If the AI suggests a tandoori spot in Delhi or a boutique riad in Marrakech, it provides direct, vetted links to [Viator](https://www.viator.com/?pid=P00121703&mcid=42383&medium=link) for tours or [Expedia](https://www.expedia.com/?affcid=ZOorfcw) for stays. This means you aren't just getting advice; you're getting an actionable booking platform. This integration ensures that the 'how' is as easy as the 'where', removing the final friction point in travel planning.",
-          image: "https://images.unsplash.com/photo-1454165833222-7cd6c1f2ae63?q=80&w=900&auto=format&fit=crop",
+          image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=900&auto=format&fit=crop",
           layout: "text-left"
         },
         {
