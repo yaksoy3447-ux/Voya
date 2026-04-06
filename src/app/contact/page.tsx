@@ -31,7 +31,8 @@ export default function ContactPage() {
             email: formData.get("email"),
             _subject: "Rovago Contact Form: " + formData.get("topic"),
             message: formData.get("message"),
-            _template: "table"
+            _template: "table",
+            _captcha: "false"
         })
       })
       setIsSent(true)
