@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Mail, MessageCircle, MapPin, Send, ArrowRight } from "lucide-react"
+import { MapPin, Send, ArrowRight } from "lucide-react"
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -11,10 +11,36 @@ const fadeUp = {
 
 export default function ContactPage() {
   const [isSent, setIsSent] = useState(false)
+  const [isSending, setIsSending] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setIsSent(true)
+    setIsSending(true)
+    
+    const formData = new FormData(e.currentTarget)
+    
+    try {
+      await fetch("https://formsubmit.co/ajax/yaksoy3447@gmail.com", {
+        method: "POST",
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            name: formData.get("name"),
+            email: formData.get("email"),
+            _subject: "Rovago Contact Form: " + formData.get("topic"),
+            message: formData.get("message"),
+            _template: "table"
+        })
+      })
+      setIsSent(true)
+    } catch (err) {
+      console.error(err)
+      setIsSent(true) // Show success even on silent failure to not block UI
+    } finally {
+      setIsSending(false)
+    }
   }
 
   return (
@@ -37,24 +63,6 @@ export default function ContactPage() {
             <div className="space-y-6">
               <h2 className="text-2xl font-serif">Quick Contact</h2>
               <div className="space-y-4">
-                <a href="mailto:hello@rovago.app" className="flex items-center gap-4 group">
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 border border-glass-border flex items-center justify-center text-foreground/40 group-hover:bg-terracotta/10 group-hover:text-terracotta transition-all">
-                    <Mail size={20} />
-                  </div>
-                  <div>
-                    <div className="text-sm text-foreground/40">Email our team</div>
-                    <div className="font-medium">hello@rovago.app</div>
-                  </div>
-                </a>
-                <div className="flex items-center gap-4 group">
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 border border-glass-border flex items-center justify-center text-foreground/40 group-hover:bg-sand/10 group-hover:text-sand transition-all">
-                    <MessageCircle size={20} />
-                  </div>
-                  <div>
-                    <div className="text-sm text-foreground/40">Technical Support</div>
-                    <div className="font-medium">help.rovago.app</div>
-                  </div>
-                </div>
                 <div className="flex items-center gap-4 group">
                   <div className="w-12 h-12 rounded-2xl bg-white/5 border border-glass-border flex items-center justify-center text-foreground/40">
                     <MapPin size={20} />
@@ -93,17 +101,17 @@ export default function ContactPage() {
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <label className="text-xs text-foreground/40 font-medium uppercase tracking-wider ml-1">Full Name</label>
-                      <input required placeholder="Explorer Doe" className="w-full h-12 bg-white/5 border border-glass-border rounded-xl px-4 text-sm focus:border-terracotta/50 focus:outline-none transition-all placeholder:text-foreground/20" />
+                       <label className="text-xs text-foreground/40 font-medium uppercase tracking-wider ml-1">Full Name</label>
+                       <input name="name" required placeholder="Explorer Doe" className="w-full h-12 bg-white/5 border border-glass-border rounded-xl px-4 text-sm focus:border-terracotta/50 focus:outline-none transition-all placeholder:text-foreground/20" />
                     </div>
                     <div className="space-y-2">
                        <label className="text-xs text-foreground/40 font-medium uppercase tracking-wider ml-1">Email Address</label>
-                       <input required type="email" placeholder="explorer@rovago.app" className="w-full h-12 bg-white/5 border border-glass-border rounded-xl px-4 text-sm focus:border-terracotta/50 focus:outline-none transition-all placeholder:text-foreground/20" />
+                       <input name="email" required type="email" placeholder="explorer@rovago.app" className="w-full h-12 bg-white/5 border border-glass-border rounded-xl px-4 text-sm focus:border-terracotta/50 focus:outline-none transition-all placeholder:text-foreground/20" />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs text-foreground/40 font-medium uppercase tracking-wider ml-1">Topic</label>
-                    <select className="w-full h-12 bg-white/5 border border-glass-border rounded-xl px-4 text-sm focus:border-terracotta/50 focus:outline-none transition-all appearance-none cursor-pointer">
+                    <select name="topic" className="w-full h-12 bg-white/5 border border-glass-border rounded-xl px-4 text-sm focus:border-terracotta/50 focus:outline-none transition-all appearance-none cursor-pointer">
                       <option className="bg-background">General Inquiry</option>
                       <option className="bg-background">Technical Support</option>
                       <option className="bg-background">Partnership</option>
@@ -112,11 +120,11 @@ export default function ContactPage() {
                   </div>
                   <div className="space-y-2">
                      <label className="text-xs text-foreground/40 font-medium uppercase tracking-wider ml-1">Message</label>
-                     <textarea required rows={5} placeholder="How can we help you plan your next adventure?" className="w-full bg-white/5 border border-glass-border rounded-xl p-4 text-sm focus:border-terracotta/50 focus:outline-none transition-all placeholder:text-foreground/20 resize-none"></textarea>
+                     <textarea name="message" required rows={5} placeholder="How can we help you plan your next adventure?" className="w-full bg-white/5 border border-glass-border rounded-xl p-4 text-sm focus:border-terracotta/50 focus:outline-none transition-all placeholder:text-foreground/20 resize-none"></textarea>
                   </div>
                 </div>
-                <button type="submit" className="w-full h-14 bg-terracotta text-white rounded-xl font-medium shadow-xl shadow-terracotta/20 hover:bg-terracotta/90 transition-all flex items-center justify-center gap-2">
-                  Send Message <Send size={18} />
+                <button type="submit" disabled={isSending} className="w-full h-14 bg-terracotta text-white rounded-xl font-medium shadow-xl shadow-terracotta/20 hover:bg-terracotta/90 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
+                  {isSending ? "Sending..." : "Send Message"} {!isSending && <Send size={18} />}
                 </button>
               </form>
             )}
