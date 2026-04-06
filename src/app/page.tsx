@@ -1,95 +1,23 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion, useScroll, useTransform } from "framer-motion"
-import { Sparkles, MapPin, Calendar, Compass, Star, ArrowRight, Shield, Zap, Globe, Users, ChevronRight, Clock, DollarSign, Utensils, Brain, ChevronDown, Plus, Minus } from "lucide-react"
+import { Sparkles, ArrowRight, Shield, Zap, ChevronDown } from "lucide-react"
 
 const fadeUp: any = {
   hidden: { opacity: 0, y: 30 },
   visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.6, ease: "easeOut" } })
 }
 
-const FROM_CITIES = [
-  { name: 'Istanbul', code: 'IST' }, { name: 'London', code: 'LHR' },
-  { name: 'Paris', code: 'CDG' }, { name: 'Dubai', code: 'DXB' },
-  { name: 'Tokyo', code: 'NRT' }, { name: 'New York', code: 'JFK' },
-  { name: 'Singapore', code: 'SIN' }, { name: 'Barcelona', code: 'BCN' },
-]
-const TO_CITIES = [
-  { name: 'Bali', code: 'DPS' }, { name: 'Maldives', code: 'MLE' },
-  { name: 'Rome', code: 'FCO' }, { name: 'Santorini', code: 'JTR' },
-  { name: 'Bangkok', code: 'BKK' }, { name: 'Sydney', code: 'SYD' },
-  { name: 'Miami', code: 'MIA' }, { name: 'Cape Town', code: 'CPT' },
-]
 
 export default function LandingPage() {
   const { scrollY } = useScroll()
   const videoY = useTransform(scrollY, [0, 500], [0, 150])
   const videoScale = useTransform(scrollY, [0, 500], [1, 1.1])
 
-  const [tripType, setTripType] = useState<'oneway' | 'roundtrip'>('oneway')
-  const [adults, setAdults] = useState(1)
-  const [children, setChildren] = useState(0)
-  const [showPassengers, setShowPassengers] = useState(false)
-  const [selectedFrom, setSelectedFrom] = useState(FROM_CITIES[0])
-  const [selectedTo, setSelectedTo] = useState(TO_CITIES[0])
-  const [fromQuery, setFromQuery] = useState('')
-  const [toQuery, setToQuery] = useState('')
-  const [showFromDropdown, setShowFromDropdown] = useState(false)
-  const [showToDropdown, setShowToDropdown] = useState(false)
-  const [searchError, setSearchError] = useState('')
   const [openFaq, setOpenFaq] = useState<number | null>(null)
-  const passengersRef = useRef<HTMLDivElement>(null)
-  const fromRef = useRef<HTMLDivElement>(null)
-  const toRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      if (passengersRef.current && !passengersRef.current.contains(e.target as Node)) {
-        setShowPassengers(false)
-      }
-      if (fromRef.current && !fromRef.current.contains(e.target as Node)) {
-        setShowFromDropdown(false)
-      }
-      if (toRef.current && !toRef.current.contains(e.target as Node)) {
-        setShowToDropdown(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClick)
-    return () => document.removeEventListener('mousedown', handleClick)
-  }, [])
-
-  const getCode = (id: string) => {
-    const el = document.getElementById(id) as HTMLInputElement | null
-    if (!el) return ''
-    if (el.dataset.code) return el.dataset.code
-    const match = el.value.match(/\(([A-Z]{3})\)/)
-    return match ? match[1] : ''
-  }
-
-  const handleSearch = () => {
-    const fromCode = selectedFrom.code
-    const toCode = selectedTo.code
-    if (!fromCode) { setSearchError('Please select a departure city.'); return }
-    if (!toCode) { setSearchError('Please select a destination.'); return }
-    setSearchError('')
-    const depVal = (document.getElementById('search-dep-date') as HTMLInputElement)?.value
-    const retVal = (document.getElementById('search-ret-date') as HTMLInputElement)?.value
-    const dep = depVal ? new Date(depVal) : new Date()
-    const depDD = String(dep.getUTCDate()).padStart(2, '0')
-    const depMM = String(dep.getUTCMonth() + 1).padStart(2, '0')
-    const pax = adults + children
-    let url = `https://www.aviasales.com/search/${fromCode}${depDD}${depMM}${toCode}${pax}?marker=715711`
-    if (tripType === 'roundtrip' && retVal) {
-      const ret = new Date(retVal)
-      const retDD = String(ret.getUTCDate()).padStart(2, '0')
-      const retMM = String(ret.getUTCMonth() + 1).padStart(2, '0')
-      url = `https://www.aviasales.com/search/${fromCode}${depDD}${depMM}${toCode}${pax}${retDD}${retMM}?marker=715711`
-    }
-    window.open(url, '_blank')
-  }
 
   const allExperiences = [
     { id: 1,  type: 'klook',  title: "Eiffel Tower Summit",        loc: "Paris, France",       tag: "Iconic",         img: "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?q=80&w=800&auto=format&fit=crop", link: "https://www.klook.com/en-US/search/result/?query=Eiffel+Tower+Summit+Paris&marker=715711" },
@@ -166,121 +94,6 @@ export default function LandingPage() {
             <span className="flex items-center gap-1"><Zap size={14} className="text-yellow-400" /> Plans in under 30 seconds</span>
           </motion.div>
         </motion.div>
-      </section>
-
-      {/* ═══════════════ SEARCH & DEALS SECTION ═══════════════ */}
-      <section className="py-24 px-6 relative">
-        <div className="max-w-4xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="glass-card p-8 md:p-12 rounded-[48px] border border-glass-border/40 text-center relative overflow-hidden">
-            <div className="relative z-10">
-              <span className="text-[10px] font-bold text-terracotta uppercase tracking-[0.4em] mb-4 block italic">Direct Booking Integration</span>
-              <h2 className="text-3xl md:text-5xl font-serif text-white mb-4">Find the Best Deals</h2>
-
-              {/* TRIP TYPE + PASSENGERS */}
-              <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-                <div className="flex items-center gap-1 bg-white/5 rounded-full p-1 border border-white/10">
-                  <button onClick={() => setTripType('oneway')} className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${tripType === 'oneway' ? 'bg-terracotta text-white' : 'text-foreground/40 hover:text-foreground/70'}`}>One Way</button>
-                  <button onClick={() => setTripType('roundtrip')} className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${tripType === 'roundtrip' ? 'bg-terracotta text-white' : 'text-foreground/40 hover:text-foreground/70'}`}>Round Trip</button>
-                </div>
-
-                <div className="relative" ref={passengersRef}>
-                  <button onClick={() => setShowPassengers(v => !v)} className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-foreground/60 hover:border-terracotta/30 transition-all">
-                    <Users size={12} className="text-terracotta" /> {adults + children} Passengers
-                  </button>
-                  {showPassengers && (
-                    <div className="absolute right-0 top-full mt-2 bg-background border border-white/10 rounded-2xl p-4 min-w-[220px] shadow-2xl z-50">
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="text-xs font-bold">Adults</span>
-                        <div className="flex items-center gap-3">
-                          <button onClick={() => setAdults(v => Math.max(1, v - 1))} className="w-8 h-8 rounded-full bg-white/5">-</button>
-                          <span>{adults}</span>
-                          <button onClick={() => setAdults(v => v + 1)} className="w-8 h-8 rounded-full bg-white/5">+</button>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold">Children</span>
-                        <div className="flex items-center gap-3">
-                          <button onClick={() => setChildren(v => Math.max(0, v - 1))} className="w-8 h-8 rounded-full bg-white/5">-</button>
-                          <span>{children}</span>
-                          <button onClick={() => setChildren(v => v + 1)} className="w-8 h-8 rounded-full bg-white/5">+</button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* SEARCH FORM */}
-              <div className="bg-white/5 backdrop-blur-xl p-3 rounded-[32px] border border-white/10 flex flex-col lg:flex-row gap-2">
-                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
-                  <div className="relative" ref={fromRef}>
-                    <div className="bg-white/5 rounded-2xl p-4 text-left hover:bg-white/10 transition-all cursor-text"
-                      onClick={() => { setShowFromDropdown(true); setShowToDropdown(false) }}>
-                      <span className="text-[9px] font-bold text-terracotta uppercase block mb-1">From</span>
-                      <input
-                        value={showFromDropdown ? fromQuery : `${selectedFrom.name} (${selectedFrom.code})`}
-                        onChange={e => { setFromQuery(e.target.value); setShowFromDropdown(true) }}
-                        onFocus={() => { setFromQuery(''); setShowFromDropdown(true); setShowToDropdown(false) }}
-                        placeholder={`${selectedFrom.name} (${selectedFrom.code})`}
-                        className="bg-transparent border-none text-white text-sm w-full focus:ring-0 p-0 focus:outline-none cursor-text"
-                      />
-                    </div>
-                    {showFromDropdown && (
-                      <div className="absolute left-0 top-full mt-1 bg-[#111] border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-50 min-w-[200px]">
-                        {FROM_CITIES.filter(c =>
-                          !fromQuery || c.name.toLowerCase().includes(fromQuery.toLowerCase()) || c.code.toLowerCase().includes(fromQuery.toLowerCase())
-                        ).map(city => (
-                          <button key={city.code} onClick={() => { setSelectedFrom(city); setShowFromDropdown(false); setFromQuery('') }}
-                            className={`w-full text-left px-4 py-3 text-sm hover:bg-white/10 transition-all flex items-center justify-between ${selectedFrom.code === city.code ? 'text-terracotta font-bold' : 'text-white/80'}`}>
-                            {city.name} <span className="text-xs text-white/40">{city.code}</span>
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="relative" ref={toRef}>
-                    <div className="bg-white/5 rounded-2xl p-4 text-left hover:bg-white/10 transition-all cursor-text"
-                      onClick={() => { setShowToDropdown(true); setShowFromDropdown(false) }}>
-                      <span className="text-[9px] font-bold text-terracotta uppercase block mb-1">To</span>
-                      <input
-                        value={showToDropdown ? toQuery : `${selectedTo.name} (${selectedTo.code})`}
-                        onChange={e => { setToQuery(e.target.value); setShowToDropdown(true) }}
-                        onFocus={() => { setToQuery(''); setShowToDropdown(true); setShowFromDropdown(false) }}
-                        placeholder={`${selectedTo.name} (${selectedTo.code})`}
-                        className="bg-transparent border-none text-white text-sm w-full focus:ring-0 p-0 focus:outline-none cursor-text"
-                      />
-                    </div>
-                    {showToDropdown && (
-                      <div className="absolute left-0 top-full mt-1 bg-[#111] border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-50 min-w-[200px]">
-                        {TO_CITIES.filter(c =>
-                          !toQuery || c.name.toLowerCase().includes(toQuery.toLowerCase()) || c.code.toLowerCase().includes(toQuery.toLowerCase())
-                        ).map(city => (
-                          <button key={city.code} onClick={() => { setSelectedTo(city); setShowToDropdown(false); setToQuery('') }}
-                            className={`w-full text-left px-4 py-3 text-sm hover:bg-white/10 transition-all flex items-center justify-between ${selectedTo.code === city.code ? 'text-terracotta font-bold' : 'text-white/80'}`}>
-                            {city.name} <span className="text-xs text-white/40">{city.code}</span>
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="bg-white/5 rounded-2xl p-4 text-left">
-                    <span className="text-[9px] font-bold text-terracotta uppercase">Date</span>
-                    <input id="search-dep-date" type="date" className="bg-transparent border-none text-white text-sm w-full focus:ring-0 p-0" />
-                  </div>
-                  {tripType === 'roundtrip' && (
-                    <div className="bg-white/5 rounded-2xl p-4 text-left">
-                      <span className="text-[9px] font-bold text-terracotta uppercase">Return</span>
-                      <input id="search-ret-date" type="date" className="bg-transparent border-none text-white text-sm w-full focus:ring-0 p-0" />
-                    </div>
-                  )}
-                </div>
-                <button onClick={handleSearch} className="h-16 px-10 bg-terracotta text-white rounded-2xl text-xs font-bold hover:scale-[1.02] transition-all">
-                  Search Deals
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        </div>
       </section>
 
       {/* ═══════════════ CURATED EXPERIENCES ═══════════════ */}
