@@ -8,19 +8,26 @@ export async function GET(request: Request) {
   const code = searchParams.get('code')
   const next = searchParams.get('next') ?? '/'
 
+  const error = searchParams.get('error')
+  const error_description = searchParams.get('error_description')
+
+  if (error) {
+    return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error)}&error_description=${encodeURIComponent(error_description || '')}`)
+  }
+
   if (code) {
     const supabase = await createClient()
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
     
-    if (!error) {
+    if (!exchangeError) {
       return NextResponse.redirect(`${origin}${next}`)
     } else {
-      console.error("Auth callback error:", error.message)
-      // Redirect to login with error
+      console.error("Auth callback error:", exchangeError.message)
       return NextResponse.redirect(`${origin}/login?error=auth_failed`)
     }
   }
 
-  // return the user to an error page with some instructions
-  return NextResponse.redirect(`${origin}/login?error=invalid_callback`)
+  // If no code and no error, it might be implicit flow (hash fragment).
+  // Redirect to login safely so the client-side can parse the hash in peace and redirect them.
+  return NextResponse.redirect(`${origin}/login?next=${encodeURIComponent(next)}`)
 }
