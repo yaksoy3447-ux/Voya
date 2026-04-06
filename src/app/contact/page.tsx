@@ -29,7 +29,7 @@ export default function ContactPage() {
         body: JSON.stringify({
             name: formData.get("name"),
             email: formData.get("email"),
-            _subject: "Rovago Contact Form: " + formData.get("topic"),
+            _subject: `Rovago Contact Form: ${formData.get("topic")} [${new Date().toLocaleTimeString()}]`,
             message: formData.get("message"),
             _template: "table",
             _captcha: "false"
