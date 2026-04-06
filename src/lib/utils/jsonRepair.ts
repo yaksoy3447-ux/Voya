@@ -23,6 +23,9 @@ export function repairJson(json: string): string {
   
   // If we are left inside a string, close it
   if (inString) {
+    if (repaired.endsWith('\\')) {
+      repaired = repaired.slice(0, -1);
+    }
     repaired += '"';
   }
 

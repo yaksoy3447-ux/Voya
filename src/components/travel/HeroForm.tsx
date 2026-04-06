@@ -153,7 +153,10 @@ export function HeroForm() {
         const planData = JSON.parse(repairJson(cleaned));
         setItinerary(planData);
         router.push('/plan');
-      } catch (e: any) { alert("Error: " + (e?.message || String(e))); setStep(TOTAL_STEPS); }
+      } catch (e: any) { 
+        setLoadingMessage("Whoops! The AI got a bit too creative and lost its train of thought. Please try generating again!");
+        setTimeout(() => setStep(TOTAL_STEPS), 3000); 
+      }
     } else {
       setStep(step + 1);
     }
