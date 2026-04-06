@@ -6,10 +6,11 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight, Mail, Lock, Eye, EyeOff, Compass } from "lucide-react"
-import { useSearchParams } from "next/navigation"
+import { useSearchParams, useRouter } from "next/navigation"
 
 function LoginContent() {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [isSignUp, setIsSignUp] = useState(false)
@@ -17,18 +18,29 @@ function LoginContent() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+
   useEffect(() => {
     const urlError = searchParams.get('error')
     const urlDesc = searchParams.get('desc')
     if (urlError === 'auth_failed') setError(`Authentication failed. ${urlDesc || 'Please try again.'}`)
     if (urlError === 'invalid_callback') setError("Invalid login attempt. Please try again.")
     if (urlError === 'access_denied') setError("Access denied. You cancelled the login.")
-  }, [searchParams])
-
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+    
+    // Auto-redirect if session is already established (e.g. from implicit flow hash fragment or magic links)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session) {
+        setTimeout(() => {
+          router.push(searchParams.get('next') || "/create")
+        }, 300)
+      }
+    })
+    
+    return () => subscription.unsubscribe()
+  }, [searchParams, supabase.auth, router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -42,7 +54,16 @@ function LoginContent() {
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
-        window.location.href = "/create"
+        
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+          if (session) {
+            setTimeout(() => {
+              router.push(searchParams.get('next') || "/create")
+            }, 300)
+          }
+        })
+        
+        return () => subscription.unsubscribe()
       }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err))
