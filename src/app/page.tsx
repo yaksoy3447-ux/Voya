@@ -35,6 +35,8 @@ export default function LandingPage() {
   const [showPassengers, setShowPassengers] = useState(false)
   const [selectedFrom, setSelectedFrom] = useState(FROM_CITIES[0])
   const [selectedTo, setSelectedTo] = useState(TO_CITIES[0])
+  const [fromQuery, setFromQuery] = useState('')
+  const [toQuery, setToQuery] = useState('')
   const [showFromDropdown, setShowFromDropdown] = useState(false)
   const [showToDropdown, setShowToDropdown] = useState(false)
   const [searchError, setSearchError] = useState('')
@@ -212,15 +214,23 @@ export default function LandingPage() {
               <div className="bg-white/5 backdrop-blur-xl p-3 rounded-[32px] border border-white/10 flex flex-col lg:flex-row gap-2">
                 <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
                   <div className="relative" ref={fromRef}>
-                    <button onClick={() => { setShowFromDropdown(v => !v); setShowToDropdown(false) }}
-                      className="bg-white/5 rounded-2xl p-4 text-left w-full hover:bg-white/10 transition-all">
-                      <span className="text-[9px] font-bold text-terracotta uppercase block">From</span>
-                      <span className="text-white text-sm">{selectedFrom.name} ({selectedFrom.code})</span>
-                    </button>
+                    <div className="bg-white/5 rounded-2xl p-4 text-left hover:bg-white/10 transition-all cursor-text"
+                      onClick={() => { setShowFromDropdown(true); setShowToDropdown(false) }}>
+                      <span className="text-[9px] font-bold text-terracotta uppercase block mb-1">From</span>
+                      <input
+                        value={showFromDropdown ? fromQuery : `${selectedFrom.name} (${selectedFrom.code})`}
+                        onChange={e => { setFromQuery(e.target.value); setShowFromDropdown(true) }}
+                        onFocus={() => { setFromQuery(''); setShowFromDropdown(true); setShowToDropdown(false) }}
+                        placeholder={`${selectedFrom.name} (${selectedFrom.code})`}
+                        className="bg-transparent border-none text-white text-sm w-full focus:ring-0 p-0 focus:outline-none cursor-text"
+                      />
+                    </div>
                     {showFromDropdown && (
-                      <div className="absolute left-0 top-full mt-1 bg-[#111] border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-50 min-w-[180px]">
-                        {FROM_CITIES.map(city => (
-                          <button key={city.code} onClick={() => { setSelectedFrom(city); setShowFromDropdown(false) }}
+                      <div className="absolute left-0 top-full mt-1 bg-[#111] border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-50 min-w-[200px]">
+                        {FROM_CITIES.filter(c =>
+                          !fromQuery || c.name.toLowerCase().includes(fromQuery.toLowerCase()) || c.code.toLowerCase().includes(fromQuery.toLowerCase())
+                        ).map(city => (
+                          <button key={city.code} onClick={() => { setSelectedFrom(city); setShowFromDropdown(false); setFromQuery('') }}
                             className={`w-full text-left px-4 py-3 text-sm hover:bg-white/10 transition-all flex items-center justify-between ${selectedFrom.code === city.code ? 'text-terracotta font-bold' : 'text-white/80'}`}>
                             {city.name} <span className="text-xs text-white/40">{city.code}</span>
                           </button>
@@ -229,15 +239,23 @@ export default function LandingPage() {
                     )}
                   </div>
                   <div className="relative" ref={toRef}>
-                    <button onClick={() => { setShowToDropdown(v => !v); setShowFromDropdown(false) }}
-                      className="bg-white/5 rounded-2xl p-4 text-left w-full hover:bg-white/10 transition-all">
-                      <span className="text-[9px] font-bold text-terracotta uppercase block">To</span>
-                      <span className="text-white text-sm">{selectedTo.name} ({selectedTo.code})</span>
-                    </button>
+                    <div className="bg-white/5 rounded-2xl p-4 text-left hover:bg-white/10 transition-all cursor-text"
+                      onClick={() => { setShowToDropdown(true); setShowFromDropdown(false) }}>
+                      <span className="text-[9px] font-bold text-terracotta uppercase block mb-1">To</span>
+                      <input
+                        value={showToDropdown ? toQuery : `${selectedTo.name} (${selectedTo.code})`}
+                        onChange={e => { setToQuery(e.target.value); setShowToDropdown(true) }}
+                        onFocus={() => { setToQuery(''); setShowToDropdown(true); setShowFromDropdown(false) }}
+                        placeholder={`${selectedTo.name} (${selectedTo.code})`}
+                        className="bg-transparent border-none text-white text-sm w-full focus:ring-0 p-0 focus:outline-none cursor-text"
+                      />
+                    </div>
                     {showToDropdown && (
-                      <div className="absolute left-0 top-full mt-1 bg-[#111] border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-50 min-w-[180px]">
-                        {TO_CITIES.map(city => (
-                          <button key={city.code} onClick={() => { setSelectedTo(city); setShowToDropdown(false) }}
+                      <div className="absolute left-0 top-full mt-1 bg-[#111] border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-50 min-w-[200px]">
+                        {TO_CITIES.filter(c =>
+                          !toQuery || c.name.toLowerCase().includes(toQuery.toLowerCase()) || c.code.toLowerCase().includes(toQuery.toLowerCase())
+                        ).map(city => (
+                          <button key={city.code} onClick={() => { setSelectedTo(city); setShowToDropdown(false); setToQuery('') }}
                             className={`w-full text-left px-4 py-3 text-sm hover:bg-white/10 transition-all flex items-center justify-between ${selectedTo.code === city.code ? 'text-terracotta font-bold' : 'text-white/80'}`}>
                             {city.name} <span className="text-xs text-white/40">{city.code}</span>
                           </button>
