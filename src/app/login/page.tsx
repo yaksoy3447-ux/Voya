@@ -29,6 +29,7 @@ function LoginContent() {
     if (urlError === 'auth_failed') setError(`Authentication failed. ${urlDesc || 'Please try again.'}`)
     if (urlError === 'invalid_callback') setError("Invalid login attempt. Please try again.")
     if (urlError === 'access_denied') setError("Access denied. You cancelled the login.")
+    if (urlError === 'middleware_bounce') setError(`Session expired or cookies blocked. ${urlDesc || ''}`)
     
     // Auto-redirect if session is already established (e.g. from implicit flow hash fragment or magic links)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {

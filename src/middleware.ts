@@ -33,6 +33,8 @@ export async function middleware(request: NextRequest) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     url.searchParams.set('next', request.nextUrl.pathname)
+    url.searchParams.set('error', 'middleware_bounce')
+    url.searchParams.set('desc', 'Middleware did not detect a valid session cookie.')
     return NextResponse.redirect(url)
   }
 
