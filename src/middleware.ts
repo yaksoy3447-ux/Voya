@@ -16,25 +16,31 @@ export async function middleware(request: NextRequest) {
     supabaseAnonKey,
     {
       cookies: {
-        getAll() { return request.cookies.getAll() },
+        getAll() {
+          return request.cookies.getAll()
+        },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
           supabaseResponse = NextResponse.next({ request })
-          cookiesToSet.forEach(({ name, value, options }) => supabaseResponse.cookies.set(name, value, options))
+          cookiesToSet.forEach(({ name, value, options }) =>
+            supabaseResponse.cookies.set(name, value, options)
+          )
         },
       },
     }
   )
 
+  // IMPORTANT: Use getUser() not getSession() for server-side auth
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Guard: Protect /create and /profile
-  if (!user && (request.nextUrl.pathname.startsWith('/create') || request.nextUrl.pathname.startsWith('/profile'))) {
+  // Protect /create and /profile routes
+  if (!user && (
+    request.nextUrl.pathname.startsWith('/create') ||
+    request.nextUrl.pathname.startsWith('/profile')
+  )) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     url.searchParams.set('next', request.nextUrl.pathname)
-    url.searchParams.set('error', 'middleware_bounce')
-    url.searchParams.set('desc', 'Middleware did not detect a valid session cookie.')
     return NextResponse.redirect(url)
   }
 

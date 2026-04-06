@@ -5,66 +5,48 @@ import { createBrowserClient } from "@supabase/ssr"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Mail, Lock, Eye, EyeOff, Compass } from "lucide-react"
-import { useSearchParams, useRouter } from "next/navigation"
+import { ArrowRight, Mail, Lock, Eye, EyeOff } from "lucide-react"
+import { useSearchParams } from "next/navigation"
+
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 function LoginContent() {
   const searchParams = useSearchParams()
-  const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [isSignUp, setIsSignUp] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
-
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  const [success, setSuccess] = useState("")
 
   useEffect(() => {
     const urlError = searchParams.get('error')
     const urlDesc = searchParams.get('desc')
-    if (urlError === 'auth_failed') setError(`Authentication failed. ${urlDesc || 'Please try again.'}`)
-    if (urlError === 'invalid_callback') setError("Invalid login attempt. Please try again.")
-    if (urlError === 'access_denied') setError("Access denied. You cancelled the login.")
-    if (urlError === 'middleware_bounce') setError(`Session expired or cookies blocked. ${urlDesc || ''}`)
-    
-    // Auto-redirect if session is already established (e.g. from implicit flow hash fragment or magic links)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        setTimeout(() => {
-          router.push(searchParams.get('next') || "/create")
-        }, 300)
-      }
-    })
-    
-    return () => subscription.unsubscribe()
-  }, [searchParams, supabase.auth, router])
+    if (urlError) {
+      setError(urlDesc ? decodeURIComponent(urlDesc) : "Authentication failed. Please try again.")
+    }
+  }, [searchParams])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError("")
+    setSuccess("")
+
     try {
       if (isSignUp) {
         const { error } = await supabase.auth.signUp({ email, password })
         if (error) throw error
-        alert("Check your email for a confirmation link!")
+        setSuccess("Account created! Please check your email for a confirmation link.")
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
-        
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-          if (session) {
-            setTimeout(() => {
-              router.push(searchParams.get('next') || "/create")
-            }, 300)
-          }
-        })
-        
-        return () => subscription.unsubscribe()
+        // Successful - hard redirect to ensure cookies are recognized by middleware
+        window.location.href = searchParams.get('next') || "/create"
       }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err))
@@ -73,20 +55,18 @@ function LoginContent() {
     }
   }
 
-  const handleOAuth = async (provider: 'google' | 'facebook') => {
-    await supabase.auth.signInWithOAuth({
-      provider,
-      options: { 
+  const handleGoogle = async () => {
+    setError("")
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
         redirectTo: `${window.location.origin}/auth/callback?next=/create`,
         queryParams: {
           prompt: 'select_account',
-          ...(provider === 'facebook' && {
-            access_type: 'offline',
-            scope: 'email,public_profile'
-          })
         }
       }
     })
+    if (error) setError(error.message)
   }
 
   return (
@@ -117,7 +97,10 @@ function LoginContent() {
         {/* Card */}
         <div className="glass-card p-8 rounded-3xl border border-glass-border">
           <div className="grid grid-cols-1 gap-3 mb-6">
-            <button onClick={() => handleOAuth('google')} className="flex items-center justify-center gap-2 h-12 rounded-xl border border-glass-border bg-white/5 hover:bg-white/10 transition-all shadow-lg shadow-black/5">
+            <button
+              onClick={handleGoogle}
+              className="flex items-center justify-center gap-2 h-12 rounded-xl border border-glass-border bg-white/5 hover:bg-white/10 transition-all shadow-lg shadow-black/5"
+            >
               <svg className="w-5 h-5" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
               <span className="text-sm font-medium text-foreground/70">Continue with Google</span>
             </button>
@@ -134,6 +117,9 @@ function LoginContent() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
               <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">{error}</div>
+            )}
+            {success && (
+              <div className="p-3 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400 text-sm">{success}</div>
             )}
 
             <div className="relative">
@@ -176,7 +162,7 @@ function LoginContent() {
           {/* Toggle Sign In / Sign Up */}
           <p className="text-center text-sm text-foreground/50 mt-6">
             {isSignUp ? 'Already have an account?' : "Don't have an account?"}
-            <button onClick={() => { setIsSignUp(!isSignUp); setError("") }} className="text-terracotta hover:underline ml-1 font-medium">
+            <button onClick={() => { setIsSignUp(!isSignUp); setError(""); setSuccess("") }} className="text-terracotta hover:underline ml-1 font-medium">
               {isSignUp ? 'Sign In' : 'Sign Up'}
             </button>
           </p>
