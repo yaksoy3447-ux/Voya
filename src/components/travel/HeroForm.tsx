@@ -271,12 +271,28 @@ export function HeroForm() {
                     <div className="space-y-6 text-left">
                        <h2 className="text-2xl font-serif text-foreground/90 flex items-center gap-2"><HeartPulse className="text-terracotta"/> Interests</h2>
                        <div className="flex flex-wrap gap-2">
-                         {["History", "Food", "Nature", "Art", "Shopping"].map(i => (
-                           <button key={i} onClick={() => setInterests(prev => prev.includes(i) ? prev.filter(x => x !== i) : [...prev, i])} className={`px-4 py-2 rounded-full border text-sm transition-all ${interests.includes(i) ? 'bg-terracotta border-terracotta text-white' : 'border-glass-border'}`}>
+                         {["History", "Food", "Nature", "Art", "Shopping", "Swimming", "Nightlife", "Adventure", "Wellness"].map(i => (
+                           <button key={i} onClick={() => setInterests(prev => prev.includes(i) ? prev.filter(x => x !== i) : [...prev, i])} className={`px-4 py-2 rounded-full border text-sm transition-all ${interests.includes(i) ? 'bg-terracotta border-terracotta text-white' : 'border-glass-border hover:bg-white/5'}`}>
                              {i}
                            </button>
                          ))}
                        </div>
+
+                       {isFlexible && (
+                         <div className="pt-4">
+                           <h2 className="text-2xl font-serif text-foreground/90 flex items-center gap-2 mb-4"><Sparkles className="text-terracotta"/> Trip Vibe</h2>
+                           <div className="grid grid-cols-2 gap-3">
+                             {vibeOptions.map(v => (
+                               <button key={v.id} onClick={() => setVibe(v.id)} className={`p-3 rounded-xl border transition-all text-left flex items-center gap-3 ${vibe === v.id ? 'border-terracotta bg-terracotta/10' : 'border-glass-border hover:border-terracotta/30'}`}>
+                                 <div className="p-2 rounded-full bg-white/5 flex shrink-0 items-center justify-center">
+                                   {v.icon}
+                                 </div>
+                                 <span className="font-medium text-sm">{v.label}</span>
+                               </button>
+                             ))}
+                           </div>
+                         </div>
+                       )}
                     </div>
                   )}
                   <div className="pt-8 flex items-center justify-between border-t border-glass-border/40 mt-auto">
